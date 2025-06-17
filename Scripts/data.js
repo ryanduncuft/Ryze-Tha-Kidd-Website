@@ -50,7 +50,7 @@ const GIST_RAW_URL = 'https://gist.githubusercontent.com/ryanduncuft/39ade5f46c7
 const CACHE_KEY = 'discographyDataCache';
 const CACHE_TIMESTAMP_KEY = 'discographyDataTimestamp';
 // How long the data stays in local storage before we check for updates.
-const CACHE_DURATION_SECONDS = 5;
+const CACHE_DURATION_SECONDS = 2678400;
 const CACHE_DURATION_MS = CACHE_DURATION_SECONDS * 1000;
 
 // Note: This function gets the discography data.
