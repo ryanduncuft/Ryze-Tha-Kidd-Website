@@ -1,26 +1,37 @@
 import { releasesData, fetchReleasesData } from './data.js';
 
-document.addEventListener('DOMContentLoaded', async () =>
-    {
-    const albumSection = document.querySelector('.album-hero-section');
-    if (!albumSection)
-    {
-        console.error('Album hero section not found. Cannot load data.');
+document.addEventListener('DOMContentLoaded', async () => {
+    console.log('Page loaded. Running albumPageLoader.js');
+
+    // *** IMPORTANT CHANGE HERE ***
+    // Get the ID from the URL query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const albumId = urlParams.get('id'); // Get the value of the 'id' parameter
+
+    if (!albumId) {
+        console.error('Missing "id" query parameter in URL for album. Cannot load data.');
+        const mainContentContainer = document.querySelector('.album-page-content .container');
+        if (mainContentContainer) {
+            mainContentContainer.innerHTML = '<p style="text-align: center; color: var(--text-color-dark); font-size: 1.5rem; padding: 50px;">Oops! No album ID provided in the URL.</p>';
+            if (document.body.classList.contains('dark-mode')) {
+                mainContentContainer.querySelector('p').style.color = 'var(--text-color-light)';
+            }
+        }
+        // Also hide other elements that might be visible by default
+        document.querySelector('.album-visuals')?.classList.add('hidden');
+        document.querySelector('.album-details-panel')?.classList.add('hidden');
         return;
     }
 
-    const albumId = albumSection.getAttribute('data-id');
-    if (!albumId)
-    {
-        console.error('Album ID not found in data-id attribute. Cannot load data.');
-        return;
-    }
+    console.log(`Trying to load album ID from URL: ${albumId}`);
 
     // grab the latest album data
     await fetchReleasesData();
 
     // find the current album in our data
-    const currentRelease = releasesData.find(release => release.id === albumId);
+    const currentRelease = releasesData.find(
+        release => release.id === albumId && ['album', 'ep'].includes(release.type)
+    );
 
     // get all the elements we'll be updating
     const albumCoverImg = document.querySelector('.album-cover-tilt-effect img');
@@ -33,134 +44,116 @@ document.addEventListener('DOMContentLoaded', async () =>
     const creditsSection = document.querySelector('.credits-section');
     const mainContentContainer = document.querySelector('.album-page-content .container');
 
-    if (currentRelease)
-    {
+    if (currentRelease) {
         // update the page's HTML head for SEO and browser tab title
         document.title = `${currentRelease.title} | ${currentRelease.artist}`;
-        document.querySelector('meta[name="description"]').setAttribute('content', currentRelease.description || `Explore ${currentRelease.title} by ${currentRelease.artist}.`);
-        document.querySelector('meta[name="keywords"]').setAttribute('content', `Ryze Tha Kidd, ${currentRelease.type}, ${currentRelease.title}, music, ${currentRelease.artist}, ${currentRelease.credits?.artists?.join(', ') || ''}, ${currentRelease.credits?.producers?.join(', ') || ''}`);
+        
+        const setMeta = (selector, content) => {
+            const tag = document.querySelector(selector);
+            if (tag) tag.setAttribute('content', content);
+        };
+
+        setMeta('meta[name="description"]', currentRelease.description || `Explore ${currentRelease.title} by ${currentRelease.artist}.`);
+        setMeta('meta[name="keywords"]', `Ryze Tha Kidd, ${currentRelease.type}, ${currentRelease.title}, music, ${currentRelease.artist}, ${currentRelease.credits?.artists?.join(', ') || ''}, ${currentRelease.credits?.producers?.join(', ') || ''}`);
 
         // set Open Graph and Twitter card meta tags for social sharing
         const fullImagePath = currentRelease.image;
-        document.querySelector('meta[property="og:title"]').setAttribute('content', currentRelease.title);
-        document.querySelector('meta[property="og:description"]').setAttribute('content', currentRelease.description || `Listen to ${currentRelease.title} by ${currentRelease.artist}.`);
-        document.querySelector('meta[property="og:url"]').setAttribute('content', window.location.href);
-        document.querySelector('meta[property="og:image"]').setAttribute('content', fullImagePath);
-        document.querySelector('meta[name="twitter:title"]').setAttribute('content', currentRelease.title);
-        document.querySelector('meta[name="twitter:description"]').setAttribute('content', currentRelease.description || `Check out ${currentRelease.title} by ${currentRelease.artist}.`);
-        document.querySelector('meta[name="twitter:image"]').setAttribute('content', fullImagePath);
+        setMeta('meta[property="og:title"]', currentRelease.title);
+        setMeta('meta[property="og:description"]', currentRelease.description || `Listen to ${currentRelease.title} by ${currentRelease.artist}.`);
+        setMeta('meta[property="og:url"]', window.location.href);
+        setMeta('meta[property="og:image"]', fullImagePath);
+        setMeta('meta[name="twitter:title"]', currentRelease.title);
+        setMeta('meta[name="twitter:description"]', currentRelease.description || `Check out ${currentRelease.title} by ${currentRelease.artist}.`);
+        setMeta('meta[name="twitter:image"]', fullImagePath);
 
         // update album cover
-        if (albumCoverImg)
-        {
+        if (albumCoverImg) {
             albumCoverImg.src = currentRelease.image;
             albumCoverImg.alt = `${currentRelease.title} cover art`;
         }
 
         // update album title and artist
-        if (albumTitleElem)
-        {
+        if (albumTitleElem) {
             albumTitleElem.textContent = currentRelease.title;
-        }
-        
-        else
-        {
+        } else {
             console.warn('Album title element not found.');
         }
-
-        if (albumArtistElem)
-        {
+        
+        if (albumArtistElem) {
             albumArtistElem.textContent = currentRelease.artist;
-        }
-
-        else
-        {
+        } else {
             console.warn('Album artist element not found.');
         }
 
         // update "Listen Now" button
-        if (listenNowBtn && currentRelease.listenLink)
-        {
+        if (listenNowBtn && currentRelease.listenLink) {
             listenNowBtn.href = currentRelease.listenLink;
             listenNowBtn.classList.remove('hidden');
-        }
-        
-        else if (listenNowBtn)
-        {
+        } else if (listenNowBtn) {
             listenNowBtn.classList.add('hidden'); // hide if no link
         }
 
         // update tracklist
-        if (tracklistGrid && tracklistSection && currentRelease.tracks && currentRelease.tracks.length > 0)
-        {
+        if (tracklistGrid && tracklistSection && currentRelease.tracks && currentRelease.tracks.length > 0) {
             tracklistGrid.innerHTML = ''; // clear existing buttons
 
-            // assuming track directory is the same as the album's title
-            const trackDirectory = currentRelease.title;
-
+            // --- THIS IS THE SECTION TO UPDATE ---
             currentRelease.tracks.forEach((track) => {
                 const trackButton = document.createElement('a');
-                trackButton.href = `${trackDirectory}/${track.link}`;
+                
+                // *** OLD LINE (likely causing the issue): ***
+                // trackButton.href = `${trackDirectory}/${track.link}`; 
+                // OR
+                // trackButton.href = `single.html?id=${track.id || track.link}`; // This was better, but assumes track.link IS the ID or a path to old HTML
+
+                // *** NEW CORRECTED LINE: ***
+                // It's crucial that `track.id` is present in your `releasesData` for each individual track
+                // within an album's `tracks` array. This `id` should match the `id` of that
+                // specific track if it were listed as a standalone 'single' or 'album-track' type.
+                trackButton.href = `single.html?id=${track.id}`; // Assumes track.id exists for each track
+
                 trackButton.classList.add('track-button');
                 trackButton.textContent = track.title;
                 tracklistGrid.appendChild(trackButton);
             });
             tracklistSection.classList.remove('hidden'); // show tracklist
-        }
-
-        else if (tracklistSection)
-        {
+        } else if (tracklistSection) {
             tracklistSection.classList.add('hidden'); // hide if no tracks
         }
 
         // update credits
-        if (creditsDiv && creditsSection && currentRelease.credits)
-        {
+        if (creditsDiv && creditsSection && currentRelease.credits) {
             let artistsHtml = '';
-            if (currentRelease.credits.artists && currentRelease.credits.artists.length > 0)
-            {
+            if (currentRelease.credits.artists && currentRelease.credits.artists.length > 0) {
                 artistsHtml = `<p><strong>Artist${currentRelease.credits.artists.length > 1 ? 's' : ''}:</strong> ${currentRelease.credits.artists.join(', ')}</p>`;
             }
 
             let producersHtml = '';
-            if (currentRelease.credits.producers && currentRelease.credits.producers.length > 0)
-            {
+            if (currentRelease.credits.producers && currentRelease.credits.producers.length > 0) {
                 producersHtml = `<p><strong>Producer${currentRelease.credits.producers.length > 1 ? 's' : ''}:</strong> ${currentRelease.credits.producers.join(', ')}</p>`;
             }
 
             // only show credits if there's artists, producers, or a release date
-            if (artistsHtml || producersHtml || currentRelease.displayDate)
-            {
+            if (artistsHtml || producersHtml || currentRelease.displayDate) {
                 creditsDiv.innerHTML = `
                     ${artistsHtml}
                     ${producersHtml}
                     ${currentRelease.displayDate ? `<p><strong>Release Date:</strong> ${currentRelease.displayDate}</p>` : ''}
                 `;
                 creditsSection.classList.remove('hidden'); // show credits section
-            }
-
-            else 
-            {
+            } else {
                 creditsSection.classList.add('hidden'); // hide if no meaningful credits
             }
-        }
-
-        else if (creditsSection)
-        {
+        } else if (creditsSection) {
             creditsSection.classList.add('hidden'); // hide if no credits data
         }
 
-    }
-
-    else
-    {
+    } else {
         // if no album data is found, show a message
-        if (mainContentContainer)
-        {
-            mainContentContainer.innerHTML = '<p style="text-align: center; color: var(--text-color-dark); font-size: 1.5rem; padding: 50px;">Oops! This release could not be found.</p>';
-            // adjust color for light mode if needed
-            if (!document.body.classList.contains('dark-mode'))
-            {
+        if (mainContentContainer) {
+            mainContentContainer.innerHTML = '<p style="text-align: center; color: var(--text-color-dark); font-size: 1.5rem; padding: 50px;">Oops! This release could not be found or is not an album/EP.</p>';
+            // adjust color for dark mode if needed
+            if (document.body.classList.contains('dark-mode')) {
                 mainContentContainer.querySelector('p').style.color = 'var(--text-color-light)';
             }
         }

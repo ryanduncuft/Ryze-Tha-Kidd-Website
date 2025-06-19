@@ -6,60 +6,52 @@
 
 import { releasesData, fetchReleasesData } from './data.js';
 
-document.addEventListener('DOMContentLoaded', async () =>
-{
+document.addEventListener('DOMContentLoaded', async () => {
     console.log('Page loaded. Running singlePageLoader.js');
 
-    const mainContent = document.querySelector('.main-content');
-    if (!mainContent)
-    {
-        console.error('Missing main content section. Cannot load single page details.');
-        return;
-    }
+    // *** IMPORTANT CHANGE HERE ***
+    // Get the ID from the URL query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const singleId = urlParams.get('id'); // Get the value of the 'id' parameter
 
-    const singleId = mainContent.getAttribute('data-id');
-    if (!singleId)
-    {
-        console.error('Missing data-id on main content. Cannot identify the release.');
-        return;
-    }
-
-    console.log(`Trying to load release ID: ${singleId}`);
-
-    // First, make sure our music data is loaded
-    await fetchReleasesData();
-
-    // Find the specific release using its ID and make sure it's a track-like item
-    const currentSingle = releasesData.find
-    (release =>
-        release.id === singleId &&
-        ['single', 'collab', 'album-track'].includes(release.type)
-    );
-
-    if (!currentSingle)
-    {
-        console.error(`No release found for ID: ${singleId} or wrong type.`);
-
-        // Show a "not found" message
+    if (!singleId) {
+        console.error('Missing "id" query parameter in URL. Cannot identify the release.');
         const container = document.querySelector('.main-content .container');
-        if (container)
-        {
-            container.innerHTML = '<p style="text-align: center; color: var(--text-color-dark); font-size: 1.5rem; padding: 50px;">Oops! This release could not be found.</p>';
-            // Adjust color for dark mode
-            if (document.body.classList.contains('dark-mode'))
-            {
+        if (container) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-color-dark); font-size: 1.5rem; padding: 50px;">Oops! No release ID provided in the URL.</p>';
+            if (document.body.classList.contains('dark-mode')) {
                 container.querySelector('p').style.color = 'var(--text-color-light)';
             }
         }
+        document.querySelectorAll('.single-picture, .single-info, .single-section, .tabs').forEach(el => el?.classList.add('hidden'));
+        return;
+    }
 
-        // Hide other elements to prevent empty displays
+    console.log(`Trying to load release ID from URL: ${singleId}`);
+
+    await fetchReleasesData();
+
+    const currentSingle = releasesData.find(
+        release =>
+            release.id === singleId &&
+            ['single', 'collab', 'album-track'].includes(release.type)
+    );
+
+    if (!currentSingle) {
+        console.error(`No release found for ID: ${singleId} or wrong type.`);
+        const container = document.querySelector('.main-content .container');
+        if (container) {
+            container.innerHTML = '<p style="text-align: center; color: var(--text-color-dark); font-size: 1.5rem; padding: 50px;">Oops! This release could not be found.</p>';
+            if (document.body.classList.contains('dark-mode')) {
+                container.querySelector('p').style.color = 'var(--text-color-light)';
+            }
+        }
         document.querySelectorAll('.single-picture, .single-info, .single-section, .tabs').forEach(el => el?.classList.add('hidden'));
         return;
     }
 
     console.log('Successfully found release:', currentSingle);
 
-    // Get all the elements we'll be filling with data
     const singleCoverImg = document.getElementById('single-cover-img');
     const listenNowBtn = document.getElementById('listen-now-btn');
     const singleTitleElem = document.getElementById('single-title');
@@ -77,9 +69,7 @@ document.addEventListener('DOMContentLoaded', async () =>
     const lyricsContentDiv = document.getElementById('lyrics-content');
     const tabsContainer = document.querySelector('.tabs');
 
-    // Note: This function manages which tab content is visible and which button is active.
-    function showTab(tabId)
-    {
+    function showTab(tabId) {
         document.querySelectorAll('.singlebtn-toggle').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
@@ -93,8 +83,7 @@ document.addEventListener('DOMContentLoaded', async () =>
     // Set the page title and meta tags for SEO and social sharing
     document.title = `${currentSingle.title} | ${currentSingle.artist}`;
 
-    const setMeta = (selector, content) =>
-    {
+    const setMeta = (selector, content) => {
         const tag = document.querySelector(selector);
         if (tag) tag.setAttribute('content', content);
     };
@@ -102,7 +91,6 @@ document.addEventListener('DOMContentLoaded', async () =>
     setMeta('meta[name="description"]', currentSingle.description || `Listen to ${currentSingle.title} by ${currentSingle.artist}.`);
     setMeta('meta[name="keywords"]', `Ryze Tha Kidd, ${currentSingle.type}, ${currentSingle.title}, music, ${currentSingle.artist}, ${currentSingle.genre || ''}, ${currentSingle.writer || ''}, ${currentSingle.producer || ''}`);
 
-    // Use the full image URL from our data for Open Graph and Twitter cards
     setMeta('meta[property="og:url"]', window.location.href);
     setMeta('meta[property="og:title"]', currentSingle.title);
     setMeta('meta[property="og:description"]', currentSingle.description || `Listen to ${currentSingle.title} by ${currentSingle.artist}.`);
@@ -113,20 +101,17 @@ document.addEventListener('DOMContentLoaded', async () =>
     setMeta('meta[property="twitter:description"]', currentSingle.description || `Check out ${currentSingle.title} by ${currentSingle.artist}.`);
     setMeta('meta[property="twitter:image"]', currentSingle.image);
 
-    // Fill in the page content
-    if (singleCoverImg)
-    {
+    if (singleCoverImg) {
         singleCoverImg.src = currentSingle.image;
         singleCoverImg.alt = `${currentSingle.title} cover art`;
     }
 
-    if (listenNowBtn)
-    {
+    if (listenNowBtn) {
         if (currentSingle.listenLink) {
             listenNowBtn.href = currentSingle.listenLink;
             listenNowBtn.classList.remove('hidden');
         } else {
-            listenNowBtn.classList.add('hidden'); // Hide if no link
+            listenNowBtn.classList.add('hidden');
         }
     }
 
@@ -137,65 +122,41 @@ document.addEventListener('DOMContentLoaded', async () =>
     if (writerElem) writerElem.innerHTML = `<strong>Writer:</strong> ${currentSingle.writer || 'N/A'}`;
     if (producerElem) producerElem.innerHTML = `<strong>Producer:</strong> ${currentSingle.producer || 'N/A'}`;
 
-    // Handle the description tab content
-    if (descriptionTextElem)
-    {
-        if (currentSingle.descriptionHtml)
-        {
+    if (descriptionTextElem) {
+        if (currentSingle.descriptionHtml) {
             descriptionTextElem.innerHTML = currentSingle.descriptionHtml;
             descriptionTabBtn?.classList.remove('hidden');
             descriptionContentDiv?.classList.remove('hidden');
-        }
-        
-        else
-        {
+        } else {
             descriptionTabBtn?.classList.add('hidden');
             descriptionContentDiv?.classList.add('hidden');
         }
     }
 
-    // Handle the lyrics tab content
-    if (lyricsTextElem)
-    {
-        if (currentSingle.lyrics)
-        {
+    if (lyricsTextElem) {
+        if (currentSingle.lyrics) {
             lyricsTextElem.innerHTML = currentSingle.lyrics;
             lyricsTabBtn?.classList.remove('hidden');
             lyricsContentDiv?.classList.remove('hidden');
-        }
-        
-        else
-        {
+        } else {
             lyricsTabBtn?.classList.add('hidden');
             lyricsContentDiv?.classList.add('hidden');
         }
     }
 
-    // Show the first available tab by default (description or lyrics)
     const descHidden = descriptionContentDiv?.classList.contains('hidden');
     const lyricsHidden = lyricsContentDiv?.classList.contains('hidden');
 
-    if (!descHidden)
-    {
+    if (!descHidden) {
         showTab('description-content');
-    }
-    
-    else if (!lyricsHidden)
-    {
+    } else if (!lyricsHidden) {
         showTab('lyrics-content');
-    }
-    
-    else
-    {
-        // If both are hidden, hide the entire tabs section
+    } else {
         tabsContainer?.classList.add('hidden');
     }
 
-    // Add click listeners to the tab buttons
-    document.querySelectorAll('.singlebtn-toggle').forEach(button =>
-    {
-        button.addEventListener('click', (event) =>
-        {
+    document.querySelectorAll('.singlebtn-toggle').forEach(button => {
+        button.addEventListener('click', (event) => {
             event.preventDefault();
             const tabId = button.getAttribute('data-tab-target');
             if (tabId) showTab(tabId);
