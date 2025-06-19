@@ -41,7 +41,7 @@ No specific software is required to *run* the website. However, for development 
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/ryanduncuft/RTK.git](https://github.com/ryanduncuft/RTK.git)
+    git clone https://github.com/ryanduncuft/RTK.git
     ```
 2.  **Navigate to the project directory:**
     ```bash
@@ -57,7 +57,7 @@ You can easily run this website locally in your browser without needing a comple
 
 To view the project locally:
 
-1.  **Open with Live Server (Recommended):** If you use VS Code, install the "Live Server" extension. Then, simply right-click on the `index.html` file in your project directory and select "Open with Live Server". This will launch the website in your default browser and automatically refresh it as you make changes.
+1.  **Open with Five Server (Recommended):** If you use VS Code, install the "Give Server" extension. Then, simply right-click on the `index.html` file in your project directory and select "Open with Five Server". This will launch the website in your default browser and automatically refresh it as you make changes.
 
     *Alternatively, you can manually open the `index.html` file in your web browser by double-clicking it.*
 
@@ -65,7 +65,7 @@ To view the project locally:
 
 ## Live Website
 
-Experience the website live at: [https://ryzethakidd.netlify.app/](https://ryzethakidd.netlify.app/)
+Experience the website live at: (https://ryzethakidd.netlify.app/)
 
 ---
 
@@ -97,4 +97,4 @@ Got questions or just want to connect? Feel free to reach out!
 * **GitHub:** [@RyzeThaKidd](https://github.com/ryanduncuft)
 * **Email:** ryanduncuft23@gmail.com
 
-Project Link: [https://github.com/ryanduncuft/RTK](https://github.com/ryanduncuft/RTK)
+Project Link: (https://github.com/ryanduncuft/RTK)
