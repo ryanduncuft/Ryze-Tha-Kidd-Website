@@ -1,7 +1,10 @@
 # Ryze Tha Kidd Artist Website
 
+---
+
 ## Overview
-This website serves as the official online hub for **Ryze Tha Kidd**, designed to be the ultimate destination for fans and newcomers alike. Its core purpose is to showcase my music releases, provide detailed information about each track, and offer insights into my journey as an artist. It's the perfect place to stay informed about new music and to connect with my story.
+
+Welcome to the official online hub for **Ryze Tha Kidd**! This website is designed to be the ultimate destination for both dedicated fans and new listeners. Its core purpose is to showcase my latest music releases, provide detailed information about each track, and offer insights into my journey as an artist. It's the perfect place to stay informed about new music and to connect with my story.
 
 ---
 
@@ -17,9 +20,11 @@ This website serves as the official online hub for **Ryze Tha Kidd**, designed t
 
 ## Technologies Used
 
-* **Frontend:** Built with **HTML5**, **CSS3**, and **JavaScript** for a responsive and interactive user experience.
-* **Data Handling:** Utilizes **JavaScript** for JSON parsing and data binding, efficiently managing and displaying dynamic content.
-* **Deployment:** Seamlessly deployed using **Netlify**.
+This website is built with modern web technologies to provide a smooth and interactive user experience:
+
+* **Frontend:** Crafted with **HTML5**, **CSS3**, and **JavaScript** for a responsive and engaging interface.
+* **Data Handling:** Utilizes **JavaScript** for efficient JSON parsing and data binding, seamlessly managing and displaying dynamic content.
+* **Deployment:** Seamlessly deployed and hosted using **Netlify**.
 * **Version Control:** Managed with **Git** for collaborative development and pushing updates to this GitHub repository.
 
 ---
@@ -30,7 +35,7 @@ To get a local copy of the website up and running on your machine, follow these 
 
 ### Prerequisites
 
-No specific software is required to *run* the website, but having a code editor like **VS Code** with relevant web development extensions is highly recommended for development purposes.
+No specific software is required to *run* the website. However, for development purposes, a code editor like **VS Code** with relevant web development extensions is highly recommended.
 
 ### Installation
 
@@ -60,7 +65,7 @@ To view the project locally:
 
 ## Live Website
 
-**Live Site:** (https://ryzethakidd.netlify.app/)
+Experience the website live at: [https://ryzethakidd.netlify.app/](https://ryzethakidd.netlify.app/)
 
 ---
 
@@ -79,8 +84,17 @@ Don't forget to give the project a star! Thanks again!
 
 ---
 
+## Future Plans
+
+I'm continuously working to enhance the website and bring new features to improve the user experience. Stay tuned for updates!
+
+---
+
 ## Contact
 
-Ryan Duncuft - [@RyzeThaKidd](https://github.com/ryanduncuft) - [ryanduncuft23@gmail.com](mailto:ryanduncuft23@gmail.com)
+Got questions or just want to connect? Feel free to reach out!
 
-Project Link: (https://github.com/ryanduncuft/RTK)
+* **GitHub:** [@RyzeThaKidd](https://github.com/ryanduncuft)
+* **Email:** ryanduncuft23@gmail.com
+
+Project Link: [https://github.com/ryanduncuft/RTK](https://github.com/ryanduncuft/RTK)
