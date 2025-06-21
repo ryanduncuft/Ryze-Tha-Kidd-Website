@@ -1,8 +1,9 @@
-// My notes:
-// - Tries to load the footer HTML from a few possible locations.
-// - Once loaded, it puts the HTML into the 'footer' div.
-// - It also updates the copyright year and applies dark mode if needed.
+// Scripts/footer.js
 
+// Import cache keys from data.js
+import { CACHE_KEY, CACHE_TIMESTAMP_KEY, fetchReleasesData } from './data.js'; // Adjust path if data.js is not in the same directory
+
+// --- Footer Loading Paths ---
 const footerPathsToTry =
 [
     '/footer.html',       // From the very top of the site
@@ -11,48 +12,6 @@ const footerPathsToTry =
     '../../footer.html',  // Two folders up
     '../../../footer.html', // Three folders up
 ];
-
-/**
- * Note: This function tries to load the footer from different paths until it succeeds.
- * After loading, it updates the year and sets the dark mode.
- */
-async function loadFooter()
-{
-    for (const path of footerPathsToTry)
-    {
-        try
-        {
-            const response = await fetch(path);
-
-            // If we found the footer HTML
-            if (response.ok)
-            {
-                const footerHtml = await response.text();
-                // Put the footer HTML into the 'footer' div
-                document.getElementById("footer").innerHTML = footerHtml;
-
-                // Update the copyright year
-                updateCurrentYear();
-
-                // If dark mode is active, apply its styles to the new footer
-                if (typeof window.applyDarkModeClasses === 'function')
-                {
-                    window.applyDarkModeClasses();
-                }
-                return; // Stop trying paths, we found it!
-            }
-        }
-        
-        catch (error)
-        {
-            // Log if a path fails, but keep trying others
-            console.warn(`Couldn't load footer from ${path}:`, error);
-        }
-    }
-
-    // If we tried all paths and failed
-    console.error("Failed to load the footer from any of the specified paths.");
-}
 
 /**
  * Note: This function finds the 'current-year' element and updates it to the current year.
@@ -66,5 +25,91 @@ function updateCurrentYear()
     }
 }
 
-// When the entire page is loaded, start loading the footer.
-document.addEventListener('DOMContentLoaded', loadFooter);
+/**
+ * Sets up the event listener for the Clear Cache button.
+ * This button clears the data cache stored in localStorage.
+ */
+function setupCacheInvalidationButton() {
+    // Select the element by its ID
+    const clearCacheBtn = document.getElementById('clear-cache-btn');
+
+    if (clearCacheBtn) {
+        // Prevent default link behavior if it's an <a> tag
+        clearCacheBtn.addEventListener('click', (event) => {
+            event.preventDefault(); // Stop the link from jumping to #
+
+            // Confirm with the user before clearing
+            if (confirm("Are you sure you want to clear the local data cache? This will reload the page.")) {
+                try {
+                    // Use the imported cache keys to clear the specific data cache
+                    localStorage.removeItem(CACHE_KEY);
+                    localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+                    console.log("%c[User Action] Local storage data cache cleared successfully.", "color: red; font-weight: bold;");
+
+                    // Force a full page reload to ensure the new data is fetched
+                    // and other potential browser-cached assets are re-evaluated.
+                    window.location.reload(true);
+                } catch (e) {
+                    console.error("[User Action] Failed to clear local storage:", e);
+                    alert("Failed to clear cache. Please try clearing your browser's cache manually or use Incognito mode.");
+                }
+            }
+        });
+    }
+}
+
+/**
+ * Note: This function tries to load the footer from different paths until it succeeds.
+ * After loading, it updates the year, sets dark mode, and initializes the cache invalidation button.
+ */
+async function loadFooter()
+{
+    for (const path of footerPathsToTry)
+    {
+        try
+        {
+            const response = await fetch(path);
+
+            if (response.ok)
+            {
+                const footerHtml = await response.text();
+                const footerDiv = document.getElementById("footer");
+                if (footerDiv) {
+                    footerDiv.innerHTML = footerHtml;
+                } else {
+                    console.error("Footer div with ID 'footer' not found in the document.");
+                    return;
+                }
+
+                updateCurrentYear();
+
+                if (typeof window.applyDarkModeClasses === 'function')
+                {
+                    window.applyDarkModeClasses();
+                }
+
+                setupCacheInvalidationButton(); // Setup the clear cache button after footer is loaded
+                return;
+            }
+        }
+
+        catch (error)
+        {
+            console.warn(`Couldn't load footer from ${path}:`, error);
+        }
+    }
+
+    console.error("Failed to load the footer from any of the specified paths.");
+}
+
+// When the entire page is loaded:
+// 1. Load the footer HTML and set up its interactive elements.
+// 2. Initiate the data fetching process from data.js.
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load the footer first, as it contains the button.
+    await loadFooter();
+
+    // Then, fetch the data. This will either load from fresh cache or network.
+    // The data.js module manages its own cache.
+    await fetchReleasesData();
+});

@@ -171,15 +171,6 @@ main > section {
   transform: scale(1.05);
 }
 
-.back-button {
-  border-radius: var(--border-radius-sm);
-  background-color: var(--primary-color);
-  color: #fff;
-  padding: var(--spacing-xs) var(--spacing-md);
-  font-size: 16px;
-  transition: background-color 0.3s ease;
-}
-
 .back-button:hover {
   background-color: #8b0000;
 }
@@ -195,6 +186,7 @@ main > section {
 
 .btn-toggle:hover {
   background-color: var(--primary-hover-color);
+  cursor: pointer;
 }
 
 /* --- Scrollbar Styles --- */

@@ -98,14 +98,32 @@ function initializeMasonryGrid() {
         const column = document.createElement('div');
         column.classList.add('masonry-column');
         column.style.flex = '1'; // Allows columns to share space
-        column.style.minWidth = `calc((100% / ${numColumns}) - var(--spacing-xl) * ${(numColumns - 1) / numColumns})`; // Calculates column width with gap
+        // Use CSS variable for single item max-width, otherwise calculate based on numColumns
+        if (numColumns === 1) { // When there's only one column, explicitly set min-width to match the desired item width
+            column.style.minWidth = 'var(--discography-item-width)';
+            column.style.maxWidth = 'var(--discography-item-width)'; // Crucial: constrain the single column
+        } else {
+            column.style.minWidth = `calc((100% / ${numColumns}) - var(--spacing-xl) * ${(numColumns - 1) / numColumns})`; // Calculates column width with gap
+            column.style.maxWidth = 'none'; // Ensure no max-width on multiple columns
+        }
+
+
         // Add horizontal gap between columns
         if (i > 0) {
             column.style.marginLeft = 'var(--spacing-xl)';
         }
         releasesGrid.appendChild(column);
     }
-    releasesGrid.style.maxWidth = '1300px'; // Reset max-width
+    // Set max-width for the overall grid if it's a single column layout
+    // This allows the grid to shrink around the single column, centering it if releasesGrid is wider.
+    if (numColumns === 1) {
+        // Adjust the overall grid max-width to be slightly larger than the item width to account for padding/margins
+        // Or remove this line and rely solely on the column's max-width if grid is already narrow enough.
+        // Let's make it the same as the single item width to ensure it perfectly wraps it.
+        releasesGrid.style.maxWidth = 'var(--discography-item-width)';
+    } else {
+        releasesGrid.style.maxWidth = '1300px'; // Reset max-width for multiple columns
+    }
     releasesGrid.style.margin = 'auto'; // Center the grid
 }
 
@@ -193,13 +211,23 @@ function displayReleases(category) {
         });
     }
 
+    // --- REMOVED THE FOLLOWING BLOCK ---
     // Handle single item centering (optional for masonry, but keeps previous behavior)
+    // if (filteredReleases.length === 1) {
+    //     releasesGrid.style.justifyContent = 'center'; // Center the single column
+    //     releasesGrid.style.maxWidth = '450px'; // <-- THIS WAS THE PROBLEM LINE
+    // } else {
+    //     releasesGrid.style.justifyContent = 'flex-start'; // Reset for multiple columns
+    //     releasesGrid.style.maxWidth = '1300px'; // Reset max-width
+    // }
+    // --- END REMOVED BLOCK ---
+
+    // The logic for centering and max-width is now handled in initializeMasonryGrid based on numColumns.
+    // If you want to explicitly set justify-content here, ensure it aligns with the single-column state.
     if (filteredReleases.length === 1) {
-        releasesGrid.style.justifyContent = 'center'; // Center the single column
-        releasesGrid.style.maxWidth = '450px'; // Constrain width for single item
+        releasesGrid.style.justifyContent = 'center';
     } else {
-        releasesGrid.style.justifyContent = 'flex-start'; // Reset for multiple columns
-        releasesGrid.style.maxWidth = '1300px'; // Reset max-width
+        releasesGrid.style.justifyContent = 'flex-start';
     }
 }
 
@@ -213,21 +241,8 @@ navButtons.forEach(button => {
 
         const category = button.getAttribute('data-category');
 
-        // No need for fade-out class on the main grid, as we're managing opacity directly
-        // releasesGrid.classList.add('fade-out'); // Remove this line
-
-        // After the fade-out (simulated by opacity transition), update content
         setTimeout(() => {
             displayReleases(category);
-
-            // No need for fade-in class on the main grid, as we're managing opacity directly
-            // releasesGrid.classList.remove('fade-out'); // Remove this line
-            // releasesGrid.classList.add('fade-in'); // Remove this line
-
-            // No need for this timeout anymore
-            // setTimeout(() => {
-            //     releasesGrid.classList.remove('fade-in');
-            // }, 500); // Matches CSS fade-in duration
         }, 300); // This delay now acts as the visual "fade-out" time before new content appears
     });
 });
