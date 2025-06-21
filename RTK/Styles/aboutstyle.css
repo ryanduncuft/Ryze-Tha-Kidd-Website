@@ -1,0 +1,281 @@
+@import url(homestyle.css); /* Keep this to inherit global styles like font, colors etc. */
+
+/* --- Variables --- */
+:root {
+  /* My note: These variables help map specific "about page" colors to our main theme colors. */
+  --about-primary-color: var(--primary-color);
+  --about-text-color-light: var(--light-text-color);
+  --about-heading-color-light: var(--light-text-color); /* Headings look good darker in light mode */
+  --about-secondary-text-color-light: #777; /* Softer color for infobox subheadings */
+  --about-card-bg-light: var(--light-card-bg);
+  --about-border-color-light: var(--light-card-border);
+  --about-card-shadow-light: var(--light-card-shadow);
+  --about-link-color-light: var(--primary-color);
+  --about-link-hover-color-light: var(--primary-hover-color);
+}
+
+/* --- Dark Mode Overrides for About Page --- */
+/* My note: When dark mode is on, these swap the colors for the about page. */
+body.dark-mode {
+  --about-text-color-light: var(--dark-text-color);
+  --about-heading-color-light: var(--dark-text-color);
+  --about-secondary-text-color-light: #aaa;
+  --about-card-bg-light: var(--dark-card-bg);
+  --about-border-color-light: var(--dark-card-border);
+  --about-card-shadow-light: var(--dark-card-shadow);
+  --about-link-color-light: var(--primary-hover-color); /* Lighter link color in dark mode */
+  --about-link-hover-color-light: var(--primary-color);
+}
+
+/* --- General Page Layout --- */
+/* My note: Overall padding for the main content area. */
+.about-page-main {
+  padding: var(--spacing-xxl) 0;
+  color: var(--about-text-color-light); /* Use the resolved text color */
+  transition: color 0.3s ease; /* Smooth transition for text color */
+}
+
+/* My note: Layout for the main content, like a Wikipedia page (sidebar + article). */
+.container.wikipedia-layout {
+  display: flex;
+  flex-direction: row; /* Default for desktop */
+  gap: var(--spacing-lg); /* Space between infobox and article */
+  max-width: 1300px; /* Aligned with homestyle.css max-width for consistency */
+  margin: 0 auto;
+  padding: 0 var(--spacing-md); /* Adjusted padding for better consistency */
+  box-sizing: border-box;
+  align-items: flex-start; /* Align items to the top */
+}
+
+/* --- Infobox (Sidebar) Styling --- */
+/* My note: Styles for the information box on the side. */
+.infobox {
+  flex: 0 0 320px; /* Fixed width on larger screens */
+  min-width: 280px;
+  max-width: 350px;
+  padding: var(--spacing-md);
+  background-color: var(--about-card-bg-light);
+  border: 1px solid var(--about-border-color-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 6px 20px var(--about-card-shadow-light); /* Slightly increased default shadow */
+  text-align: left;
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: sticky; /* Sticky positioning for infobox */
+  top: var(--spacing-lg); /* Adjust this value based on your header height */
+  align-self: flex-start; /* Ensure it sticks to the top of its flex container */
+}
+
+.infobox:hover {
+  box-shadow: 0 10px 25px var(--about-card-shadow-light); /* More pronounced shadow on hover */
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.infobox-header {
+  text-align: center;
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--about-border-color-light); /* Separator line */
+}
+
+.infobox-header img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--border-radius-sm);
+  margin-bottom: var(--spacing-sm);
+  box-shadow: 0 3px 10px var(--about-card-shadow-light); /* Improved image shadow */
+  transition: transform 0.3s ease;
+}
+
+.infobox-header img:hover {
+  transform: scale(1.02); /* Slightly enlarge image on hover */
+}
+
+.infobox-title {
+  font-size: 2.2em;
+  color: var(--about-primary-color);
+  margin-bottom: var(--spacing-xs);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.infobox-subtitle {
+  font-size: 1.1em;
+  color: var(--about-secondary-text-color-light);
+  margin-bottom: 0;
+}
+
+.infobox-details {
+  list-style: none; /* No bullets */
+  padding: 0;
+  margin: 0;
+}
+
+.infobox-details li {
+  font-size: 1em;
+  color: var(--about-text-color-light);
+  margin: var(--spacing-xs) 0;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed var(--about-border-color-light); /* Dashed lines for details */
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+.infobox-details li:last-child {
+  border-bottom: none; /* No border on the very last item */
+}
+
+.infobox-details strong {
+  color: var(--about-heading-color-light); /* Make bold text stand out */
+  margin-right: 5px;
+}
+
+/* --- Main Article Content Styling --- */
+/* My note: Styles for the main text area of the about page. */
+.article-content {
+  flex: 1; /* Takes up all remaining space */
+  padding: var(--spacing-md);
+  background-color: var(--about-card-bg-light);
+  border-radius: var(--border-radius-md);
+  box-shadow: 0 6px 20px var(--about-card-shadow-light); /* Slightly increased default shadow */
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-content h1 {
+  font-size: 2.8em;
+  color: var(--about-heading-color-light);
+  margin-bottom: var(--spacing-md);
+  font-weight: 700;
+  border-bottom: 2px solid var(--about-primary-color); /* Underline for main title */
+  padding-bottom: var(--spacing-xs);
+  line-height: 1.2;
+}
+
+.article-content h2 {
+  font-size: 2em;
+  color: var(--about-heading-color-light);
+  margin-top: var(--spacing-xl); /* More space above new sections */
+  margin-bottom: var(--spacing-sm);
+  font-weight: 600;
+  border-bottom: 1px solid var(--about-border-color-light); /* Subtle underline for subheadings */
+  padding-bottom: 8px;
+}
+
+.article-content p {
+  font-size: 1.1em;
+  color: var(--about-text-color-light);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.7; /* Better readability */
+  text-align: justify; /* Clean text alignment */
+}
+
+.article-content p strong {
+  color: var(--about-heading-color-light);
+}
+
+.article-content ul {
+  margin-left: var(--spacing-md); /* Indent lists */
+  list-style-type: disc;
+  margin-bottom: var(--spacing-md);
+}
+
+.article-content ul li {
+  font-size: 1.05em;
+  color: var(--about-text-color-light);
+  margin-bottom: 8px;
+  line-height: 1.5;
+}
+
+.article-content a {
+  color: var(--about-link-color-light);
+  text-decoration: none;
+  transition: color 0.2s ease, text-decoration 0.2s ease;
+}
+
+.article-content a:hover {
+  text-decoration: underline;
+  color: var(--about-link-hover-color-light);
+}
+
+/* --- Responsive Adjustments --- */
+/* My note: Tablet adjustments (992px and below) */
+@media screen and (max-width: 992px) {
+  .container.wikipedia-layout {
+    flex-direction: column; /* Stack infobox and article vertically */
+    gap: var(--spacing-md);
+    padding: var(--spacing-sm);
+  }
+
+  .infobox {
+    flex: 0 0 auto; /* Allow infobox to take its natural size */
+    max-width: 100%; /* Make it full width */
+    margin: 0 auto; /* Center it */
+    text-align: center;
+    position: static; /* Remove sticky positioning on mobile */
+  }
+
+  .infobox-header img {
+    max-width: 40%; /* Make the image smaller when stacked */
+  }
+
+  .article-content {
+    flex: 1 1 100%; /* Article takes full width */
+    padding: var(--spacing-sm);
+  }
+
+  .article-content h1 {
+    font-size: 2.2em;
+    margin-bottom: var(--spacing-md);
+  }
+
+  .article-content h2 {
+    font-size: 1.6em;
+    margin-top: var(--spacing-lg);
+  }
+
+  .article-content p,
+  .article-content ul li {
+    font-size: 1em;
+  }
+}
+
+/* My note: Mobile adjustments (576px and below) */
+@media screen and (max-width: 576px) {
+  .container.wikipedia-layout {
+    padding: var(--spacing-xs);
+  }
+
+  .infobox {
+    padding: var(--spacing-sm);
+  }
+
+  .infobox-header img {
+    max-width: 50%; /* Adjust image size for very small screens */
+  }
+
+  .infobox-title {
+    font-size: 1.8em;
+  }
+  .infobox-subtitle {
+    font-size: 1em;
+  }
+  .infobox-details li {
+    font-size: 0.95em;
+  }
+
+  .article-content {
+    padding: var(--spacing-sm);
+  }
+  .article-content h1 {
+    font-size: 1.8em;
+    margin-bottom: var(--spacing-sm);
+  }
+  .article-content h2 {
+    font-size: 1.4em;
+    margin-top: var(--spacing-md);
+  }
+  .article-content p,
+  .article-content ul li {
+    font-size: 0.95em;
+    line-height: 1.6;
+  }
+}

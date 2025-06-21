@@ -1,0 +1,340 @@
+@import url('homestyle.css'); /* My note: Keeping this to bring in global styles like font, colors, etc. */
+
+/* --- Variables for Contact Page Theming --- */
+:root {
+    /* My note: Mapping main contact page elements to our theme's light mode variables. */
+    --contact-title-color-light: var(--primary-color);
+    --contact-subtitle-color-light: var(--light-text-color);
+    --contact-wrapper-bg-light: var(--light-card-bg);
+    --contact-wrapper-shadow-light: var(--light-card-shadow);
+
+    /* My note: Variables for input fields. */
+    --input-bg-light: #f8f8f8; /* A light grey for inputs */
+    --input-border-light: rgba(0, 0, 0, 0.1);
+    --input-focus-border-light: var(--primary-color);
+    --input-placeholder-color-light: #999;
+    --input-text-color-light: var(--dark-text-color); /* Ensure input text is readable in light mode */
+
+
+    /* My note: Button variables, leveraging existing homestyle ones. */
+    --contact-button-bg-light: var(--primary-color);
+    --contact-button-hover-bg-light: var(--primary-hover-color);
+
+    /* My note: Social icon colors. */
+    --social-icon-color-light: var(--primary-color);
+}
+
+/* --- Dark Mode Overrides for Contact Page --- */
+body.dark-mode {
+    /* My note: Adjusting colors for dark mode. */
+    --contact-title-color-light: var(--primary-hover-color);
+    --contact-subtitle-color-light: var(--dark-text-color);
+    --contact-wrapper-bg-light: var(--dark-card-bg);
+    --contact-wrapper-shadow-light: var(--dark-card-shadow);
+
+    --input-bg-light: #333; /* Darker input background */
+    --input-border-light: var(--dark-card-border);
+    --input-focus-border-light: var(--primary-hover-color);
+    --input-placeholder-color-light: #888;
+    --input-text-color-light: var(--light-text-color); /* Ensure input text is readable in dark mode */
+
+    --contact-button-bg-light: var(--primary-hover-color);
+    --contact-button-hover-bg-light: var(--primary-color);
+
+    --social-icon-color-light: var(--primary-hover-color);
+}
+
+/* --- Base Box Sizing for Global Consistency (Good Practice) --- */
+/* My note: Ensures padding and border are included in an element's total width and height. */
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+
+/* --- Contact Section Layout --- */
+/* My note: General padding and centering for the entire contact section. */
+.contact-section {
+    /* Changed padding to use a single variable for all sides,
+       then override with more specific horizontal padding in media queries */
+    padding: var(--spacing-xxl) var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    /* Ensure it takes up full viewport height, adjusting for header/footer if you have them */
+    min-height: calc(100vh - var(--header-height, 80px) - var(--footer-height, 80px));
+}
+
+/* My note: Styling for the main "Contact Us" title. */
+.contact-title {
+    font-size: 3rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--contact-title-color-light);
+    margin-bottom: var(--spacing-sm);
+    text-shadow: 0 3px 6px rgba(0, 0, 0, 0.1); /* Slightly softer shadow */
+    word-break: break-word; /* Prevents long words from overflowing */
+}
+
+/* My note: Styling for the descriptive subtitle below the title. */
+.contact-subtitle {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: var(--contact-subtitle-color-light);
+    margin-bottom: var(--spacing-xl);
+    max-width: 700px;
+    width: 100%; /* Ensure it respects max-width and adjusts */
+    padding: 0 var(--spacing-xs); /* Add slight horizontal padding to prevent text touching edges */
+    margin-inline: auto; /* My note: This centers it horizontally. */
+    font-weight: 400; /* Often subtitles look better slightly lighter */
+    word-break: break-word; /* Prevents long words from overflowing */
+}
+
+/* --- Contact Form Wrapper --- */
+/* My note: Container for the contact form itself, with card-like styling. */
+.contact-wrapper {
+    width: 100%; /* Ensure it fills available width up to max-width */
+    max-width: 600px;
+    background: var(--contact-wrapper-bg-light);
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-xl);
+    box-shadow: 0 8px 25px var(--contact-wrapper-shadow-light);
+    margin-inline: auto; /* My note: Centers the form horizontally. */
+    margin-bottom: var(--spacing-xxl); /* Space below the form */
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid var(--input-border-light); /* Subtle border for definition */
+}
+
+/* --- Input Fields --- */
+/* My note: Grouping for each input field (e.g., name, email). */
+.input-group {
+    width: 100%;
+    margin-bottom: var(--spacing-md); /* Space between fields */
+    position: relative; /* For potential error messages or icons */
+}
+
+/* My note: General styling for text inputs and textareas. */
+.input-group input,
+.input-group textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    font-size: 1.1rem;
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--input-border-light);
+    background: var(--input-bg-light);
+    color: var(--input-text-color-light); /* Use input-specific text color */
+    /* box-sizing: border-box;  Moved to global html, *, *::before, *::after rule */
+    transition: all 0.3s ease;
+    -webkit-appearance: none; /* For iOS Safari styling */
+    -moz-appearance: none; /* For Firefox styling */
+    appearance: none; /* Standard property for cross-browser consistency */
+}
+
+/* My note: Specific height for textarea and resize control. */
+.input-group textarea {
+    min-height: 120px; /* Make textarea taller */
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+
+/* My note: Placeholder text color. */
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+    color: var(--input-placeholder-color-light);
+    opacity: 1; /* Ensures consistency across browsers */
+}
+
+/* My note: Focus state for inputs (when a user clicks on them). */
+.input-group input:focus,
+.input-group textarea:focus {
+    border-color: var(--input-focus-border-light);
+    background: var(--light-card-hover-bg); /* Use hover background for focused input */
+    outline: none; /* Remove default outline */
+    /* My note: This box-shadow requires a --primary-color-rgb variable to work best. */
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb, 81, 45, 168), 0.2);
+}
+
+/* --- Submit Button --- */
+/* My note: Styling for the form submission button. */
+button[type="submit"] {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md); /* Added horizontal padding for consistency */
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--contact-button-bg-light);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    -webkit-appearance: none; /* For iOS Safari styling */
+    -moz-appearance: none; /* For Firefox styling */
+    appearance: none; /* Standard property for cross-browser consistency */
+}
+
+/* My note: Hover effect for the submit button. */
+button[type="submit"]:hover {
+    background: var(--contact-button-hover-bg-light);
+    transform: translateY(-3px); /* Slight lift */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+body.dark-mode button[type="submit"]:hover {
+    /* My note: This box-shadow requires a --primary-hover-color-rgb variable. */
+    /* Ensure homestyle.css defines --primary-hover-color-rgb like --primary-color-rgb */
+    box-shadow: 0 8px 15px rgba(var(--primary-hover-color-rgb, 187, 134, 252), 0.15);
+}
+
+/* --- Social Contact Section --- */
+/* My note: Section dedicated to social media links. */
+.social-contact {
+    margin-top: var(--spacing-xxl); /* Increased margin to separate from form */
+    padding-top: var(--spacing-xl); /* Add padding for visual separation */
+    border-top: 1px solid var(--input-border-light); /* Subtle separator line */
+    width: 100%; /* Ensure it spans the width for the border */
+    max-width: 600px; /* Match form max-width */
+}
+
+.social-contact h2 {
+    font-size: 1.8rem;
+    color: var(--contact-title-color-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.social-contact p {
+    font-size: 1.1rem;
+    color: var(--contact-subtitle-color-light);
+    margin-bottom: var(--spacing-lg); /* Space below paragraph before icons */
+    line-height: 1.5;
+}
+
+/* My note: Container for the social media icons. */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    /* Use 'flex-wrap' to allow icons to move to the next line if space is tight */
+    flex-wrap: wrap;
+    gap: var(--spacing-md); /* Space between icons */
+    margin-top: var(--spacing-sm);
+    padding: 0 var(--spacing-xs); /* Add a tiny bit of horizontal padding to prevent icons from touching edges */
+}
+
+/* My note: Styling for individual social icons. */
+.social-icons a {
+    color: var(--social-icon-color-light);
+    font-size: 2.5rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+    display: inline-flex; /* Use flex for perfect centering if icons vary */
+    align-items: center;
+    justify-content: center;
+    width: 2.5em; /* Make click target size consistent with font-size */
+    height: 2.5em;
+    border-radius: 50%; /* Make them perfectly round */
+}
+
+.social-icons a:hover {
+    transform: translateY(-5px) scale(1.1); /* Lift and grow on hover */
+}
+
+/* My note: Specific brand colors for social icons on hover. */
+.social-icons a .fa-youtube:hover { color: #FF0000; }
+.social-icons a .fa-instagram:hover { color: #C13584; }
+.social-icons a .fa-spotify:hover { color: #1DB954; }
+.social-icons a .fa-soundcloud:hover { color: #FF7700; }
+
+/* My note: These media queries ensure the contact page looks great on all devices. */
+
+@media (max-width: 1024px) { /* Tablets and smaller laptops */
+    .contact-section { padding: var(--spacing-xl) var(--spacing-sm); }
+    .contact-title { font-size: 2.5rem; }
+    .contact-subtitle {
+        font-size: 1.15rem;
+        margin-bottom: var(--spacing-lg);
+    }
+    .contact-wrapper { padding: var(--spacing-lg); }
+    .input-group input,
+    .input-group textarea {
+        padding: var(--spacing-sm);
+        font-size: 1rem;
+    }
+    button[type="submit"] {
+        padding: var(--spacing-sm);
+        font-size: 1.1rem;
+    }
+    .social-contact h2 { font-size: 1.6rem; }
+    .social-icons a { font-size: 2.2rem; }
+}
+
+@media (max-width: 768px) { /* Medium mobile devices (e.g., larger phones in landscape) */
+    .contact-section { padding: var(--spacing-xl) var(--spacing-sm); }
+    .contact-title {
+        font-size: 2.2rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    .contact-subtitle {
+        font-size: 1rem;
+        margin-bottom: var(--spacing-md);
+    }
+    .contact-wrapper {
+        padding: var(--spacing-md);
+        border-radius: var(--border-radius-lg);
+    }
+    .input-group { margin-bottom: var(--spacing-sm); }
+    .social-contact h2 { font-size: 1.4rem; }
+    .social-icons {
+        gap: var(--spacing-md); /* Keep gap for icons, flex-wrap will handle overflow */
+    }
+    .social-icons a {
+        font-size: 2rem;
+        width: 2em; /* Adjust icon button size */
+        height: 2em;
+    }
+}
+
+@media (max-width: 480px) { /* Smaller mobile devices (e.g., standard phones in portrait) */
+    .contact-section { padding: var(--spacing-lg) var(--spacing-xs); } /* Reduce overall padding for tiny screens */
+    .contact-title { font-size: 1.8rem; }
+    .contact-subtitle { font-size: 0.95rem; }
+    .contact-wrapper { padding: var(--spacing-md); }
+    .input-group input,
+    .input-group textarea {
+        padding: var(--spacing-xs);
+        font-size: 0.9rem;
+    }
+    button[type="submit"] {
+        padding: var(--spacing-xs);
+        font-size: 1rem;
+    }
+    .social-icons {
+        gap: var(--spacing-sm); /* Even smaller gap for icons on smallest screens */
+    }
+    .social-icons a {
+        font-size: 1.8rem;
+        width: 1.8em; /* Adjust icon button size */
+        height: 1.8em;
+    }
+}
+
+/* Extra small screens (e.g., iPhone SE portrait, older Androids) */
+@media (max-width: 375px) {
+    .contact-section { padding: var(--spacing-md) var(--spacing-xs); }
+    .contact-title { font-size: 1.6rem; }
+    .contact-subtitle { font-size: 0.85rem; padding: 0 var(--spacing-xxs); } /* Even tighter padding */
+    .contact-wrapper { padding: var(--spacing-sm); }
+    .input-group input,
+    .input-group textarea { font-size: 0.85rem; padding: var(--spacing-xxs); }
+    button[type="submit"] { font-size: 0.9rem; padding: var(--spacing-xxs); }
+    .social-icons { gap: var(--spacing-xs); } /* Very small gap */
+    .social-icons a {
+        font-size: 1.6rem;
+        width: 1.6em; /* Adjust icon button size */
+        height: 1.6em;
+    }
+}

@@ -1,0 +1,431 @@
+/* My note: Inheriting global styles like fonts, base colors, and spacing variables. */
+@import url(homestyle.css);
+
+/* --- Variables for Discography Theming --- */
+:root {
+  /* My note: Mapping general theme colors to discography-specific variables for clarity. */
+  --primary-color-discography: var(--primary-color);
+  --secondary-color-discography: var(--primary-hover-color);
+  --text-color-discography-light: var(--light-text-color);
+  --card-bg-discography-light: var(--light-card-bg);
+  --card-shadow-discography-light: var(--light-card-shadow);
+  --border-color-discography-light: var(--light-card-border);
+  --sparkle-color-discography-light: #ffeb3b; /* My note: Yellow sparkles for light mode. */
+}
+
+/* My note: Dark mode overrides for discography-specific variables. */
+body.dark-mode {
+  --text-color-discography-light: var(--dark-text-color);
+  --card-bg-discography-light: var(--dark-card-bg);
+  --card-shadow-discography-light: var(--dark-card-shadow);
+  --border-color-discography-light: var(--dark-card-border);
+  --sparkle-color-discography-light: #ffffff; /* My note: White sparkles for dark mode. */
+}
+
+/* --- Base Section Styling --- */
+/* My note: Overall padding for the discography section. */
+.discography {
+  padding: var(--spacing-xxl) var(--spacing-md);
+  transition: color 0.3s ease; /* Smooth transition for text color */
+}
+
+/* My note: Container for consistent content width. */
+.discography .container {
+  max-width: 1300px; /* Aligned with homestyle.css global max-width. */
+  margin: auto;
+  padding: 0;
+}
+
+/* My note: Styling for the main page title (e.g., "Discography"). */
+.page-title {
+  font-size: 3rem;
+  color: var(--text-color-discography-light);
+  text-align: center;
+  margin-bottom: var(--spacing-xxl);
+  letter-spacing: 1.5px;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Navigation Buttons (Filter/Category Buttons) --- */
+/* My note: Layout for the navigation buttons, allowing them to wrap. */
+.discography-nav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-xxl);
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+/* My note: Styling for individual navigation/filter buttons.
+    The @extend is a preprocessor concept; manually applying properties. */
+.nav-btn {
+  background-color: var(--primary-color);
+  color: #fff;
+  padding: var(--spacing-xs) var(--spacing-md);
+  border: none;
+  border-radius: var(--border-radius-sm);
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease-out;
+  display: inline-block; /* Allows side-by-side display */
+  text-decoration: none; /* Removes underline from links */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* My note: Active and hover states for navigation buttons. */
+.nav-btn.active,
+.nav-btn:hover {
+  background-color: var(--primary-hover-color);
+  transform: translateY(-3px); /* Subtle lift effect */
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* --- Release Grid (Proper Masonry Container) --- */
+/* My note: This is now a flex container for our JS-generated masonry columns. */
+.release-grid {
+  display: flex; /* Changed from grid to flex */
+  flex-wrap: wrap; /* Allows columns to wrap if necessary */
+  align-items: flex-start; /* Ensures columns start from the top */
+  /* We manage gaps inside the JS. This gap will be for between the columns themselves IF flex-wrap kicks in.*/
+  gap: 0; /* Important: reset this, as JS will add margin to columns */
+  transition: opacity 0.5s ease-in-out; /* Smooth fade when content changes. */
+  padding: 0 var(--spacing-md); /* Add some horizontal padding to the grid itself */
+  /* Remove column-count and column-gap as they are no longer used here */
+}
+
+/* My note: The JavaScript will create these column divs inside .release-grid */
+.masonry-column {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Allow columns to grow/shrink */
+  /* min-width will be set by JS dynamically for true masonry */
+  /* margin-left will be applied by JS for column-gap */
+}
+
+
+/* My note: Fade effects for grid content when filtering. */
+/* Keep these for the overall grid fade effect */
+.release-grid.fade-out {
+  opacity: 0;
+}
+.release-grid.fade-in {
+  opacity: 1;
+}
+
+/* My note: Specific layout for a single item (JS will handle centering) */
+.release-grid.single-item-grid {
+  /* This class is largely handled by JS now, can be removed or simplified */
+  /* You can keep it if you want specific CSS for 1 column layout that JS can't easily do */
+  display: flex; /* Ensure it remains flex */
+  justify-content: center; /* Center the single column */
+  /* max-width and margin are also set by JS for single item */
+}
+
+/* --- Individual Release Item --- */
+/* My note: Styling for each album/single card. */
+.release-item {
+  background: var(--card-bg-discography-light);
+  border-radius: var(--border-radius-xl);
+  box-shadow: 0 8px 20px var(--card-shadow-discography-light);
+  /* My note: Transitions for hover effects and initial animation. */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s ease, opacity 0.3s ease;
+  overflow: hidden; /* Ensures content respects border-radius */
+  position: relative; /* For image wrapper positioning */
+  /* The margin-bottom on this item will now act as the vertical gap between cards in a column */
+  /* It is set in JS: card.style.marginBottom = 'var(--spacing-xl)'; */
+  /* No need for break-inside with flex column layout */
+  /* remove: break-inside: avoid-column; */
+  animation: fadeIn 0.6s ease-out forwards; /* Initial reveal animation */
+  border: 1px solid var(--border-color-discography-light);
+  color: var(--text-color-discography-light); /* Inherit text color */
+  width: 100%; /* Ensure cards take full width of their masonry column */
+  box-sizing: border-box; /* Include padding/border in width calculation */
+}
+
+/* My note: Ensures the entire card is clickable if it's a link. */
+.release-item a {
+  display: block;
+  text-decoration: none;
+  color: inherit; /* Inherit color from parent */
+  height: 100%;
+}
+
+/* My note: Hover effect for the entire release card. */
+.release-item:hover {
+  transform: translateY(-8px); /* Lift effect */
+  box-shadow: 0 15px 30px var(--card-shadow-discography-light); /* Deeper shadow on hover */
+}
+
+/* My note: Wrapper for the album cover image, used for aspect ratio and overflow. */
+.release-image-wrapper {
+  position: relative;
+  padding-top: 100%; /* Creates a square aspect ratio (height = width) */
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-color-discography-light); /* Separator line */
+}
+
+/* My note: Styling for the album cover image. */
+.release-item img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image covers the area without distortion */
+  border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0; /* Rounded top corners */
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smooth zoom effect */
+}
+
+/* My note: Zoom effect on image when the card is hovered. */
+.release-item:hover img {
+  transform: scale(1.08);
+}
+
+/* My note: Container for text information about the release. */
+.release-info {
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* My note: Styling for the release title (e.g., Album Name, Single Name). */
+.release-info h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color-discography); /* Primary color for title */
+  margin-bottom: var(--spacing-xs);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+/* My note: Styling for release date and type (e.g., "Album", "Single"). */
+.release-info .release-date,
+.release-info .release-type {
+  font-size: 0.95rem;
+  color: #777; /* Subtle grey for meta info */
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+/* My note: Dark mode adjustments for text colors within release info. */
+body.dark-mode .release-info h3 {
+  color: var(--secondary-color-discography);
+}
+body.dark-mode .release-info .release-date,
+body.dark-mode .release-info .release-type {
+  color: #bbb;
+}
+
+/* My note: Styling for the release description/synopsis. */
+.release-info p {
+  font-size: 1rem;
+  color: var(--text-color-discography-light);
+  line-height: 1.6;
+  margin-top: var(--spacing-sm);
+}
+
+/* --- No Releases Message --- */
+/* My note: Message displayed when no releases match the current filter. */
+.no-releases-message {
+  text-align: center;
+  color: var(--text-color-discography-light);
+  font-size: 1.2rem;
+  padding: var(--spacing-xxl) var(--spacing-md);
+  opacity: 0; /* Hidden by default, then animated in */
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+/* My note: Dark mode text color for the "no releases" message. */
+body.dark-mode .no-releases-message {
+  color: var(--text-color-discography-dark);
+}
+
+/* --- Sparkle Animation Element --- */
+/* My note: Base styling for the individual sparkle elements that appear on hover. */
+.sparkle {
+  position: absolute;
+  background-color: var(--sparkle-color-discography-light);
+  border-radius: 50%; /* Makes them circular */
+  opacity: 0; /* Hidden by default */
+  pointer-events: none; /* Ensures sparkles don't interfere with clicks */
+  z-index: 2; /* Appears above the image */
+  filter: blur(1px); /* Softens the edges of the sparkle */
+  transform: scale(0); /* Hidden and scaled down initially */
+}
+
+/* My note: Trigger the sparkle animation on hover of the release item. */
+.release-item:hover .sparkle {
+  animation: sparklePop 0.8s ease-out forwards;
+}
+
+/* --- Keyframe Animations --- */
+
+/* My note: Fade-in animation for elements appearing on the page. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* My note: Animation for the individual sparkle elements. */
+@keyframes sparklePop {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1) rotate(180deg);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* --- Media Queries --- */
+
+@media (max-width: 1024px) {
+  /* My note: Adjustments for tablets and smaller laptops. */
+  .page-title {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-xl);
+  }
+  .release-info h3 {
+    font-size: 1.6rem;
+  }
+  .release-info .release-date,
+  .release-info .release-type,
+  .release-info p {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  /* My note: Adjustments for medium-sized mobile devices. */
+  .discography {
+    padding: var(--spacing-xl) var(--spacing-sm);
+  }
+  .page-title {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-lg);
+  }
+  .discography-nav {
+    margin-bottom: var(--spacing-xl);
+    gap: var(--spacing-xs); /* Smaller gap for buttons */
+  }
+  .nav-btn {
+    padding: var(--spacing-xs) var(--spacing-md);
+    font-size: 1rem;
+  }
+  .release-grid {
+    padding: 0; /* Remove horizontal padding as items will be full width */
+  }
+  .release-item {
+    flex-direction: row; /* My note: Switch to horizontal layout for items. */
+    align-items: center;
+    padding: var(--spacing-sm);
+    margin-bottom: var(--spacing-md) !important; /* Adjust margin for single column, override JS */
+  }
+  .release-image-wrapper {
+    width: 150px; /* My note: Larger image size in horizontal layout. */
+    height: 0;
+    padding-top: 150px; /* My note: Maintain square aspect ratio. */
+    flex-shrink: 0; /* Prevents image from shrinking */
+    border-radius: var(--border-radius-md);
+    border-bottom: none; /* No bottom border in horizontal layout */
+    margin-right: var(--spacing-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .release-item img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+    transition: none; /* Disable zoom effect on mobile for better performance */
+  }
+  .release-item:hover img {
+    transform: none; /* My note: Reset hover effect on mobile. */
+  }
+  .release-info {
+    padding: 0;
+  } /* Remove padding, handled by parent */
+  .release-info h3 {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+  }
+  .release-info .release-date,
+  .release-info .release-type {
+    font-size: 0.85rem;
+    margin-bottom: 3px;
+  }
+  .release-info p {
+    font-size: 0.9rem;
+    margin-top: var(--spacing-xs);
+    /* My note: Truncate description with ellipsis for multi-line text. */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+@media (max-width: 480px) {
+  /* My note: Adjustments for small mobile devices. */
+  .discography {
+    padding: var(--spacing-lg) var(--spacing-xs);
+  }
+  .page-title {
+    font-size: 1.8rem;
+    margin-bottom: var(--spacing-md);
+  }
+  .discography-nav {
+    margin-bottom: var(--spacing-lg);
+    gap: 8px; /* Even smaller gap for buttons */
+  }
+  .nav-btn {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.9rem;
+  }
+  .release-item {
+    padding: var(--spacing-xs);
+  }
+  .release-image-wrapper {
+    width: 120px; /* My note: Slightly smaller image for very small screens. */
+    height: 0;
+    padding-top: 120px; /* My note: Maintain square aspect ratio. */
+    margin-right: var(--spacing-xs);
+    position: relative;
+    overflow: hidden;
+  }
+  .release-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+  }
+  .release-info h3 {
+    font-size: 1.2rem;
+  }
+  .release-info .release-date,
+  .release-info .release-type,
+  .release-info p {
+    font-size: 0.8rem;
+  }
+  .release-info p {
+    -webkit-line-clamp: 2;
+  } /* Only 2 lines for description on smallest screens */
+}

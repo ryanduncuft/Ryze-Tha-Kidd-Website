@@ -1,0 +1,343 @@
+/* Styles/404style.css */
+
+@import url('homestyle.css');
+@import url('https://fonts.googleapis.com/css?family=Dosis:300,400,500'); /* Added Dosis font */
+
+/* Animations from Lost in Space */
+@-moz-keyframes rocket-movement { 100% {-moz-transform: translate(1200px,-600px);} }
+@-webkit-keyframes rocket-movement {100% {-webkit-transform: translate(1200px,-600px); } }
+@keyframes rocket-movement { 100% {transform: translate(1200px,-600px);} }
+@-moz-keyframes spin-earth { 100% { -moz-transform: rotate(-360deg); transition: transform 20s;  } }
+@-webkit-keyframes spin-earth { 100% { -webkit-transform: rotate(-360deg); transition: transform 20s;  } }
+@keyframes spin-earth{ 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); transition: transform 20s; } }
+
+@-moz-keyframes move-astronaut {
+    100% { -moz-transform: translate(-160px, -160px);}
+}
+@-webkit-keyframes move-astronaut {
+    100% { -webkit-transform: translate(-160px, -160px);}
+}
+@keyframes move-astronaut{
+    100% { -webkit-transform: translate(-160px, -160px); transform:translate(-160px, -160px); }
+}
+@-moz-keyframes rotate-astronaut {
+    100% { -moz-transform: rotate(-720deg);}
+}
+@-webkit-keyframes rotate-astronaut {
+    100% { -webkit-transform: rotate(-720deg);}
+}
+@keyframes rotate-astronaut{
+    100% { -webkit-transform: rotate(-720deg); transform:rotate(-720deg); }
+}
+
+@-moz-keyframes glow-star {
+    40% { -moz-opacity: 0.3;}
+    90%,100% { -moz-opacity: 1; -moz-transform: scale(1.2);}
+}
+@-webkit-keyframes glow-star {
+    40% { -webkit-opacity: 0.3;}
+    90%,100% { -webkit-opacity: 1; -webkit-transform: scale(1.2);}
+}
+@keyframes glow-star{
+    40% { -webkit-opacity: 0.3; opacity: 0.3;  }
+    90%,100% { -webkit-opacity: 1; opacity: 1; -webkit-transform: scale(1.2); transform: scale(1.2); border-radius: 999999px;}
+}
+
+/* Global/Base styles */
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Dosis', sans-serif; /* Set Dosis as primary font */
+    font-weight: 300;
+    -webkit-user-select: none; /* Safari 3.1+ */
+    -moz-user-select: none; /* Firefox 2+ */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none; /* Standard syntax */
+    overflow: hidden; /* Hide scrollbars to manage space elements */
+}
+
+/* Lost in Space background styles */
+.bg-purple {
+    background: url(http://salehriaz.com/404Page/img/bg_purple.png);
+    background-repeat: repeat-x;
+    background-size: cover;
+    background-position: left top;
+    height: 100%;
+    position: fixed; /* Make background fixed */
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -2; /* Send to back */
+}
+
+.stars {
+    background: url(http://salehriaz.com/404Page/img/overlay_stars.svg);
+    background-repeat: repeat;
+    background-size: contain;
+    background-position: left top;
+    position: fixed; /* Make stars fixed */
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1; /* Slightly above bg-purple */
+}
+
+.objects img {
+    z-index: 90; /* Keep objects behind content */
+    pointer-events: none;
+}
+
+.object_rocket {
+    z-index: 95;
+    position: absolute;
+    transform: translateX(-50px);
+    top: 75%;
+    pointer-events: none;
+    animation: rocket-movement 200s linear infinite both running;
+}
+
+.object_earth {
+    position: absolute;
+    top: 20%;
+    left: 15%;
+    z-index: 90;
+}
+
+.object_moon {
+    position: absolute;
+    top: 12%;
+    left: 25%;
+}
+
+.object_astronaut {
+    animation: rotate-astronaut 200s infinite linear both alternate;
+}
+
+.box_astronaut {
+    z-index: 110 !important;
+    position: absolute;
+    top: 60%;
+    right: 20%;
+    will-change: transform;
+    animation: move-astronaut 50s infinite linear both alternate;
+}
+
+.glowing_stars .star {
+    position: absolute;
+    border-radius: 100%;
+    background-color: #fff;
+    width: 3px;
+    height: 3px;
+    opacity: 0.3;
+    will-change: opacity;
+}
+
+.glowing_stars .star:nth-child(1){
+    top: 80%;
+    left: 25%;
+    animation: glow-star 2s infinite ease-in-out alternate 1s;
+}
+.glowing_stars .star:nth-child(2){
+    top: 20%;
+    left: 40%;
+    animation: glow-star 2s infinite ease-in-out alternate 3s;
+}
+.glowing_stars .star:nth-child(3){
+    top: 25%;
+    left: 25%;
+    animation: glow-star 2s infinite ease-in-out alternate 5s;
+}
+.glowing_stars .star:nth-child(4){
+    top: 75%;
+    left: 80%;
+    animation: glow-star 2s infinite ease-in-out alternate 7s;
+}
+.glowing_stars .star:nth-child(5){
+    top: 90%;
+    left: 50%;
+    animation: glow-star 2s infinite ease-in-out alternate 9s;
+}
+
+/* Your original 404 styles - adjusted for integration */
+.content-wrapper {
+    position: relative; /* Allows z-index to work */
+    z-index: 1; /* Ensure content is above background */
+    min-height: 100vh; /* Make sure it takes full height */
+    display: flex;
+    flex-direction: column;
+}
+
+.error-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* Remove min-height calc and let it be handled by content-wrapper flex */
+    flex-grow: 1; /* Allow section to grow and take available space */
+    padding: var(--spacing-xxl) var(--spacing-md);
+    text-align: center;
+    position: relative; /* For image-404 positioning */
+    z-index: 2; /* Ensure error section is above the 404 image */
+    color: white; /* Default text color for visibility against dark background */
+}
+
+.image-404 {
+    position: absolute; /* Position the 404 image relative to error-section */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1; /* Place behind text but above general background */
+    opacity: 0.5; /* Make it subtle */
+}
+
+
+.error-code {
+    font-size: 8rem;
+    font-weight: 900;
+    color: var(--primary-color); /* Your primary color */
+    margin-bottom: var(--spacing-md);
+    text-shadow: 4px 4px 10px rgba(var(--primary-color-rgb), 0.3);
+    animation: bounceIn 1s ease-out;
+    z-index: 3; /* Ensure it's above the 404 image */
+}
+
+.error-message {
+    font-size: 2.2rem;
+    color: white; /* Ensure visibility on dark background */
+    margin-bottom: var(--spacing-sm);
+    max-width: 800px;
+    line-height: 1.3;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 3;
+}
+
+.error-guidance {
+    font-size: 1.2rem;
+    color: #bbb; /* Slightly lighter text for guidance */
+    margin-bottom: var(--spacing-lg);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    z-index: 3;
+}
+
+/* Adjust dark mode colors if needed for the new background */
+body.dark-mode .error-message,
+body.dark-mode .error-guidance {
+    color: var(--dark-text-color); /* This might need adjustment if it clashes with purple background */
+}
+
+.error-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-md);
+    z-index: 3;
+}
+
+.btn {
+    /* Existing btn styles */
+    z-index: 3;
+}
+
+.btn.secondary-btn {
+    background-color: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    z-index: 3;
+}
+
+.btn.secondary-btn:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+}
+
+/* Original bounceIn animation */
+@keyframes bounceIn {
+    0%, 20%, 40%, 60%, 80%, 100% {
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+    }
+    0% {
+        opacity: 0;
+        transform: scale3d(0.3, 0.3, 0.3);
+    }
+    20% {
+        transform: scale3d(1.1, 1.1, 1.1);
+    }
+    40% {
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+    60% {
+        opacity: 1;
+        transform: scale3d(1.03, 1.03, 1.03);
+    }
+    80% {
+        transform: scale3d(0.97, 0.97, 0.97);
+    }
+    100% {
+        opacity: 1;
+        transform: scale3d(1, 1, 1);
+    }
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 1024px) {
+    .error-code {
+        font-size: 6rem;
+    }
+    .error-message {
+        font-size: 1.8rem;
+    }
+    .error-guidance {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .error-code {
+        font-size: 5rem;
+    }
+    .error-message {
+        font-size: 1.6rem;
+    }
+    .error-guidance {
+        font-size: 1rem;
+    }
+    .error-links {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+    }
+    .btn {
+        width: 80%;
+        margin: 0 auto;
+    }
+    /* Adjust astronaut position for smaller screens */
+    .box_astronaut {
+        top: 70%;
+        right: 10%; /* Adjust as needed */
+    }
+}
+
+@media (max-width: 480px) {
+    .error-code {
+        font-size: 4rem;
+    }
+    .error-message {
+        font-size: 1.4rem;
+    }
+    .error-guidance {
+        font-size: 0.95rem;
+    }
+    .btn {
+        width: 90%;
+    }
+    /* Further adjust astronaut for very small screens */
+    .box_astronaut {
+        top: 75%;
+        right: 5%; /* Adjust as needed */
+    }
+}

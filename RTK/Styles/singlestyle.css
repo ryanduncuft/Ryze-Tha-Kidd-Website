@@ -1,0 +1,616 @@
+/* Styles/singlestyle.css */
+@import url(homestyle.css); /* Keep this for global styles like navbar, footer, and utility classes */
+
+/* Root variables imported from homestyle.css or albumstyle.css for consistency */
+:root {
+    --primary-color: #6e43ff;
+    --secondary-color: #5c6bc0;
+    --accent-color: #8c71ff;
+    --text-color-dark: #eee;
+    --text-color-light: #444;
+    --bg-dark: #1a1a1a;
+    --bg-light: #f0f0f0;
+    --card-bg-dark: rgba(25, 25, 25, 0.7);
+    --card-bg-light: rgba(255, 255, 255, 0.8);
+    --border-dark: rgba(255, 255, 255, 0.1);
+    --border-light: rgba(0, 0, 0, 0.1);
+    --shadow-dark: 0 10px 30px rgba(0, 0, 0, 0.6);
+    --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Base body styles for theming */
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-color-dark);
+    font-family: sans-serif; /* Ensure a fallback font */
+}
+
+body:not(.dark-mode) {
+    background-color: var(--bg-light);
+    color: var(--text-color-light);
+}
+
+/* Fade-in Animation (reused from albumstyle) */
+@keyframes fadeInSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- General Layout and Containers --- */
+.main-content {
+    padding-bottom: 50px; /* Space for footer */
+}
+
+.main-content .container {
+    max-width: 1200px;
+    margin: 50px auto; /* Centered with vertical margin */
+    padding: 0 20px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+    gap: 60px; /* Space between the two main sections */
+}
+
+/* Reusing album-hero-section structure for single page */
+.album-hero-section { /* Renamed from .main-content .container for consistency */
+    display: flex;
+    flex-direction: row; /* Desktop: Side-by-side */
+    gap: 60px;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 50px;
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-dark);
+    background: var(--card-bg-dark);
+    transition: all 0.5s ease;
+    width: 100%; /* Ensure it takes full width of its parent container */
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+}
+
+body:not(.dark-mode) .album-hero-section {
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-light);
+    background: var(--card-bg-light);
+}
+
+/* Adjusting HTML elements to fit the new class names if you update them in HTML */
+.toc-section { /* This will become .album-visuals in the HTML */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    flex-shrink: 0;
+    width: 100%; /* Ensure it scales for mobile */
+    max-width: 380px; /* Limit for desktop */
+    opacity: 0; /* For fade-in animation */
+    transform: translateY(20px); /* For slide-up animation */
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+    animation-delay: 0.2s; /* Staggered animation */
+}
+
+.single-picture { /* Renamed to .album-cover-tilt-effect in HTML */
+    position: relative;
+    display: inline-block;
+    perspective: 1000px;
+    transform-style: preserve-3d;
+    width: 100%; /* Ensure tilt effect container scales */
+}
+
+.single-picture img { /* Renamed to .album-cover-tilt-effect img in HTML */
+    width: 100%; /* Make image responsive */
+    max-width: 380px; /* Larger cover size for desktop */
+    height: auto;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 80px rgba(110, 67, 255, 0.3);
+    transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.5s ease-out;
+    display: block;
+    border: 3px solid var(--border-dark);
+    margin: 0 auto;
+}
+
+body:not(.dark-mode) .single-picture img {
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 0 60px rgba(110, 67, 255, 0.15);
+    border: 3px solid var(--border-light);
+}
+
+.single-picture:hover img {
+    transform: rotateY(12deg) rotateX(8deg) scale(1.06);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 100px rgba(110, 67, 255, 0.5);
+}
+
+body:not(.dark-mode) .single-picture:hover img {
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3), 0 0 80px rgba(110, 67, 255, 0.25);
+}
+
+.button-container {
+    /* The .button-container now wraps only one button, adjust as needed */
+    width: 100%;
+    display: flex; /* Keeps it flexible for icon */
+    justify-content: center; /* Center the button */
+}
+
+.primary-btn { /* This will be #listen-now-btn in HTML */
+    padding: 18px 40px; /* Larger button for desktop */
+    font-size: 1.2em;
+    background-color: var(--primary-color);
+    color: #fff;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: inline-flex; /* Use inline-flex for proper centering of icon/text */
+    align-items: center;
+    justify-content: center;
+    width: auto; /* Allow button to size naturally */
+    max-width: 300px; /* Limit button width */
+}
+
+body:not(.dark-mode) .primary-btn {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.primary-btn:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-7px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+}
+
+body:not(.dark-mode) .primary-btn:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+}
+
+.primary-btn i {
+    margin-right: 15px; /* Desktop icon margin */
+    font-size: 1.3em;
+}
+
+.single-info { /* This will become part of .album-details-panel in HTML */
+    flex-grow: 1;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Smaller gap for info items */
+    text-align: left;
+    opacity: 0; /* For fade-in animation */
+    transform: translateY(20px); /* For slide-up animation */
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+    animation-delay: 0.4s; /* Staggered animation */
+}
+
+.single-info h2 { /* This is the main single title */
+    font-size: 4.5rem; /* Larger title for emphasis */
+    margin-bottom: 5px;
+    line-height: 1.1;
+    text-shadow: 0 0 15px rgba(110, 67, 255, 0.4);
+    color: #fff;
+    letter-spacing: -1px;
+    font-weight: 700; /* Ensure it's bold */
+}
+
+body:not(.dark-mode) .single-info h2 {
+    color: #333;
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.single-info p {
+    font-size: 1.1rem; /* Consistent text size */
+    color: var(--text-color-dark);
+    margin: 8px 0;
+    line-height: 1.6;
+}
+
+body:not(.dark-mode) .single-info p {
+    color: var(--text-color-light);
+}
+
+.single-info p strong {
+    color: var(--accent-color); /* Highlight strong text */
+    font-weight: 600;
+}
+
+body:not(.dark-mode) .single-info p strong {
+    color: var(--primary-color);
+}
+
+/* Tabs Section */
+.single-section { /* This will become part of .album-details-panel, or a separate section */
+    flex: 2 1 60%; /* Allows it to take more space */
+    min-width: 300px;
+    max-width: 800px;
+    padding: 40px; /* Increased padding */
+    border-radius: 25px;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid var(--border-dark);
+    box-shadow: var(--shadow-dark);
+    background: var(--card-bg-dark);
+    transition: all 0.5s ease;
+    text-align: left; /* Align text within sections to left */
+    opacity: 0; /* For fade-in animation */
+    transform: translateY(20px); /* For slide-up animation */
+    animation: fadeInSlideUp 0.8s ease-out forwards;
+    animation-delay: 0.6s; /* Staggered animation */
+}
+
+body:not(.dark-mode) .single-section {
+    border: 1px solid var(--border-light);
+    box-shadow: var(--shadow-light);
+    background: var(--card-bg-light);
+}
+
+.tabs {
+    display: flex;
+    justify-content: flex-start; /* Align tabs to the left */
+    gap: 15px; /* Space between tabs */
+    margin-bottom: 30px; /* Space below tabs */
+    flex-wrap: wrap; /* Allow tabs to wrap on smaller screens */
+}
+
+.singlebtn-toggle {
+    background-color: transparent;
+    color: var(--text-color-dark);
+    padding: 12px 25px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1.1em;
+    flex-grow: 1; /* Allow buttons to grow and fill space */
+    max-width: 180px; /* Limit max width for buttons */
+}
+
+body:not(.dark-mode) .singlebtn-toggle {
+    color: var(--text-color-light);
+    border-color: var(--primary-color);
+}
+
+.singlebtn-toggle:hover {
+    background-color: var(--primary-color);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+body:not(.dark-mode) .singlebtn-toggle:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.singlebtn-toggle.active {
+    background-color: var(--primary-color);
+    color: #fff;
+    border-color: var(--primary-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+}
+
+body:not(.dark-mode) .singlebtn-toggle.active {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.tab-content {
+    display: none;
+    line-height: 1.8;
+}
+
+.tab-content.active {
+    display: block;
+    animation: fadeInSlideUp 0.6s ease-out forwards; /* Fade in tab content */
+}
+
+.single-section h1 { /* Heading inside description/lyrics tabs */
+    font-size: 2.8rem;
+    color: var(--accent-color);
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+    padding-bottom: 10px;
+    text-align: left; /* Ensure heading is left-aligned */
+}
+
+body:not(.dark-mode) .single-section h1 {
+    color: var(--primary-color);
+}
+
+.single-section h1::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 80px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+    transition: width 0.3s ease-out;
+}
+
+.single-section:hover h1::after {
+    width: 100%;
+}
+
+.single-section p {
+    font-size: 1.1rem;
+    color: var(--text-color-dark);
+    margin-bottom: 15px;
+    line-height: 1.7;
+    text-align: left;
+}
+
+body:not(.dark-mode) .single-section p {
+    color: var(--text-color-light);
+}
+
+.single-section .lyrics {
+    white-space: pre-wrap; /* Preserve line breaks */
+    font-family: 'Courier New', Courier, monospace; /* Monospace for lyrics */
+    font-size: 1.05rem;
+    color: var(--text-color-dark);
+}
+
+body:not(.dark-mode) .single-section .lyrics {
+    color: var(--text-color-light);
+}
+
+/* Utility class for hiding elements */
+.hidden {
+    display: none !important;
+}
+
+/* --- Responsive Adjustments --- */
+
+@media (max-width: 1024px) { /* Tablets and smaller laptops */
+    .main-content .container {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+        text-align: center; /* Center content in the container */
+        padding: 40px;
+        gap: 40px;
+    }
+
+    .album-hero-section { /* Also adjust the main container for single page */
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 40px;
+        gap: 40px;
+        /* Ensure it takes full available width within the container */
+        width: calc(100% - 40px); /* Adjust for padding on container */
+        max-width: 700px; /* Limit its max width */
+    }
+
+    .toc-section { /* Album visuals part (image and button) */
+        max-width: 350px; /* A bit larger for tablets */
+        width: 100%;
+        text-align: center; /* Ensure contents are centered */
+    }
+
+    .single-picture img {
+        max-width: 300px; /* Adjust max size for tablet view */
+    }
+
+    .single-picture:hover img {
+        transform: none; /* Disable tilt effect on smaller devices for better UX */
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 0 80px rgba(110, 67, 255, 0.3); /* Revert to non-hover shadow */
+    }
+
+    body:not(.dark-mode) .single-picture:hover img {
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2), 0 0 60px rgba(110, 67, 255, 0.15); /* Revert to non-hover shadow */
+    }
+
+    .single-info { /* Album details panel part */
+        text-align: center; /* Center text when stacked */
+        max-width: 600px; /* Keep consistent with desktop max-width for content alignment */
+        width: 100%;
+        padding: 0 20px; /* Add some horizontal padding */
+        box-sizing: border-box;
+    }
+
+    .single-info h2 {
+        font-size: 3.5rem; /* Slightly smaller for tablets */
+        word-break: break-word; /* Prevent long words from overflowing */
+        hyphens: auto; /* Allow hyphenation for better text flow */
+    }
+
+    .primary-btn {
+        padding: 15px 30px;
+        font-size: 1.05em;
+        width: auto; /* Allow button to size naturally */
+        min-width: 180px; /* Ensure a minimum size */
+        margin: 0 auto; /* Center the button if not full width */
+    }
+
+    .primary-btn i {
+        margin-right: 10px;
+        font-size: 1.2em;
+    }
+
+    .single-section { /* Main content section (description/lyrics) */
+        max-width: 700px; /* Allow panel to be a bit wider on tablets */
+        padding: 30px;
+        width: calc(100% - 40px); /* Adjust for padding on container */
+        box-sizing: border-box;
+        text-align: center; /* Center all text content within this section */
+    }
+
+    .single-section h1 {
+        font-size: 2.2rem;
+        text-align: center; /* Center heading within tab content */
+    }
+
+    .single-section h1::after {
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+    }
+
+    .single-section:hover h1::after {
+        width: 80px; /* Disable the hover expansion on mobile */
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .single-section p, .single-section .lyrics {
+        text-align: center; /* Center text within tab content */
+        word-break: break-word; /* Prevent long words from overflowing */
+        hyphens: auto; /* Allow hyphenation for better text flow */
+    }
+
+    .tabs {
+        justify-content: center; /* Center tabs on smaller screens */
+        gap: 10px; /* Slightly less gap */
+    }
+
+    .singlebtn-toggle {
+        font-size: 0.95em;
+        padding: 10px 20px;
+        max-width: 160px;
+        flex-basis: auto; /* Allow buttons to wrap naturally, not forced equal width */
+        flex-grow: 0; /* Don't force them to grow */
+    }
+}
+
+@media (max-width: 768px) { /* Medium mobile devices */
+    .main-content .container {
+        margin: 20px auto; /* Reduce vertical margin */
+        padding: 0 15px; /* Reduce horizontal padding */
+        gap: 25px; /* Reduce gap further */
+    }
+
+    .album-hero-section {
+        padding: 25px 15px; /* Adjust padding */
+        gap: 25px;
+        width: calc(100% - 30px); /* Adjust for new container padding */
+    }
+
+    .toc-section {
+        max-width: 250px; /* Smaller image on medium mobiles */
+    }
+
+    .single-picture img {
+        max-width: 250px;
+    }
+
+    .single-info h2 {
+        font-size: 2.8rem; /* Smaller title */
+        margin-bottom: 0; /* Tighten up spacing */
+    }
+
+    .single-info p {
+        font-size: 1em; /* Slightly smaller text */
+        margin: 5px 0; /* Reduce paragraph margin */
+    }
+
+    .primary-btn {
+        padding: 12px 25px;
+        font-size: 1em;
+        min-width: 160px;
+    }
+
+    .primary-section { /* Ensure this targets the right element if it exists */
+        padding: 20px 15px; /* Reduced padding for the main section */
+        width: calc(100% - 30px); /* Adjust for new container padding */
+    }
+
+    .single-section h1 {
+        font-size: 1.8rem; /* Smaller heading */
+        margin-bottom: 15px;
+    }
+
+    .single-section h1::after {
+        width: 50px; /* Shorter underline */
+    }
+
+    .single-section p, .single-section .lyrics {
+        font-size: 0.95rem; /* Smaller text */
+    }
+
+    .tabs {
+        flex-direction: column; /* Stack tabs vertically on smaller screens */
+        gap: 8px; /* Less gap when stacked */
+        margin-bottom: 20px;
+    }
+
+    .singlebtn-toggle {
+        font-size: 0.9em;
+        padding: 8px 15px;
+        max-width: 100%; /* Allow buttons to take full width when stacked */
+        width: 100%; /* Force full width */
+    }
+}
+
+@media (max-width: 480px) { /* Smaller mobile devices */
+    .main-content .container {
+        margin: 15px auto;
+        padding: 0 10px;
+        gap: 20px;
+    }
+
+    .album-hero-section {
+        padding: 20px 10px;
+        gap: 20px;
+        width: calc(100% - 20px); /* Adjust for new container padding */
+    }
+
+    .toc-section {
+        max-width: 200px; /* Even smaller image on small mobiles */
+    }
+
+    .single-picture img {
+        max-width: 200px;
+    }
+
+    .single-info h2 {
+        font-size: 2.2rem; /* Smallest title size */
+    }
+
+    .single-info p {
+        font-size: 0.9rem; /* Smallest text size */
+    }
+
+    .primary-btn {
+        padding: 10px 20px;
+        font-size: 0.9em;
+        min-width: 140px;
+    }
+
+    .single-section {
+        padding: 20px 10px;
+        width: calc(100% - 20px); /* Adjust for new container padding */
+    }
+
+    .single-section h1 {
+        font-size: 1.5rem; /* Smallest heading size */
+        margin-bottom: 10px;
+    }
+
+    .single-section h1::after {
+        width: 40px; /* Even shorter underline */
+    }
+
+    .single-section p, .single-section .lyrics {
+        font-size: 0.85rem; /* Smallest text size */
+    }
+
+    .tabs {
+        gap: 6px; /* Very small gap when stacked */
+        margin-bottom: 15px;
+    }
+
+    .singlebtn-toggle {
+        font-size: 0.85em; /* Smallest button text */
+        padding: 6px 10px;
+    }
+}
