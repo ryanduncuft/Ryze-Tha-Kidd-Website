@@ -33,12 +33,19 @@
 
             <div id="navbar"></div>
 
-            <section class="contact-section"> <div class="container">
+            <section class="contact-section">
+                <div class="container">
                     <h1 class="contact-title">Get In Touch</h1>
-                    <p class="contact-subtitle">Have a question, collab idea, or just wanna say what’s up? Drop me a message!</p>
+                    <p class="contact-subtitle">Have a question, collab idea, or just wanna say what's up? Drop me a message!</p>
 
                     <div class="contact-wrapper">
-                        <form name="contact" method="POST" data-netlify="true">
+                        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html">
+                            <input type="hidden" name="form-name" value="contact" />
+
+                            <p class="hidden">
+                                <label>Don't fill this out if you're human: <input name="bot-field" /></label>
+                            </p>
+
                             <div class="input-group">
                                 <input type="text" name="name" placeholder="Your Name" required aria-label="Your Name">
                             </div>
@@ -46,7 +53,11 @@
                                 <input type="email" name="email" placeholder="Your Email" required aria-label="Your Email Address">
                             </div>
                             <div class="input-group">
-                                <textarea name="message" rows="6" placeholder="Your Message" required aria-label="Your Message"></textarea> </div>
+                                <textarea name="message" rows="6" placeholder="Your Message" required aria-label="Your Message"></textarea>
+                            </div>
+
+                            <div data-netlify-recaptcha="true"></div>
+
                             <button type="submit">Send Message</button>
                         </form>
                     </div>
@@ -58,7 +69,7 @@
                             <a href="https://www.instagram.com/ryzethakidd/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
                             <a href="https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H" target="_blank" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
                             <a href="https://soundcloud.com/ryzethakidd" target="_blank" aria-label="SoundCloud"><i class="fab fa-soundcloud"></i></a>
-                            </div>
+                        </div>
                         <p>Prefer social? Follow me there!</p>
                     </div>
 

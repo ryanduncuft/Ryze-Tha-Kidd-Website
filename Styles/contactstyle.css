@@ -111,6 +111,11 @@ html {
 }
 
 /* --- Input Fields --- */
+
+.hidden {
+    display: none;
+}
+
 /* My note: Grouping for each input field (e.g., name, email). */
 .input-group {
     width: 100%;
