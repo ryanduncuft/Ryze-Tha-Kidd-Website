@@ -1,0 +1,175 @@
+/* --- Home Styles --- */
+
+/* --- Base Styles --- */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--main-font-family);
+  color: var(--body-text-color);
+  background: linear-gradient(235deg, var(--body-bg-start), var(--body-bg-mid), var(--body-bg-start)) 0% 50% / 400% 400%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out;
+  animation: background-animation-subtle 60s infinite;
+}
+
+.content-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- Base Box Sizing for Global Consistency (Good Practice) --- */
+html {
+  box-sizing: border-box;
+}
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/* --- Typography & Alignment --- */
+#welcome-message,
+.feature-card,
+.footer,
+.hero-section,
+.navbar .logo,
+.text-center,
+.video-section {
+  text-align: center;
+}
+
+.footer-column ul li { /* This one is more specific to the footer component, but harmless here for now */
+  margin-bottom: var(--spacing-xs);
+}
+
+.feature-card h3,
+.video-section h2 { /* Could also be in components.css if these sections are components */
+  color: var(--primary-color);
+}
+
+.footer p,
+.footer-column h3 { /* Specific to footer, but general text styles */
+  color: var(--primary-color);
+}
+
+/* --- Layout & Positioning --- */
+.container {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-md);
+}
+
+.flex-center,
+.navbar .container { /* .navbar .container could be in components.css, but general container styling fits base */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.welcome-screen,
+.feature-card,
+.features-section,
+.navbar,
+.video-wrapper,
+main > section { /* These are often foundational layout for sections */
+  position: relative;
+}
+
+/* --- Scrollbar Styles --- */
+::-webkit-scrollbar {
+  width: var(--spacing-xs);
+  height: var(--spacing-xs);
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: var(--border-radius-lg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: var(--border-radius-lg);
+  transition: background-color 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-hover-color);
+}
+
+::-webkit-scrollbar-horizontal {
+  height: var(--spacing-xs);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  background: var(--primary-color);
+  border-radius: var(--border-radius-lg);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+  background: var(--primary-hover-color);
+}
+
+/* --- Animations --- */
+@keyframes background-animation-subtle {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes fadeInSlideDownScale {
+  from {
+    opacity: 0;
+    transform: translateY(-50px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fillLoadingBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+body.dark-mode .navbar .logo {
+  color: var(--primary-color);
+}
+
+body.dark-mode .navbar .nav-links a.active,
+body.dark-mode .navbar .nav-links a:hover {
+  background-color: var(--primary-hover-color);
+  color: var(--dark-bg-start);
+  box-shadow: 0 4px 12px rgba(var(--primary-hover-color-rgb), 0.2);
+}
+
+
+
