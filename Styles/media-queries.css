@@ -59,31 +59,92 @@
 
   /* Contact */
   .contact-section {
-    padding: var(--spacing-xl) var(--spacing-sm);
+    padding: var(--spacing-xl) var(--spacing-md);
   }
 
   .contact-title {
     font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: var(--spacing-sm);
   }
 
   .contact-subtitle {
     font-size: 1.15rem;
-    margin-bottom: var(--spacing-lg);
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .contact-wrapper {
     padding: var(--spacing-lg);
+    background: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .input-group {
+    margin-bottom: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .input-group label {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--body-text-color);
   }
 
   .input-group input,
   .input-group textarea {
     padding: var(--spacing-sm);
     font-size: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-md);
+    background: var(--input-bg);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .input-group input:focus,
+  .input-group textarea:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px rgba(var(--primary-color-rgb), 0.2);
+    outline: none;
+  }
+
+  .input-group textarea {
+    resize: vertical;
+    min-height: 120px;
   }
 
   button[type="submit"] {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
     font-size: 1.1rem;
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    width: 100%;
+    max-width: 300px;
+    margin: var(--spacing-sm) auto 0;
+    display: block;
+  }
+
+  button[type="submit"]:hover {
+    background: var(--primary-color-dark);
+    transform: translateY(-2px);
+  }
+
+  .input-group.recaptcha-group {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .input-group.recaptcha-group > div {
+    transform: scale(0.9);
   }
 
   /* Discography */
@@ -438,26 +499,54 @@
 
   /* Contact */
   .contact-section {
-    padding: var(--spacing-xl) var(--spacing-sm);
+    padding: var(--spacing-lg) var(--spacing-sm);
   }
 
   .contact-title {
-    font-size: 2.2rem;
+    font-size: 2rem;
     margin-bottom: var(--spacing-xs);
   }
 
   .contact-subtitle {
     font-size: 1rem;
-    margin-bottom: var(--spacing-md);
+    max-width: 90%;
   }
 
   .contact-wrapper {
     padding: var(--spacing-md);
-    border-radius: var(--border-radius-lg);
+    border-radius: var(--border-radius-md);
   }
 
   .input-group {
     margin-bottom: var(--spacing-sm);
+  }
+
+  .input-group label {
+    font-size: 0.95rem;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    padding: var(--spacing-sm);
+    font-size: 0.95rem;
+  }
+
+  .input-group textarea {
+    min-height: 100px;
+  }
+
+  button[type="submit"] {
+    padding: var(--spacing-sm);
+    font-size: 1rem;
+    max-width: 250px;
+  }
+
+  .input-group.recaptcha-group {
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .input-group.recaptcha-group > div {
+    transform: scale(0.85);
   }
 
   /* Discography */
@@ -852,7 +941,7 @@
 
   /* Contact */
   .contact-section {
-    padding: var(--spacing-lg) var(--spacing-xs);
+    padding: var(--spacing-md) var(--spacing-xs);
   }
 
   .contact-title {
@@ -860,22 +949,45 @@
   }
 
   .contact-subtitle {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    max-width: 100%;
   }
 
   .contact-wrapper {
-    padding: var(--spacing-md);
+    padding: var(--spacing-sm);
+  }
+
+  .input-group {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .input-group label {
+    font-size: 0.9rem;
   }
 
   .input-group input,
   .input-group textarea {
     padding: var(--spacing-xs);
     font-size: 0.9rem;
+    border-radius: var(--border-radius-sm);
+  }
+
+  .input-group textarea {
+    min-height: 80px;
   }
 
   button[type="submit"] {
-    padding: var(--spacing-xs);
-    font-size: 1rem;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    font-size: 0.95rem;
+    max-width: 200px;
+  }
+
+  .input-group.recaptcha-group {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .input-group.recaptcha-group > div {
+    transform: scale(0.75);
   }
 
   /* Discography */
@@ -1040,7 +1152,7 @@
 @media (max-width: 375px) {
   /* Contact */
   .contact-section {
-    padding: var(--spacing-md) var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-xxs);
   }
 
   .contact-title {
@@ -1053,7 +1165,11 @@
   }
 
   .contact-wrapper {
-    padding: var(--spacing-sm);
+    padding: var(--spacing-xs);
+  }
+
+  .input-group label {
+    font-size: 0.85rem;
   }
 
   .input-group input,
@@ -1064,6 +1180,15 @@
 
   button[type="submit"] {
     font-size: 0.9rem;
-    padding: var(--spacing-xxs);
+    padding: var(--spacing-xxs) var(--spacing-xs);
+    max-width: 180px;
+  }
+
+  .input-group.recaptcha-group {
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .input-group.recaptcha-group > div {
+    transform: scale(0.7);
   }
 }

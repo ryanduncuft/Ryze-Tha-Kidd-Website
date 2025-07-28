@@ -502,6 +502,19 @@ body.dark-mode button[type="submit"]:hover {
     box-shadow: 0 8px 15px rgba(var(--primary-hover-color-rgb, 187, 134, 252), 0.15);
 }
 
+.input-group.recaptcha-group {
+  margin-bottom: var(--spacing-md);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.input-group.recaptcha-group > div {
+  transform: scale(1);
+  transform-origin: center;
+}
+
 /* My note: These media queries ensure the contact page looks great on all devices. */
 
 
@@ -1419,6 +1432,3 @@ body:not(.dark-mode) .single-section .lyrics {
 .hidden {
     display: none !important;
 }
-
-/* --- Responsive Adjustments --- */
-
