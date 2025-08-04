@@ -1,283 +1,326 @@
 /* --- Home Styles --- */
 
 /* --- Buttons & Links --- */
+
 .btn,
 .feature-card .btn,
 .hero-section .btn {
-  background-color: var(--primary-color);
-  color: #fff;
-  padding: var(--spacing-xs) var(--spacing-md);
-  border: none;
-  border-radius: var(--border-radius-sm);
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease-out;
-  display: inline-block;
-  text-decoration: none;
+	background-color: var(--primary-color);
+	color: #fff;
+	padding: var(--spacing-xs) var(--spacing-md);
+	border: none;
+	border-radius: var(--border-radius-sm);
+	font-size: 16px;
+	cursor: pointer;
+	transition: background-color 0.3s ease, transform 0.2s ease-out;
+	display: inline-block;
+	text-decoration: none;
 }
 
 .btn:hover,
 .feature-card .btn:hover,
 .hero-section .btn:hover {
-  background-color: var(--primary-hover-color);
-  transform: scale(1.05);
+	background-color: var(--primary-hover-color);
+	transform: scale(1.05);
 }
 
-.back-button:hover { /* If .back-button is a standalone component, its base style should be added as well */
-  background-color: #8b0000;
+.back-button:hover {
+	/* If .back-button is a standalone component, its base style should be added as well */
+	background-color: #8b0000;
 }
 
 .btn-toggle {
-  border-radius: var(--border-radius-sm);
-  background-color: var(--primary-color);
-  color: #fff;
-  padding: var(--spacing-xs) var(--spacing-sm);
-  font-weight: 700;
-  transition: background-color 0.3s ease;
+	border-radius: var(--border-radius-sm);
+	background-color: var(--primary-color);
+	color: #fff;
+	padding: var(--spacing-xs) var(--spacing-sm);
+	font-weight: 700;
+	transition: background-color 0.3s ease;
 }
 
 .btn-toggle:hover {
-  background-color: var(--primary-hover-color);
-  cursor: pointer;
+	background-color: var(--primary-hover-color);
+	cursor: pointer;
 }
 
 /* --- Navbar --- */
+
 .navbar {
-  padding: var(--spacing-sm) 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+	padding: var(--spacing-sm) 0;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
 }
 
-.navbar .container { /* Specific container use within navbar */
-  justify-content: space-between;
-  overflow: hidden;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
+.navbar .container {
+	justify-content: space-between;
+	overflow: hidden;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
 }
 
 .navbar .logo {
-  font-size: 26px;
-  font-weight: 700;
-  text-decoration: none;
-  margin-left: var(--spacing-md);
-  color: var(--primary-color);
+	font-size: 26px;
+	font-weight: 700;
+	text-decoration: none;
+	margin-left: var(--spacing-md);
+	color: var(--primary-color);
 }
 
 .navbar .nav-links {
-  display: flex;
-  gap: var(--spacing-md);
-  justify-content: flex-end;
-  z-index: 1000;
-  margin-right: var(--spacing-md);
+	display: flex;
+	gap: var(--spacing-md);
+	justify-content: flex-end;
+	z-index: 1000;
+	margin-right: var(--spacing-md);
 }
 
 .navbar .nav-links li {
-  list-style: none;
+	list-style: none;
 }
 
 .navbar .nav-links a {
-  text-decoration: none;
-  color: var(--body-text-color);
-  font-weight: 500;
-  padding: var(--spacing-xs);
-  transition: color 0.3s, background-color 0.5s ease-in-out;
-  display: inline-block;
+	text-decoration: none;
+	color: var(--body-text-color);
+	font-weight: 500;
+	padding: var(--spacing-xs);
+	transition: color 0.3s, background-color 0.5s ease-in-out;
+	display: inline-block;
 }
 
 .navbar .nav-links a:hover {
-  color: var(--primary-hover-color);
+	color: var(--primary-hover-color);
 }
 
 .navbar .menu-btn {
-  color: var(--primary-color);
-  display: none;
-  font-size: var(--spacing-lg);
-  cursor: pointer;
-  position: absolute;
-  right: var(--spacing-md);
-  background: none;
-  border: none;
-  padding: 0;
-  z-index: 1001;
-  transition: transform 0.3s ease-in-out;
+	color: var(--primary-color);
+	display: none;
+	font-size: var(--spacing-lg);
+	cursor: pointer;
+	position: absolute;
+	right: var(--spacing-md);
+	background: none;
+	border: none;
+	padding: 0;
+	z-index: 1001;
+	transition: transform 0.3s ease-in-out;
 }
 
 .navbar .menu-btn.active {
-  transform: rotate(90deg);
+	transform: rotate(90deg);
 }
 
 .navbar .menu-btn.active .fa-bars:before {
-  content: "\f00d";
+	content: "\f00d";
 }
 
 .navbar #main-nav {
-  display: block;
-  position: static;
-  left: auto;
-  background-color: transparent;
-  width: auto;
-  height: auto;
-  z-index: auto;
-  transition: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
+	display: block;
+	position: static;
+	left: auto;
+	background-color: transparent;
+	width: auto;
+	height: auto;
+	z-index: auto;
+	transition: none;
+	backdrop-filter: none;
+	-webkit-backdrop-filter: none;
+}
+
+.new-badge {
+    background-color: var(--primary-color);
+    color: #fff;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-left: 5px;
+    vertical-align: super; /* To position it slightly above the text */
 }
 
 /* --- Footer --- */
+
 .footer {
-  padding: var(--spacing-xl) 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  color: var(--body-text-color);
+	padding: var(--spacing-xl) 0;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: var(--body-text-color);
 }
 
 .footer .container {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 var(--spacing-md);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 .footer-content {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-lg);
-  width: 100%;
-  text-align: left;
-  margin-bottom: var(--spacing-lg);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: var(--spacing-lg);
+	width: 100%;
+	text-align: left;
+	margin-bottom: var(--spacing-lg);
 }
 
 .footer-column {
-  padding: var(--spacing-sm);
+	padding: var(--spacing-sm);
 }
 
 .footer-column h3 {
-  font-size: 1.2rem;
-  margin-bottom: var(--spacing-sm);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+	font-size: 1.2rem;
+	margin-bottom: var(--spacing-sm);
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
 }
 
 .footer-column ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
+	list-style: none;
+	padding: 0;
+	margin: 0;
 }
 
 .footer-column ul li a {
-  color: var(--footer-link-color);
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: color 0.3s;
+	color: var(--footer-link-color);
+	text-decoration: none;
+	font-size: 0.95rem;
+	transition: color 0.3s;
 }
 
 .footer-column ul li a:hover {
-  color: var(--primary-hover-color);
+	color: var(--primary-hover-color);
 }
 
 .footer p {
-  margin: var(--spacing-xs) 0;
-  font-size: 15px;
+	margin: var(--spacing-xs) 0;
+	font-size: 15px;
 }
 
 .footer .social-icons {
-  margin-top: var(--spacing-sm);
-  display: flex;
-  justify-content: center;
-  gap: var(--spacing-md);
+	margin-top: var(--spacing-sm);
+	display: flex;
+	justify-content: center;
+	gap: var(--spacing-md);
 }
 
 .footer .social-icons .icon {
-  font-size: 1.8rem;
-  color: var(--primary-color);
-  transition: color 0.3s;
+	font-size: 1.8rem;
+	color: var(--primary-color);
+	transition: color 0.3s;
 }
 
 .footer .social-icons .icon:hover {
-  color: var(--primary-hover-color);
+	color: var(--primary-hover-color);
 }
-
-
 
 /* --- Footer Specific Styles */
 
-.footer-column ul li a, /* Target regular footer navigation links */
-#clear-cache-btn {      /* Target the clear cache button by its ID */
-    color: var(--primary-color); /* Use your primary color variable for consistency */
-    text-decoration: none;
-    font-weight: 600;
-    /* margin-top: auto; - This is likely not needed for inline links */
-    transition: color 0.3s, text-decoration 0.3s;
+.footer-column ul li a,
+/* Target regular footer navigation links */
+
+#clear-cache-btn {
+	/* Target the clear cache button by its ID */
+	color: var(--primary-color);
+	/* Use your primary color variable for consistency */
+	text-decoration: none;
+	font-weight: 600;
+	/* margin-top: auto; - This is likely not needed for inline links */
+	transition: color 0.3s, text-decoration 0.3s;
 }
 
 body:not(.dark-mode) .footer-column ul li a,
 body:not(.dark-mode) #clear-cache-btn {
-    color: var(--primary-color); /* Keep primary color for consistency in light mode */
+	color: var(--primary-color);
+	/* Keep primary color for consistency in light mode */
 }
-
 
 .footer-column ul li a:hover,
 #clear-cache-btn:hover {
-    color: var(--accent-color); /* Use accent color for hover effect, or primary-hover-color */
-    text-decoration: underline; /* Add underline on hover for clearer interaction */
+	color: var(--accent-color);
+	/* Use accent color for hover effect, or primary-hover-color */
+	text-decoration: underline;
+	/* Add underline on hover for clearer interaction */
 }
 
 body:not(.dark-mode) .footer-column ul li a:hover,
 body:not(.dark-mode) #clear-cache-btn:hover {
-    color: var(--accent-color); /* Consistent hover color in light mode */
+	color: var(--accent-color);
+	/* Consistent hover color in light mode */
 }
 
 /* Style for the container to position the tooltip relative to it */
+
 .tooltip-container {
-    position: relative; /* Essential for positioning the tooltip */
-    display: inline-block; /* Makes the container wrap its content tightly */
-    /* If clear-cache-btn is inside a list item, consider changing display to block or flex */
-    /* display: block; /* This might be useful if you want it to take full width like other list items */
+	position: relative;
+	/* Essential for positioning the tooltip */
+	display: inline-block;
+	/* Makes the container wrap its content tightly */
+	/* If clear-cache-btn is inside a list item, consider changing display to block or flex */
+	/* display: block; /* This might be useful if you want it to take full width like other list items */
 }
 
 /* Style for the tooltip text itself */
+
 .tooltip-text {
-    visibility: hidden; /* Hidden by default */
-    width: 200px; /* Adjust width as needed */
-    background-color: #555; /* Dark background */
-    color: #fff; /* White text */
-    text-align: center;
-    border-radius: 6px; /* Rounded corners */
-    padding: 5px 10px; /* Some padding */
-    position: absolute; /* Positioned relative to the .tooltip-container */
-    z-index: 1; /* Ensure it's on top of other content */
-    bottom: 125%; /* Position above the link */
-    left: 50%;
-    margin-left: -100px; /* Half of the width to center it */
-    opacity: 0; /* Start with no opacity */
-    transition: opacity 0.3s; /* Smooth transition for fade-in */
+	visibility: hidden;
+	/* Hidden by default */
+	width: 200px;
+	/* Adjust width as needed */
+	background-color: #555;
+	/* Dark background */
+	color: #fff;
+	/* White text */
+	text-align: center;
+	border-radius: 6px;
+	/* Rounded corners */
+	padding: 5px 10px;
+	/* Some padding */
+	position: absolute;
+	/* Positioned relative to the .tooltip-container */
+	z-index: 1;
+	/* Ensure it's on top of other content */
+	bottom: 125%;
+	/* Position above the link */
+	left: 50%;
+	margin-left: -100px;
+	/* Half of the width to center it */
+	opacity: 0;
+	/* Start with no opacity */
+	transition: opacity 0.3s;
+	/* Smooth transition for fade-in */
 }
 
 /* Arrow at the bottom of the tooltip (optional, but nice) */
+
 .tooltip-text::after {
-    content: "";
-    position: absolute;
-    top: 100%; /* At the bottom of the tooltip */
-    left: 50%;
-    margin-left: -5px; /* Half of the arrow's width */
-    border-width: 5px;
-    border-style: solid;
-    border-color: #555 transparent transparent transparent; /* Creates a downward arrow */
+	content: "";
+	position: absolute;
+	top: 100%;
+	/* At the bottom of the tooltip */
+	left: 50%;
+	margin-left: -5px;
+	/* Half of the arrow's width */
+	border-width: 5px;
+	border-style: solid;
+	border-color: #555 transparent transparent transparent;
+	/* Creates a downward arrow */
 }
 
 /* Show the tooltip when hovering over the container */
+
 .tooltip-container:hover .tooltip-text {
-    visibility: visible; /* Make visible */
-    opacity: 1; /* Fade in */
+	visibility: visible;
+	/* Make visible */
+	opacity: 1;
+	/* Fade in */
 }

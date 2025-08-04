@@ -98,3 +98,13 @@ Got questions or just want to connect? Feel free to reach out!
 * **Email:** ryanduncuft23@gmail.com
 
 Project Link: (https://github.com/ryanduncuft/RTK)
+
+---
+
+# UPDATES
+
+## Monday 4th August 2025
+
+I've been working hard behind the scenes to give the website a serious upgrade! I’ve completely optimized the code and polished the design to make it a smoother, better-looking experience for everyone. The animations are now crisper than ever.
+
+And for the main event: a brand new **"Services" page** is now live! I'm officially offering my mixing and mastering expertise. Whether you're a new artist or a seasoned pro, I'm here to help you get that clean, powerful, and **radio-ready sound** your music deserves. Hit me up for a quote, and let's make some magic.

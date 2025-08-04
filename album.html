@@ -1,58 +1,74 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="Styles/main.css">
-    <link rel="icon" href="../../Images/WebpageIcon.ico" type="image/x-icon">
-    
-    <meta property="og:type" content="music.album"> 
-    <title>Loading Album... | Ryze Tha Kidd</title>
+	<meta charset="UTF-8">
+	<meta content="width=device-width,initial-scale=1" name="viewport">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+	<link href="Styles/main.css" rel="stylesheet">
+	<link href="../../Images/WebpageIcon.ico" rel="icon" type="image/x-icon">
+	<meta content="music.album" property="og:type">
+
+	<title>Loading Album... | Ryze Tha Kidd</title>
 </head>
+
 <body>
-    <div class="content-wrapper">
-        <div id="navbar"></div>
+	<div class="content-wrapper">
+		<div id="navbar">
+		</div>
 
-        <main>
-            <section class="album-page-content">
-                <div class="container">
-                    <section class="album-hero-section"> 
-                        <div class="album-visuals">
-                            <div class="album-cover-tilt-effect">
-                                <img src="" alt="Album Cover"> 
-                            </div>
-                            <a href="#" class="btn primary-btn listen-now-btn" target="_blank">
-                                <i class="fas fa-play-circle"></i> Listen Now
-                            </a>
-                        </div>
 
-                        <div class="album-details-panel">
-                            <h1 class="album-title">Album Title</h1>
-                            <p class="album-artist">Artist Name</p>
+		<main>
+			<section class="album-page-content">
+				<div class="container">
+					<section class="album-hero-section">
+						<div class="album-visuals">
+							<div class="album-cover-tilt-effect"><img alt="Album Cover" src="">
+							</div>
+							<a class="btn primary-btn listen-now-btn" href="#" target="_blank"><i class="fas fa-play-circle"></i> Listen Now</a>
+						</div>
 
-                            <div class="tracklist-section">
-                                <h2 class="section-heading">Tracklist</h2>
-                                <div class="tracklist-grid">
-                                </div>
-                            </div>
 
-                            <div class="credits-section">
-                                <h2 class="section-heading">Credits</h2>
-                                <div id="album-credits-content" class="credits-text">
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            </section>
-        </main>
-        <div id="footer"></div>
+						<div class="album-details-panel">
+							<h1 class="album-title">Album Title</h1>
 
-        <script src="Scripts/darkmode.js"></script>
-        <script src="Scripts/navbar.js"></script>
-        <script src="Scripts/footer.js" type="module"></script>
-        <script type="module" src="../../Scripts/albumPageLoader.js"></script>
-    </div>
+
+							<p class="album-artist">Artist Name</p>
+
+
+							<div class="tracklist-section">
+								<h2 class="section-heading">Tracklist</h2>
+
+
+								<div class="tracklist-grid">
+								</div>
+							</div>
+
+
+							<div class="credits-section">
+								<h2 class="section-heading">Credits</h2>
+
+
+								<div class="credits-text" id="album-credits-content">
+								</div>
+							</div>
+						</div>
+					</section>
+				</div>
+			</section>
+		</main>
+
+
+		<div id="footer">
+		</div>
+		<script src="Scripts/darkmode.js">
+		</script> 
+		<script src="Scripts/navbar.js">
+		</script> 
+		<script src="Scripts/footer.js" type="module">
+		</script> 
+		<script src="../../Scripts/albumPageLoader.js" type="module">
+		</script>
+	</div>
 </body>
 </html>
