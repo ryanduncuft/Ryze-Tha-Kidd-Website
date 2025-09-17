@@ -1,88 +1,146 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta content="width=device-width, initial-scale=1.0" name="viewport">
-
-	<title>Ryze Tha Kidd Official Discography: All Albums, EPs, & Singles</title>
-	<meta content="Explore the complete official discography of Ryze Tha Kidd. Find all albums, EPs, singles, and collaborations, with release dates, cover art, and details. Stream or download Ryze Tha Kidd's latest music." name="description">
-	<meta content="Ryze Tha Kidd discography, Ryze Tha Kidd music, official releases, albums, EPs, singles, collaborations, hip hop, emo rap, trap music, UK rap, new music, music downloads, streaming, independent artist" name="keywords">
-	<meta content="Ryze Tha Kidd" name="author">
-	<meta content="music.discography" property="og:type">
-	<meta content="https://ryzethakidd.netlify.app/discography.html" property="og:url">
-	<meta content="Ryze Tha Kidd Official Discography: All Albums, EPs, & Singles" property="og:title">
-	<meta content="Explore the complete official discography of Ryze Tha Kidd. Find all albums, EPs, singles, and collaborations, with release dates, cover art, and details. Stream or download Ryze Tha Kidd's latest music." property="og:description">
-	<meta content="en_GB" property="og:locale">
-	<meta content="summary_large_image" name="twitter:card">
-	<meta content="@ryzethakidd" name="twitter:site">
-	<meta content="@ryzethakidd" name="twitter:creator">
-	<meta content="Ryze Tha Kidd Official Discography: All Albums, EPs, & Singles" name="twitter:title">
-	<meta content="Explore the complete official discography of Ryze Tha Kidd. Find all albums, EPs, singles, and collaborations, with release dates, cover art, and details. Stream or download Ryze Tha Kidd's latest music." name="twitter:description">
-	<link href="https://ryzethakidd.netlify.app/discography.html" rel="canonical">
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet">
-	<link href="Styles/main.css" rel="stylesheet">
-	<link href="Images/WebpageIcon.ico" rel="icon" type="image/x-icon">
-	<link href="Images/apple-touch-icon.png" rel="apple-touch-icon">
-	<script type="application/ld+json">
-	       {
-	           "@context": "https://schema.org",
-	           "@type": "MusicGroup",
-	           "name": "Ryze Tha Kidd",
-	           "url": "https://ryzethakidd.netlify.app/discography.html",
-	           "image": "https://ryzethakidd.netlify.app/Images/profile.jpg",
-	           "mainEntityOfPage": "https://ryzethakidd.netlify.app/discography.html",
-	           "genre": ["Hip Hop", "Emo Rap", "Trap", "Alternative Hip Hop"],
-	           "description": "The official discography of British Rapper Ryze Tha Kidd, featuring all released albums, EPs, and singles.",
-	           "sameAs":
-	           [
-	               "https://www.youtube.com/@RyzeThaKidd0", 
-	               "https://www.instagram.com/ryzethakidd/",
-	               "https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H?si=vA1eSYX_Qjiy5xtQpRYEOA",
-	               "https://soundcloud.com/ryzethakidd",
-	               "https://twitter.com/ryzethakidd"
-	           ],
-	       }
-	</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ryze Tha Kidd Discography | Official Albums, EPs & Singles</title>
+    <meta name="description" content="Explore the complete official discography of Ryze Tha Kidd. Find all albums, EPs, singles, and collaborations, with release dates, cover art, and details. Stream or download Ryze Tha Kidd's latest music.">
+    <meta name="keywords" content="Ryze Tha Kidd discography, Ryze Tha Kidd music, official releases, albums, EPs, singles, collaborations, hip hop, emo rap, trap music, UK rap, new music, music downloads, streaming, independent artist">
+    <meta name="author" content="Ryze Tha Kidd">
+    <meta property="og:type" content="music.discography">
+    <meta property="og:url" content="https://ryzethakidd.netlify.app/discography">
+    <meta property="og:title" content="Ryze Tha Kidd Official Discography: All Albums, EPs, & Singles">
+    <meta property="og:description" content="Explore the complete official discography of Ryze Tha Kidd. Find all albums, EPs, singles, and collaborations, with release dates, cover art, and details. Stream or download Ryze Tha Kidd's latest music.">
+    <meta property="og:locale" content="en_GB">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ryzethakidd">
+    <meta name="twitter:creator" content="@ryzethakidd">
+    <meta name="twitter:title" content="Ryze Tha Kidd Official Discography: All Albums, EPs, & Singles">
+    <meta name="twitter:description" content="Explore the complete official discography of Ryze Tha Kidd. Find all albums, EPs, and singles, with release dates, cover art, and details. Stream or download Ryze Tha Kidd's latest music.">
+    <link rel="canonical" href="https://ryzethakidd.netlify.app/discography">
+    <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico">
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style type="text/tailwindcss">
+        /* Custom Tailwind classes for this specific page */
+        @layer components {
+            .discography-container {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12;
+            }
+            .filter-btn {
+                @apply px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300;
+            }
+            .filter-btn-active {
+                @apply bg-violet-600 text-white shadow-lg;
+            }
+            .filter-btn-inactive {
+                @apply bg-gray-800 text-gray-400 hover:bg-violet-600 hover:text-white;
+            }
+            .release-card {
+                @apply bg-gray-800 rounded-lg overflow-hidden shadow-lg transform transition-transform duration-300 hover:scale-105;
+            }
+            .release-card-body {
+                @apply p-4 text-center;
+            }
+            .release-title {
+                @apply text-lg font-semibold text-white truncate;
+            }
+            .release-artist {
+                @apply text-sm text-gray-400 mb-2 truncate;
+            }
+            .release-date {
+                @apply text-xs text-gray-500 mb-2;
+            }
+            .stream-links {
+                @apply flex justify-center space-x-2 mt-4;
+            }
+            .stream-link {
+                @apply text-gray-400 hover:text-white transition-colors duration-300;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "MusicGroup",
+            "name": "Ryze Tha Kidd",
+            "url": "https://ryzethakidd.netlify.app/discography",
+            "image": "https://ryzethakidd.netlify.app/Images/profile.jpg",
+            "mainEntityOfPage": "https://ryzethakidd.netlify.app/discography",
+            "genre": ["Hip Hop", "Emo Rap", "Trap", "Alternative Hip Hop"],
+            "description": "The official discography of British Rapper Ryze Tha Kidd, featuring all released albums, EPs, and singles.",
+            "sameAs": [
+                "https://www.youtube.com/@RyzeThaKidd0", 
+                "https://www.instagram.com/ryzethakidd/",
+                "https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H?si=vA1eSYX_Qjiy5xtQpRYEOA",
+                "https://soundcloud.com/ryzethakidd",
+                "https://twitter.com/ryzethakidd"
+            ]
+        }
+    </script>
+    <style>
+        #interactive-bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: #1f1f1f; /* Fallback color */
+            overflow: hidden;
+        }
+    </style>
 </head>
 
-<body>
-	<div class="content-wrapper">
-		<div id="navbar">
-		</div>
+<body class="bg-gray-900 text-gray-200 min-h-screen flex flex-col">
 
+    <div id="interactive-bg-wrapper">
+        <canvas id="interactive-bg"></canvas>
+    </div>
 
-		<main class="discography">
-			<div class="container">
-				<h1 class="page-title">My Discography</h1>
+    <header id="navbar-container"></header>
 
+    <div class="min-h-screen flex flex-col relative z-10" id="main-content">
+    
+        <main id="main-content" class="flex-grow">
+            <div class="discography-container">
+                <h1 class="text-4xl sm:text-5xl font-extrabold text-white text-center mb-10 tracking-wide">
+                    My <span class="text-violet-500">Discography</span>
+                </h1>
 
-				<div class="discography-nav">
-					<button class="nav-btn active" data-category="all">All Releases</button> <button class="nav-btn" data-category="album">Albums</button> <button class="nav-btn" data-category="ep">EPs</button> <button class="nav-btn" data-category="single">Singles</button> <button class="nav-btn" data-category="collab">Collaborations</button>
-				</div>
+                <div class="flex justify-center space-x-2 sm:space-x-4 mb-10 overflow-x-auto pb-2">
+                    <button class="filter-btn filter-btn-active" data-category="all">All Releases</button>
+                    <button class="filter-btn filter-btn-inactive" data-category="album">Albums</button>
+                    <button class="filter-btn filter-btn-inactive" data-category="ep">EPs</button>
+                    <button class="filter-btn filter-btn-inactive" data-category="single">Singles</button>
+                    <button class="filter-btn filter-btn-inactive" data-category="collab">Collaborations</button>
+                </div>
 
+                <div id="releases-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                </div>
 
-				<div class="release-grid" id="releases-grid">
-				</div>
+                <div id="loading-state" class="text-center text-gray-400 mt-10">
+                    <i class="fas fa-spinner fa-spin text-3xl text-violet-500"></i>
+                    <p class="mt-2">Loading discography...</p>
+                </div>
+                <div id="error-state" class="hidden text-center text-red-500 mt-10">
+                    <p>Failed to load discography. Please try again later.</p>
+                </div>
+                <div id="no-releases-message" class="hidden text-center text-gray-400 mt-10">
+                    <p>No releases found in this category.</p>
+                </div>
+            </div>
+        </main>
+    </div>
 
+    <footer id="footer-container"></footer>
 
-				<div class="no-releases-message" style="display: none;">
-					<p>No releases found in this category yet. Check back soon!</p>
-				</div>
-			</div>
-		</main>
-
-
-		<div id="footer">
-		</div>
-	</div>
-	<script src="Scripts/discographyscript.js" type="module">
-	</script> 
-	<script src="Scripts/darkmode.js">
-	</script> 
-	<script src="Scripts/navbar.js">
-	</script> 
-	<script src="Scripts/footer.js" type="module">
-	</script>
+    <script src="js/app.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/discography.js"></script>
 </body>
 </html>
