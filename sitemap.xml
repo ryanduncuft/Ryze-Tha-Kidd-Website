@@ -1,27 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset
-	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-		http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+	xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
-		<loc>https://ryzethakidd.netlify.app/</loc>
-		<lastmod>2025-06-25T12:22:34+00:00</lastmod>
-		<priority>1.00</priority>
+		<loc>http://ryzethakidd.netlify.app/</loc>
+		<priority>1.0</priority>
+		<changefreq>weekly</changefreq>
+		<lastmod>2025-08-12</lastmod>
 	</url>
 	<url>
-		<loc>https://ryzethakidd.netlify.app/about</loc>
-		<lastmod>2025-06-25T12:22:34+00:00</lastmod>
-		<priority>0.80</priority>
+		<loc>http://ryzethakidd.netlify.app/discography</loc>
+		<priority>0.8</priority>
+		<changefreq>weekly</changefreq>
+		<lastmod>2025-08-12</lastmod>
 	</url>
 	<url>
-		<loc>https://ryzethakidd.netlify.app/discography</loc>
-		<lastmod>2025-06-25T12:22:34+00:00</lastmod>
-		<priority>0.80</priority>
+		<loc>http://ryzethakidd.netlify.app/services</loc>
+		<priority>0.8</priority>
+		<changefreq>monthly</changefreq>
+		<lastmod>2025-08-12</lastmod>
 	</url>
 	<url>
-		<loc>https://ryzethakidd.netlify.app/contact</loc>
-		<lastmod>2025-06-25T12:22:34+00:00</lastmod>
-		<priority>0.80</priority>
+		<loc>http://ryzethakidd.netlify.app/about</loc>
+		<priority>0.7</priority>
+		<changefreq>monthly</changefreq>
+		<lastmod>2025-08-12</lastmod>
+	</url>
+	<url>
+		<loc>http://ryzethakidd.netlify.app/contact</loc>
+		<priority>0.5</priority>
+		<changefreq>yearly</changefreq>
+		<lastmod>2025-08-12</lastmod>
 	</url>
 </urlset>
