@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Success! | Your Message Was Sent</title>
+    <meta name="robots" content="noindex, follow">
+    <meta name="description" content="Your message to Ryze Tha Kidd has been successfully sent. You'll receive a response as soon as possible.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/dist/output.css">
+
+    <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico">
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
+
+    <style>
+        /* This style block ensures consistent design elements with your homepage */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        .animate-bounce-slow {
+            animation: bounce-slow 2s infinite;
+        }
+        #interactive-bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #1f1f1f, #333333);
+            overflow: hidden;
+        }
+        body {
+            background-color: #1f1f1f;
+            color: #d1d5db;
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            scroll-behavior: smooth;
+        }
+        .section-card {
+            background-color: #2c2c2e;
+            padding: 2.5rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease-in-out;
+        }
+        .section-card:hover {
+            background-color: rgba(44, 44, 46, 0.8);
+            transform: translateY(-0.5rem) scale(1.02);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        }
+        .section-heading {
+            color: #8b5cf6;
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+
+<body class="bg-zinc-800 text-gray-200 font-sans min-h-screen flex flex-col justify-between" style="scroll-behavior: smooth;">
+
+    <div id="interactive-bg-wrapper">
+        <canvas id="interactive-bg"></canvas>
+    </div>
+
+    <div id="main-content" class="min-h-screen flex flex-col relative z-10">
+        <div id="navbar-container"></div>
+
+        <main class="flex-grow flex items-center justify-center">
+            <section class="py-16 md:py-24 w-full">
+                <div class="container mx-auto px-8">
+                    <div class="section-card max-w-xl mx-auto text-center bg-zinc-900 bg-opacity-30 backdrop-filter backdrop-blur-sm p-8 md:p-12">
+                        
+                        <i class="fa-solid fa-circle-check text-green-500 text-6xl md:text-8xl mb-6 animate-bounce-slow"></i>
+                        
+                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-100 tracking-tight leading-tight md:leading-snug">
+                            Thank You!
+                        </h1>
+
+                        <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mt-6">
+                            Your message has been successfully sent. I'll get back to you as soon as possible.
+                        </p>
+                        
+                        <a href="/" class="mt-8 inline-block bg-violet-600 text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-violet-700 transition-colors duration-300 transform hover:scale-105">
+                            Go Back to the Homepage
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="footer-container"></div>
+    </div>
+    
+    <script src="js/app.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/background.js"></script>
+
+</body>
+</html>
