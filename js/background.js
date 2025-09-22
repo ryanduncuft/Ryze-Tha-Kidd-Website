@@ -1,41 +1,59 @@
 // js/background.js
-
 document.addEventListener('DOMContentLoaded', () => {
+    // Check if animations are disabled via localStorage setting
+    if (localStorage.getItem('animations') === 'disabled') {
+        console.log('Animations are disabled by user preference.');
+        return; // Exit the script to prevent animation from running
+    }
 
     const canvas = document.getElementById('interactive-bg');
+    if (!canvas) {
+        console.error('Canvas element with id "interactive-bg" not found.');
+        return;
+    }
     const ctx = canvas.getContext('2d');
 
     // Fix: Prevent the "Save Image" context menu on the canvas
-    canvas.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
     let width, height;
-    let particles = [];
+    const particles = [];
     const numParticles = 80;
     const maxDistance = 120;
     let mouse = { x: null, y: null };
     
-    // Set up canvas dimensions
+    // Set up canvas dimensions to cover the entire document height
     const resizeCanvas = () => {
         width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        height = canvas.height = document.body.scrollHeight;
+        
+        // This is a crucial fix: ensure the background wrapper also has this height
+        const wrapper = document.getElementById('interactive-bg-wrapper');
+        if (wrapper) {
+            wrapper.style.height = `${height}px`;
+        }
     };
     window.addEventListener('resize', resizeCanvas);
+    
+    // Add a listener for when content changes (e.g., dynamic loading)
+    // This is more of a safety measure for single-page applications.
+    const resizeObserver = new ResizeObserver(resizeCanvas);
+    resizeObserver.observe(document.body);
+    
     resizeCanvas();
 
     // Event listeners for mouse position
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.clientX;
-        mouse.y = e.clientY;
+        mouse.y = e.clientY + window.scrollY; // Adjust for scroll position
     });
     window.addEventListener('mouseout', () => {
         mouse.x = null;
         mouse.y = null;
     });
 
-    // Parallax scroll effect
-    const parallaxSpeed = 0.2; // Adjust this value to change the parallax intensity
+    // Parallax scroll effect speed
+    const parallaxSpeed = 0.2; 
     
     // Particle class
     class Particle {
@@ -45,15 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
             this.vx = Math.random() * 0.5 - 0.25;
             this.vy = Math.random() * 0.5 - 0.25;
             this.size = Math.random() * 1.5 + 1;
-            this.color = 'rgba(139, 92, 246, 0.8)'; // A semi-transparent violet
+            this.color = 'rgba(139, 92, 246, 0.8)';
         }
 
         // Update particle position
         update() {
-            if (this.x > width || this.x < 0) this.vx = -this.vx;
-            if (this.y > height || this.y < 0) this.vy = -this.vy;
+            // Adjust particle movement for larger canvas
             this.x += this.vx;
             this.y += this.vy;
+
+            // Bounce particles off the new, larger canvas boundaries
+            if (this.x > width || this.x < 0) this.vx = -this.vx;
+            if (this.y > height || this.y < 0) this.vy = -this.vy;
         }
 
         // Draw particle with parallax effect
@@ -78,9 +99,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Function to connect particles with lines
     const connectParticles = () => {
-        let opacityValue = 1;
+        ctx.lineWidth = 1;
         for (let a = 0; a < particles.length; a++) {
-            for (let b = a; b < particles.length; b++) {
+            for (let b = a + 1; b < particles.length; b++) { // Optimized loop to avoid double-checking pairs
                 // Calculate position with parallax effect
                 const parallaxYA = particles[a].y - (window.scrollY * parallaxSpeed);
                 const parallaxYB = particles[b].y - (window.scrollY * parallaxSpeed);
@@ -90,9 +111,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const distance = Math.sqrt(dx * dx + dy * dy);
 
                 if (distance < maxDistance) {
-                    opacityValue = 1 - (distance / maxDistance);
-                    ctx.strokeStyle = 'rgba(139, 92, 246,' + opacityValue + ')';
-                    ctx.lineWidth = 1;
+                    const opacityValue = 1 - (distance / maxDistance);
+                    ctx.strokeStyle = `rgba(139, 92, 246, ${opacityValue})`;
                     ctx.beginPath();
                     ctx.moveTo(particles[a].x, parallaxYA);
                     ctx.lineTo(particles[b].x, parallaxYB);
@@ -104,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Main animation loop
     const animate = () => {
-        ctx.clearRect(0, 0, width, height); // Clear the canvas
+        ctx.clearRect(0, 0, width, window.innerHeight); // Only clear the visible canvas area
 
         particles.forEach(p => {
             p.update();
