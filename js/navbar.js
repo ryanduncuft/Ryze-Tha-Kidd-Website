@@ -1,81 +1,82 @@
 // js/navbar.js
 document.addEventListener('DOMContentLoaded', () => {
     const navbarContainer = document.getElementById('navbar-container');
-    if (navbarContainer) {
-        // Use async/await for cleaner code
-        const loadNavbar = async () => {
-            try {
-                const response = await fetch('/components/navbar.html');
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const html = await response.text();
-                navbarContainer.innerHTML = html;
+    if (!navbarContainer) {
+        console.error('Navbar container element not found.');
+        return;
+    }
 
-                // --- Mobile Menu Setup Logic ---
-                const setupMobileMenu = () => {
-                    const desktopMenu = document.querySelector('header nav ul');
-                    const mobileMenuList = document.getElementById('mobile-menu-links');
-                    const menuToggleBtn = document.getElementById('menu-toggle-btn');
-                    const menuCloseBtn = document.getElementById('menu-close-btn');
-                    const mobileMenu = document.getElementById('mobile-menu');
-                    const mainContent = document.getElementById('main-content');
-
-                    if (desktopMenu && mobileMenuList && menuToggleBtn && menuCloseBtn && mobileMenu && mainContent) {
-                        // 1. Populate the mobile menu from the desktop links
-                        desktopMenu.querySelectorAll('li').forEach(listItem => {
-                            const clonedListItem = listItem.cloneNode(true);
-                            const anchor = clonedListItem.querySelector('a');
-                            if (anchor) {
-                                // Add classes for mobile styling
-                                anchor.classList.add('block', 'py-2');
-                                anchor.classList.remove('transition-colors', 'duration-500');
-                                anchor.classList.add('transition-colors', 'duration-300');
-                            }
-                            mobileMenuList.appendChild(clonedListItem);
-                        });
-
-                        // 2. Define toggle functions
-                        const openMenu = () => {
-                            mobileMenu.classList.remove('-translate-x-full');
-                            mainContent.classList.add('blur-sm', 'scale-95', 'pointer-events-none');
-                            document.body.style.overflow = 'hidden';
-                        };
-
-                        const closeMenu = () => {
-                            mobileMenu.classList.add('-translate-x-full');
-                            mainContent.classList.remove('blur-sm', 'scale-95', 'pointer-events-none');
-                            document.body.style.overflow = 'auto';
-                        };
-
-                        // 3. Attach event listeners
-                        menuToggleBtn.addEventListener('click', openMenu);
-                        menuCloseBtn.addEventListener('click', closeMenu);
-                        
-                        // Close menu when a link is clicked
-                        mobileMenuList.querySelectorAll('a').forEach(link => {
-                            link.addEventListener('click', closeMenu);
-                        });
-
-                        // Close menu when clicking outside the menu panel
-                        mobileMenu.addEventListener('click', (e) => {
-                            if (e.target === mobileMenu) {
-                                closeMenu();
-                            }
-                        });
-                    } else {
-                        console.error('Mobile menu elements not found after fetching navbar.');
-                    }
-                };
-                
-                // Call the setup function after the HTML is in the DOM
-                setupMobileMenu();
-
-            } catch (error) {
-                console.error('Error loading navbar:', error);
+    /**
+     * Fetches the navbar HTML and injects it into the page.
+     * @returns {Promise<void>}
+     */
+    const loadNavbar = async () => {
+        try {
+            const response = await fetch('/components/navbar.html');
+            if (!response.ok) {
+                throw new Error('Network response was not ok.');
             }
+            const html = await response.text();
+            navbarContainer.innerHTML = html;
+            
+            // Setup the mobile menu after the HTML is in the DOM
+            setupMobileMenu();
+        } catch (error) {
+            console.error('Error loading navbar:', error);
+        }
+    };
+
+    /**
+     * Sets up the mobile menu's functionality, including populating links and handling clicks.
+     * @returns {void}
+     */
+    const setupMobileMenu = () => {
+        const desktopMenu = document.querySelector('header nav ul');
+        const mobileMenuList = document.getElementById('mobile-menu-links');
+        const menuToggleBtn = document.getElementById('menu-toggle-btn');
+        const menuCloseBtn = document.getElementById('menu-close-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mainContent = document.getElementById('main-content');
+
+        // Check if all necessary elements exist before proceeding
+        if (!desktopMenu || !mobileMenuList || !menuToggleBtn || !menuCloseBtn || !mobileMenu || !mainContent) {
+            console.error('One or more mobile menu elements not found after fetching navbar.');
+            return;
+        }
+
+        // 1. Populate the mobile menu from the desktop links
+        const menuLinks = Array.from(desktopMenu.querySelectorAll('li'));
+        menuLinks.forEach(listItem => {
+            const clonedListItem = listItem.cloneNode(true);
+            const anchor = clonedListItem.querySelector('a');
+            if (anchor) {
+                anchor.classList.add('block', 'py-2', 'transition-colors', 'duration-300');
+                anchor.classList.remove('duration-500'); // Clean up redundant class
+            }
+            mobileMenuList.appendChild(clonedListItem);
+        });
+
+        // 2. Define toggle functions
+        const toggleMenu = (open = false) => {
+            mobileMenu.classList.toggle('-translate-x-full', !open);
+            mainContent.classList.toggle('blur-sm', open);
+            mainContent.classList.toggle('scale-95', open);
+            mainContent.classList.toggle('pointer-events-none', open);
+            document.body.style.overflow = open ? 'hidden' : 'auto';
         };
 
-        loadNavbar();
-    }
+        // 3. Attach event listeners
+        menuToggleBtn.addEventListener('click', () => toggleMenu(true));
+        menuCloseBtn.addEventListener('click', () => toggleMenu(false));
+        
+        // Close menu when a link or the overlay is clicked
+        mobileMenuList.addEventListener('click', () => toggleMenu(false));
+        mobileMenu.addEventListener('click', (e) => {
+            if (e.target === mobileMenu) {
+                toggleMenu(false);
+            }
+        });
+    };
+
+    loadNavbar();
 });
