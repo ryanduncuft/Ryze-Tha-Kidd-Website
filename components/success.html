@@ -1,118 +1,153 @@
 <!DOCTYPE html>
-
-
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Success! | Transmission Complete</title>
 
+    <meta name="robots" content="noindex, follow" />
+    <meta
+      name="description"
+      content="Your message to Ryze Tha Kidd has been successfully sent. You'll receive a response as soon as possible."
+    />
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-        <title>Success! | Your Message Was Sent</title>
-        <meta name="robots" content="noindex, follow">
-        <meta name="description" content="Your message to Ryze Tha Kidd has been successfully sent. You'll receive a response as soon as possible.">
-    
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link rel="stylesheet" href="/dist/output.css">
-    
-        <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico">
-        <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
-    
-        <style>
-            /* This style block ensures consistent design elements with your homepage */
-            @keyframes bounce-slow {
-                0%, 100% { transform: translateY(0); }
-                50% { transform: translateY(-4px); }
-            }
-            .animate-bounce-slow {
-                animation: bounce-slow 2s infinite;
-            }
-            #interactive-bg-wrapper {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-                background: linear-gradient(135deg, #1f1f1f, #333333);
-                overflow: hidden;
-            }
-            body {
-                background-color: #1f1f1f;
-                color: #d1d5db;
-                font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-                scroll-behavior: smooth;
-            }
-            .section-card {
-                background-color: #2c2c2e;
-                padding: 2.5rem;
-                border-radius: 1.5rem;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                transition: all 0.3s ease-in-out;
-            }
-            .section-card:hover {
-                background-color: rgba(44, 44, 46, 0.8);
-                transform: translateY(-0.5rem) scale(1.02);
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-            }
-            .section-heading {
-                color: #8b5cf6;
-                font-size: 2.25rem;
-                font-weight: 700;
-                margin-bottom: 0.5rem;
-            }
-        </style>
-    </head>
-    
-    
-    <body class="bg-zinc-800 text-gray-200 font-sans min-h-screen flex flex-col justify-between" style="scroll-behavior: smooth;">
-    
-    
-        <div id="interactive-bg-wrapper">
-            <canvas id="interactive-bg"></canvas>
-        </div>
-    
-    
-        <div id="main-content" class="min-h-screen flex flex-col relative z-10">
-            <div id="navbar-container"></div>
-        
-        
-            <main class="flex-grow flex items-center justify-center">
-                <section class="py-16 md:py-24 w-full">
-                    <div class="container mx-auto px-8">
-                        <div class="section-card max-w-xl mx-auto text-center bg-zinc-900 bg-opacity-30 backdrop-filter backdrop-blur-sm p-8 md:p-12">
-                            
-                        
-                            <i class="fa-solid fa-circle-check text-green-500 text-6xl md:text-8xl mb-6 animate-bounce-slow"></i>
-                            
-                        
-                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-gray-100 tracking-tight leading-tight md:leading-snug">
-                                Thank You!
-                            </h1>
-                        
-                        
-                            <p class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mt-6">
-                                Your message has been successfully sent. I'll get back to you as soon as possible.
-                            </p>
-                            
-                        
-                            <a href="/" class="mt-8 inline-block bg-violet-600 text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-violet-700 transition-colors duration-300 transform hover:scale-105">
-                                Go Back to the Homepage
-                            </a>
-                        </div>
-                    </div>
-                </section>
-            </main>
-        
-        
-            <div id="footer-container"></div>
-        </div>
-        
-        
-        <script src="js/app.js"></script>
-        <script src="js/navbar.js"></script>
-        <script src="js/footer.js"></script>
-        <script src="js/background.js"></script>
-    
-    </body>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/dist/output.css" />
+    <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico" />
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
+
+    <style>
+      /* --- Custom Animations --- */
+      @keyframes pulse-glow {
+        0%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+        }
+        50% {
+          transform: scale(1.05);
+          box-shadow: 0 0 25px rgba(139, 92, 246, 0.8),
+            0 0 10px rgba(255, 255, 255, 0.2);
+        }
+      }
+
+      @keyframes pulse-icon {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .animate-pulse-glow {
+        animation: pulse-glow 2s infinite ease-in-out;
+      }
+
+      .animate-pulse-icon {
+        animation: pulse-icon 1.5s infinite ease-in-out;
+      }
+
+      /* --- Base Styles for Consistency --- */
+      #interactive-bg-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2;
+        background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
+        overflow: hidden;
+      }
+
+      body {
+        background-color: #0a0a0a;
+        color: #e5e7eb;
+        font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+          "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+        scroll-behavior: smooth;
+      }
+
+      .futuristic-card {
+        background-color: rgba(25, 25, 25, 0.7);
+        border: 1px solid rgba(44, 44, 46, 0.3);
+        backdrop-filter: blur(10px); /* Stronger blur for the centered card */
+        padding: 2rem;
+        border-radius: 1.5rem;
+        box-shadow: 0 4px 60px rgba(139, 92, 246, 0.1);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .neon-glow-text {
+        text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 20px #8b5cf6;
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-black text-gray-100 font-sans min-h-screen flex flex-col justify-between"
+  >
+    <div id="interactive-bg-wrapper">
+      <canvas id="interactive-bg"></canvas>
+    </div>
+
+    <div id="main-content" class="min-h-screen flex flex-col relative z-10">
+      <div id="navbar-container"></div>
+
+      <main class="flex-grow flex items-center justify-center">
+        <section class="py-16 md:py-24 w-full">
+          <div class="max-w-7xl mx-auto px-6">
+            <div
+              class="futuristic-card max-w-xl mx-auto text-center p-8 md:p-12"
+            >
+              <div
+                class="inline-block p-4 rounded-full mb-6 border-2 border-violet-500 bg-violet-900/20 shadow-xl animate-pulse-glow"
+                style="
+                  animation-duration: 3s;
+                  animation-iteration-count: infinite;
+                "
+              >
+                <i
+                  class="fa-solid fa-circle-check text-violet-400 text-6xl md:text-8xl animate-pulse-icon"
+                ></i>
+              </div>
+
+              <h1
+                class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-violet-400 neon-glow-text tracking-tight leading-tight md:leading-snug"
+              >
+                TRANSMISSION COMPLETE
+              </h1>
+
+              <p
+                class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mt-6"
+              >
+                Your message has been successfully beamed to the network. I'll
+                review the data and get back to you as soon as possible.
+              </p>
+
+              <a
+                href="/"
+                class="mt-8 inline-block px-8 py-3 bg-violet-600 text-white font-semibold text-lg rounded-full shadow-lg transition-all duration-300 hover:bg-violet-500 transform hover:scale-[1.03]"
+              >
+                <i class="fas fa-arrow-left mr-2"></i> RETURN TO HUB
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <div id="footer-container"></div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/background.js"></script>
+  </body>
 </html>

@@ -1,223 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Home | Ryze Tha Kidd</title>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <meta name="description" content="Discover the official website of Ryze Tha Kidd, a British Rapper from Mossley, UK. Explore his latest music, discography, music videos, blog, and exclusive merchandise.">
-        <meta name="keywords" content="Ryze Tha Kidd, British Rapper, Mossley UK, UK music, UK rap, Juice WRLD inspired, independent artist, official website, music, discography, rap videos, new music, hip hop, grime, Manchester music, Juice WRLD">
-        <meta name="author" content="Ryze Tha Kidd">
-        <meta property="og:type" content="website">
-        <meta property="og:url" content="https://ryzethakidd.netlify.app/">
-        <meta property="og:title" content="Home | Ryze Tha Kidd">
-        <meta property="og:description" content="Discover the official website of Ryze Tha Kidd, a British Rapper from Mossley, UK. Explore his latest music, discography, music videos, blog, and exclusive merchandise.">
-        <meta property="og:image" content="https://ryzethakidd.netlify.app/images/me.jpg">
-        <meta property="og:image:alt" content="Ryze Tha Kidd artist photo - Official Website">
-        <meta property="og:locale" content="en_GB">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:site" content="@ryzethakidd">
-        <meta name="twitter:creator" content="@ryzethakidd">
-        <meta name="twitter:title" content="Home | Ryze Tha Kidd">
-        <meta name="twitter:description" content="Discover the official website of Ryze Tha Kidd, a British Rapper from Mossley, UK. Explore his latest music, discography, music videos, blog, and exclusive merchandise.">
-        <meta name="twitter:image" content="https://ryzethakidd.netlify.app/images/me.jpg">
-        <link rel="canonical" href="https://ryzethakidd.netlify.app/">
-        <link rel="apple-touch-icon" href="Images/apple-touch-icon.png">
-        <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico">
+    <title>
+        Ryze Tha Kidd Official Site | British Rapper, Latest Music & Merch
+    </title>
 
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link rel="stylesheet" href="./dist/output.css">
+    <meta
+        name="description"
+        content="Official website for British Rapper Ryze Tha Kidd from Mossley, UK. Stream the latest singles, view the discography, and find merch. Inspired by Juice WRLD."
+    />
+    <meta name="author" content="Ryze Tha Kidd" />
+    <link rel="canonical" href="https://ryzethakidd.netlify.app/index.html" />
 
-        <style>
-            /* Custom Keyframes for a slow bounce animation */
-            @keyframes bounce-slow {
-                0%, 100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-4px);
-                }
+    <meta
+        property="og:title"
+        content="Ryze Tha Kidd Official Site | British Rapper"
+    />
+    <meta
+        property="og:description"
+        content="Stream the latest singles, view the discography, and find exclusive content from British Rapper Ryze Tha Kidd."
+    />
+    <meta property="og:type" content="music.musician" />
+    <meta property="og:url" content="https://ryzethakidd.netlify.app/index.html" />
+    <meta property="og:image" content="https://ryzethakidd.netlify.app/images/.jpg" />
+    <meta property="og:locale" content="en_GB" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@ryzethakidd" />
+    <meta name="twitter:creator" content="@ryzethakidd" />
+    <meta name="twitter:title" content="Ryze Tha Kidd Official Site" />
+    <meta
+        name="twitter:description"
+        content="British Rapper Ryze Tha Kidd: Latest Music, Tour Dates, and Discography."
+    />
+    <meta
+        name="twitter:image"
+        content="https://ryzethakidd.netlify.app/images/me.jpg"
+    />
+
+    <link
+        rel="icon"
+        type="image/x-icon"
+        href="https://ryzethakidd.netlify.app/images/logos/WebpageIcon.ico"
+    />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="./dist/output.css" />
+
+    <style>
+        /* Define the custom pulsating glow animation */
+        @keyframes pulse-glow {
+            0%,
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
             }
-
-            .animate-bounce-slow {
-                animation: bounce-slow 2s infinite;
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 25px rgba(139, 92, 246, 0.8),
+                    0 0 10px rgba(255, 255, 255, 0.2);
             }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
 
-            /* Styles for the parallax background */
-            #interactive-bg-wrapper {
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                z-index: -1;
-                background: linear-gradient(135deg, #1f1f1f, #333333);
-                overflow: hidden;
-            }
+        /* Base & Interactive Background Setup */
+        #interactive-bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-color: #0a0a0a; /* Fallback for black background */
+            overflow: hidden;
+        }
 
-            /* General site styling */
-            body {
-                background-color: #1f1f1f;
-                color: #d1d5db;
-                /* A slightly softer gray */
-                font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-                scroll-behavior: smooth;
-            }
+        /* Consistent Translucent Card Style */
+        .futuristic-card {
+            background-color: rgba(25, 25, 25, 0.7);
+            border: 1px solid rgba(44, 44, 46, 0.3);
+            backdrop-filter: blur(8px);
+            padding: 2rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 60px rgba(139, 92, 246, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
 
-            /* Re-styling elements for a modern look */
-            .section-card {
-                background-color: #2c2c2e;
-                padding: 2rem;
-                /* Reduced padding */
-                border-radius: 1.5rem;
-                box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-                transition: all 0.3s ease-in-out;
-            }
+        /* Consistent Neon Text Glow */
+        .neon-glow-text {
+            text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 20px #8b5cf6;
+        }
 
-            .section-card:hover {
-                background-color: rgba(44, 44, 46, 0.8);
-                /* Added a subtle transparency on hover */
-                transform: translateY(-0.5rem) scale(1.02);
-                box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
-            }
+        /* Video Aspect Ratio for embedded content */
+        .video-aspect-ratio {
+            position: relative;
+            width: 100%;
+            padding-top: 56.25%; /* 16:9 Aspect Ratio */
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
 
-            .section-icon {
-                color: #8b5cf6;
-                /* Same violet color */
-                font-size: 2.5rem;
-                /* Reduced icon size */
-                margin-bottom: 1rem;
-                /* Reduced margin */
-            }
+        .video-aspect-ratio iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 
-            .section-heading {
-                color: #8b5cf6;
-                font-size: 1.75rem;
-                /* Reduced heading size */
-                font-weight: 700;
-                margin-bottom: 0.5rem;
-            }
-
-            .section-text {
-                color: #9ca3af;
-                /* Slightly different gray for body text */
-            }
-
-            /* Corrected CSS with higher specificity for the video container */
-            #youtube-video-container {
-                position: relative;
-                width: 100%;
-                max-width: 4xl;
-                /* Reduced video container size */
-                margin-left: auto;
-                margin-right: auto;
-                border-radius: 1.5rem;
-                overflow: hidden;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                padding-top: 56.25%;
-                /* Forces a 16:9 aspect ratio */
-            }
-
-            #youtube-video-container iframe {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-        </style>
-
-        <script type="application/ld+json">
-            {
-                "@context": "https://schema.org",
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "MusicGroup",
+            "name": "Ryze Tha Kidd",
+            "url": "ryzethakidd.netlify.app",
+            "image": "https://ryzethakidd.netlify.app/images/me.jpg",
+            "sameAs": [
+                "https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H",
+                "https://www.youtube.com/@RyzeThaKidd",
+                "https://www.instagram.com/@ryzethakidd",
+                "https://www.x.com/@ryzethakidd"
+            ],
+            "member": {
                 "@type": "Person",
-                "name": "Ryze Tha Kidd",
-                "url": "https://ryzethakidd.netlify.app/",
-                "image": "https://ryzethakidd.netlify.app/Images/me.jpg",
-                "sameAs": [
-                    "https://www.youtube.com/@RyzeThaKidd",
-                    "https://www.instagram.com/ryzethakidd/",
-                    "https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H?si=vA1eSYX_Qjiy5xtQpRYEOA",
-                    "https://soundcloud.com/ryzethakidd",
-                    "https://twitter.com/ryzethakidd"
-                ],
-                "jobTitle": "British Rapper",
-                "alumniOf": {
-                    "@type": "Organization",
-                    "name": "Mossley, Greater Manchester, UK"
-                },
-                "description": "Official website for Ryze Tha Kidd, a British Rapper from Mossley, UK. Explore discography, latest releases, and more.",
-                "knowsAbout": ["Rap music", "Hip Hop", "Juice WRLD", "Music Production"]
-            }
-        </script>
-    </head>
+                "name": "Ryze Tha Kidd"
+            },
+            "description": "Official website for Ryze Tha Kidd, a British Rapper specializing in UK Hip Hop.",
+            "genre": "Hip Hop, UK Rap"
+        }
+    </script>
+</head>
 
-    <body class="bg-zinc-800 text-gray-200 font-sans" style="scroll-behavior: smooth;">
-        <div id="interactive-bg-wrapper">
-            <canvas id="interactive-bg"></canvas>
-        </div>
+<body
+    class="bg-black text-gray-100 font-sans"
+    style="scroll-behavior: smooth"
+>
+    <div id="interactive-bg-wrapper">
+        <canvas id="interactive-bg"></canvas>
+    </div>
 
+    <div class="relative z-10 min-h-screen flex flex-col" id="main-content">
         <div id="navbar-container"></div>
 
-        <div class="min-h-screen flex flex-col relative z-10" id="main-content">
-            <main class="flex-grow">
-                <section class="py-16 md:py-32 text-center">
-                    <div class="max-w-screen-2xl mx-auto px-8">
-                        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-violet-500 tracking-tight leading-tight md:leading-snug">WELCOME TO THE<br>
-                        OFFICIAL SITE OF RYZE THA KIDD</h1>
-                        <p class="text-base sm:text-lg text-gray-400 max-w-2xl mx-auto mt-6">Your gateway to seamless music experiences. Explore my discography and merchandise.</p>
-                    </div>
-                </section>
-                
-                <section class="py-12 md:py-20 bg-zinc-900 bg-opacity-30 backdrop-filter backdrop-blur-sm rounded-3xl mx-4 sm:mx-8 md:mx-16 my-10">
-                    <div class="max-w-screen-2xl mx-auto px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <a href="about.html" class="section-card flex flex-col items-center text-center">
-                            <i class="fa-solid fa-address-card section-icon mb-4"></i>
-                            <h3 class="section-heading mb-2">About Me</h3>
-                            <p class="section-text text-sm">I'm a British Rapper from Mossley, Greater Manchester, UK. My style is inspired by the late Juice WRLD.</p>
-                        </a>
-                        <a href="discography.html" class="section-card flex flex-col items-center text-center">
-                            <i class="fas fa-music section-icon mb-4"></i>
-                            <h3 class="section-heading mb-2">Discography</h3>
-                            <p class="section-text text-sm">Check out my complete discography and download your favorite tracks directly to your device for free.</p>
-                        </a>
-                        <a href="contact.html" class="section-card flex flex-col items-center text-center">
-                            <i class="fa-solid fa-address-book section-icon mb-4"></i>
-                            <h3 class="section-heading mb-2">Contact</h3>
-                            <p class="section-text text-sm">Contact me for features, site updates, and things you'd like to see from me!</p>
+        <main class="flex-grow pt-16">
+            <section class="py-20 md:py-32 text-center">
+                <div class="max-w-7xl mx-auto px-6">
+                    <h1
+                        class="text-4xl sm:text-6xl lg:text-7xl font-black mb-4 text-white tracking-tighter leading-tight md:leading-snug"
+                    >
+                        WELCOME TO THE<br />
+                        <span class="text-violet-400 neon-glow-text">RYZE THA KIDD</span>
+                        OFFICIAL SITE
+                    </h1>
+                    <p
+                        class="text-lg sm:text-xl text-gray-400 max-w-3xl mx-auto mt-6 border-t border-violet-700 pt-4"
+                    >
+                        British Rapper from Mossley, UK. Your portal to my latest music,
+                        discography, and exclusive content.
+                    </p>
+                    <div class="mt-10">
+                        <a
+                            href="#latest-release-section"
+                            id="latest-drop-button"
+                            class="inline-block px-8 py-3 bg-violet-600 text-white font-semibold text-lg rounded-full shadow-lg transition-all duration-300 hover:bg-violet-500 transform animate-pulse-glow"
+                            aria-label="View Latest Release"
+                        >
+                            LATEST DROP <i class="fas fa-arrow-down ml-2"></i>
                         </a>
                     </div>
-                </section>
-                
-                <section class="py-12 md:py-20">
-                    <div class="max-w-screen-2xl mx-auto px-8">
-                        <div id="latest-release-container" class="section-card flex flex-col md:flex-row items-center">
-                            <div id="latest-release-loading" class="text-center w-full">
-                                <i class="fas fa-spinner fa-spin text-3xl text-violet-500"></i>
-                                <p class="mt-2">Loading latest release...</p>
-                            </div>
-                            <div id="latest-release-error" class="hidden text-center w-full text-red-500">
-                                <p>Failed to load the latest release. Please try again later.</p>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                
-                <section class="py-12 md:py-20">
-                    <div class="max-w-screen-2xl mx-auto px-8 text-center">
-                        <h2 class="text-3xl sm:text-4xl font-bold mb-8 text-violet-500">New Video Out Now</h2>
-                        <div class="video-container" id="youtube-video-container">
-                        </div>
-                    </div>
-                </section>
-            </main>
-            
-            <div id="footer-container"></div>
-        </div>
+                </div>
+            </section>
 
-        <script src="js/app.js"></script>
-        <script src="js/navbar.js"></script>
-        <script src="js/footer.js"></script>
-        <script src="js/background.js"></script>
-    </body>
+            <section class="py-16 md:py-24">
+                <div
+                    class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8"
+                >
+                    <a
+                        href="about.html"
+                        class="futuristic-card flex flex-col items-center text-center p-6"
+                    >
+                        <i
+                            class="fa-solid fa-user-astronaut text-4xl text-violet-500 mb-4"
+                        ></i>
+                        <h3 class="text-2xl font-bold mb-2 text-white">
+                            About The Artist
+                        </h3>
+                        <p class="text-gray-400 text-sm">
+                            Get to know the journey, inspirations (Juice WRLD inspired), and
+                            the man behind the music.
+                        </p>
+                    </a>
+                    <a
+                        href="discography.html"
+                        class="futuristic-card flex flex-col items-center text-center p-6"
+                    >
+                        <i
+                            class="fa-solid fa-compact-disc text-4xl text-violet-500 mb-4"
+                        ></i>
+                        <h3 class="text-2xl font-bold mb-2 text-white">
+                            Discography Hub
+                        </h3>
+                        <p class="text-gray-400 text-sm">
+                            Explore and stream my complete collection of tracks, EPs, and
+                            releases.
+                        </p>
+                    </a>
+                    <a
+                        href="contact.html"
+                        class="futuristic-card flex flex-col items-center text-center p-6"
+                    >
+                        <i class="fa-solid fa-headset text-4xl text-violet-500 mb-4"></i>
+                        <h3 class="text-2xl font-bold mb-2 text-white">
+                            Connect & Collab
+                        </h3>
+                        <p class="text-gray-400 text-sm">
+                            Contact me for features, business inquiries, or to simply drop a
+                            message.
+                        </p>
+                    </a>
+                </div>
+            </section>
+
+            <section class="py-16 md:py-24" id="latest-release-section">
+                <div class="max-w-4xl mx-auto px-6">
+                    <h2
+                        class="text-center text-3xl sm:text-4xl font-bold mb-8 text-violet-400 neon-glow-text"
+                    >
+                        // LATEST RELEASE //
+                    </h2>
+                    <div
+                        id="latest-release-container"
+                        class="futuristic-card min-h-[200px] flex items-center justify-center p-6"
+                    >
+                        <div id="latest-release-loading" class="text-center">
+                            <i class="fas fa-sync-alt fa-spin text-4xl text-violet-500"></i>
+                            <p class="mt-3 text-lg text-gray-400">
+                                Loading latest transmission...
+                            </p>
+                        </div>
+                        <div
+                            id="latest-release-error"
+                            class="hidden text-center text-red-500"
+                        >
+                            <p>
+                                Transmission failed. Latest release data could not be loaded.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="pt-12 pb-24 md:pt-16 md:pb-32">
+                <div class="max-w-5xl mx-auto px-6 text-center">
+                    <h2
+                        class="text-3xl sm:text-4xl font-bold mb-8 text-violet-400 neon-glow-text"
+                    >
+                        FEATURED VIDEO DROP
+                    </h2>
+                    <div class="futuristic-card p-4 hover:transform-none">
+                        <div class="video-aspect-ratio" id="youtube-video-container">
+                            <div
+                                class="flex items-center justify-center w-full h-full absolute top-0 left-0 bg-black/70"
+                            >
+                                <p class="text-gray-500 text-xl">
+                                    Video Player Content Will Load Here
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="footer-container"></div>
+    </div>
+
+    <script>
+        // Custom script for smooth scrolling to the Latest Release section (RETAINED)
+        document.addEventListener("DOMContentLoaded", () => {
+            const button = document.getElementById("latest-drop-button");
+            if (button) {
+                button.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute("href");
+                    const targetElement = document.querySelector(targetId);
+
+                    if (targetElement) {
+                        // Subtract the height of the fixed navigation bar for smooth scroll
+                        const navbarHeight =
+                            document.getElementById("navbar-container").offsetHeight || 70;
+                        window.scrollTo({
+                            top: targetElement.offsetTop - navbarHeight - 20,
+                            behavior: "smooth",
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="js/app.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/footer.js"></script>
+    <script src="js/background.js"></script>
+    <script src="js/homepage.js"></script>
+</body>
 </html>

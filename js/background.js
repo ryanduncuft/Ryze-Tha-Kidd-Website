@@ -1,141 +1,122 @@
-// js/background.js
-document.addEventListener('DOMContentLoaded', () => {
-    // Check if animations are disabled via localStorage setting
-    if (localStorage.getItem('animations') === 'disabled') {
-        console.log('Animations are disabled by user preference.');
-        return; // Exit the script to prevent animation from running
-    }
+/**
+ * js/background.js
+ * Creates a subtle, interactive particle background animation with parallax.
+ */
 
-    const canvas = document.getElementById('interactive-bg');
-    if (!canvas) {
-        console.error('Canvas element with id "interactive-bg" not found.');
+// Use an IIFE for better variable encapsulation, though the original document.addEventListener is also fine.
+(() => {
+    // --- Configuration Constants ---
+    const NUM_NODES = 40; 
+    const PARALLAX_SPEED = 0.1; // Very subtle depth effect
+    const GLOW_COLOR = 'rgba(139, 92, 246, 0.4)'; // Violet glow color
+
+    // Check for user preference to disable animations globally
+    if (localStorage.getItem('animations') === 'disabled') {
+        console.info('Background animations disabled by user preference.');
         return;
     }
-    const ctx = canvas.getContext('2d');
 
-    // Fix: Prevent the "Save Image" context menu on the canvas
-    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
-
-    let width, height;
-    const particles = [];
-    const numParticles = 80;
-    const maxDistance = 120;
-    let mouse = { x: null, y: null };
-    
-    // Set up canvas dimensions to cover the entire document height
-    const resizeCanvas = () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = document.body.scrollHeight;
-        
-        // This is a crucial fix: ensure the background wrapper also has this height
+    // Wait for the DOM to be ready
+    document.addEventListener('DOMContentLoaded', () => {
+        const canvas = document.getElementById('interactive-bg');
         const wrapper = document.getElementById('interactive-bg-wrapper');
-        if (wrapper) {
-            wrapper.style.height = `${height}px`;
-        }
-    };
-    window.addEventListener('resize', resizeCanvas);
-    
-    // Add a listener for when content changes (e.g., dynamic loading)
-    // This is more of a safety measure for single-page applications.
-    const resizeObserver = new ResizeObserver(resizeCanvas);
-    resizeObserver.observe(document.body);
-    
-    resizeCanvas();
-
-    // Event listeners for mouse position
-    window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY + window.scrollY; // Adjust for scroll position
-    });
-    window.addEventListener('mouseout', () => {
-        mouse.x = null;
-        mouse.y = null;
-    });
-
-    // Parallax scroll effect speed
-    const parallaxSpeed = 0.2; 
-    
-    // Particle class
-    class Particle {
-        constructor() {
-            this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = Math.random() * 0.5 - 0.25;
-            this.vy = Math.random() * 0.5 - 0.25;
-            this.size = Math.random() * 1.5 + 1;
-            this.color = 'rgba(139, 92, 246, 0.8)';
+        
+        if (!canvas || !wrapper) {
+            // Check for both the canvas and its fixed wrapper
+            console.error('Required elements ("interactive-bg" or "interactive-bg-wrapper") for background animation not found.');
+            return;
         }
 
-        // Update particle position
-        update() {
-            // Adjust particle movement for larger canvas
-            this.x += this.vx;
-            this.y += this.vy;
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = document.body.scrollHeight;
+        const nodes = [];
 
-            // Bounce particles off the new, larger canvas boundaries
-            if (this.x > width || this.x < 0) this.vx = -this.vx;
-            if (this.y > height || this.y < 0) this.vy = -this.vy;
-        }
+        // Prevent the "Save Image" context menu on the canvas
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
-        // Draw particle with parallax effect
-        draw() {
-            // Apply the parallax scroll effect directly to the particle's y-coordinate
-            const parallaxY = this.y - (window.scrollY * parallaxSpeed);
+        // --- Canvas Setup & Resizing ---
+        const resizeCanvas = () => {
+            // Update dimensions
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = document.body.scrollHeight;
+            
+            // Ensure the fixed wrapper matches the body's full scroll height
+            wrapper.style.height = `${height}px`; 
+        };
+        
+        // Initial setup and event listeners
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Observe body for height changes (e.g., content loading, DOM manipulation)
+        // This is necessary because canvas needs to cover the full scrollable area.
+        const resizeObserver = new ResizeObserver(resizeCanvas);
+        resizeObserver.observe(document.body);
+        
+        // --- Node Class ---
+        class Node {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                // Very slow, subtle drift: -0.1 to 0.1
+                this.vx = Math.random() * 0.2 - 0.1; 
+                this.vy = Math.random() * 0.2 - 0.1;
+                // Very small size: 0.5 to 1.3
+                this.size = Math.random() * 0.8 + 0.5; 
+                // Reduced opacity for a subdued look: 0.2 to 0.6
+                this.color = `rgba(139, 92, 246, ${Math.random() * 0.4 + 0.2})`; 
+            }
 
-            ctx.fillStyle = this.color;
-            ctx.beginPath();
-            ctx.arc(this.x, parallaxY, this.size, 0, Math.PI * 2);
-            ctx.closePath();
-            ctx.fill();
-        }
-    }
+            update() {
+                // Simple toroidal wrapping movement
+                this.x += this.vx;
+                this.y += this.vy;
 
-    // Function to create particles
-    const createParticles = () => {
-        for (let i = 0; i < numParticles; i++) {
-            particles.push(new Particle());
-        }
-    };
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
+                if (this.y > height) this.y = 0;
+                if (this.y < 0) this.y = height;
+            }
 
-    // Function to connect particles with lines
-    const connectParticles = () => {
-        ctx.lineWidth = 1;
-        for (let a = 0; a < particles.length; a++) {
-            for (let b = a + 1; b < particles.length; b++) { // Optimized loop to avoid double-checking pairs
-                // Calculate position with parallax effect
-                const parallaxYA = particles[a].y - (window.scrollY * parallaxSpeed);
-                const parallaxYB = particles[b].y - (window.scrollY * parallaxSpeed);
+            draw() {
+                // Apply the parallax scroll effect relative to the fixed canvas position
+                const parallaxY = this.y - (window.scrollY * PARALLAX_SPEED);
+                
+                // Set drawing styles
+                ctx.fillStyle = this.color;
+                ctx.shadowBlur = 5;
+                ctx.shadowColor = GLOW_COLOR; 
 
-                const dx = particles[a].x - particles[b].x;
-                const dy = parallaxYA - parallaxYB;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < maxDistance) {
-                    const opacityValue = 1 - (distance / maxDistance);
-                    ctx.strokeStyle = `rgba(139, 92, 246, ${opacityValue})`;
-                    ctx.beginPath();
-                    ctx.moveTo(particles[a].x, parallaxYA);
-                    ctx.lineTo(particles[b].x, parallaxYB);
-                    ctx.stroke();
-                }
+                // Draw the node
+                ctx.beginPath();
+                ctx.arc(this.x, parallaxY, this.size, 0, Math.PI * 2); 
+                ctx.fill();
             }
         }
-    };
 
-    // Main animation loop
-    const animate = () => {
-        ctx.clearRect(0, 0, width, window.innerHeight); // Only clear the visible canvas area
+        // Initialize nodes
+        const createNodes = () => {
+            for (let i = 0; i < NUM_NODES; i++) {
+                nodes.push(new Node());
+            }
+        };
 
-        particles.forEach(p => {
-            p.update();
-            p.draw();
-        });
+        // --- Main Animation Loop ---
+        const animate = () => {
+            // Clear the canvas, clearing only the current visible viewport height for performance
+            ctx.clearRect(0, 0, width, window.innerHeight); 
 
-        connectParticles();
-        requestAnimationFrame(animate);
-    };
+            nodes.forEach(p => {
+                p.update();
+                p.draw();
+            });
 
-    // Start the animation
-    createParticles();
-    animate();
-});
+            requestAnimationFrame(animate);
+        };
+
+        // Start the animation
+        createNodes();
+        animate();
+    });
+})();
