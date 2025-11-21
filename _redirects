@@ -1,3 +1,17 @@
-https://ryzethakidd.netlify.app/* https://www.ryzethakidd.com/:splat 301!
-http://ryzethakidd.com/* https://www.ryzethakidd.com/:splat 301!
+# 1. PRIMARY CATCH-ALL REDIRECT
+# This rule handles three issues at once:
+#   a) Redirects the old netlify.app URL to the primary domain.
+#   b) Redirects the naked domain (ryzethakidd.com) to www.
+#   c) Forces HTTPS/SSL on all requests.
+# It MUST be the first rule.
+/* https://www.ryzethakidd.com/:splat 301!
+
+# 2. SUCCESS PAGE REWRITE
+# This rule serves the content of the success.html file
+# while keeping the URL clean as /success.
 /success /components/success.html 200
+
+# 3. HTML FILE CLEANUP (Best Practice)
+# This rule ensures that if someone links to /contact.html, it redirects
+# them permanently to the cleaner /contact URL.
+/*.html /:splat 301!
