@@ -1,0 +1,3 @@
+https://ryzethakidd.netlify.app/* https://www.ryzethakidd.com/:splat 301!
+http://ryzethakidd.com/* https://www.ryzethakidd.com/:splat 301!
+/success /components/success.html 200
