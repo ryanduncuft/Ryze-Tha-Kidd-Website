@@ -1,17 +1,17 @@
-# 1. PRIMARY CATCH-ALL REDIRECT
-# This rule handles three issues at once:
-#   a) Redirects the old netlify.app URL to the primary domain.
-#   b) Redirects the naked domain (ryzethakidd.com) to www.
-#   c) Forces HTTPS/SSL on all requests.
-# It MUST be the first rule.
-/* https://www.ryzethakidd.com/:splat 301!
+# 1. NETLIFY.APP REDIRECT (Specific and Safe)
+# Redirects the old Netlify subdomain to the secure, primary domain.
+https://ryzethakidd.netlify.app/* https://www.ryzethakidd.com/:splat 301!
 
-# 2. SUCCESS PAGE REWRITE
-# This rule serves the content of the success.html file
-# while keeping the URL clean as /success.
+# 2. NAKED DOMAIN REDIRECT (Forces WWW and HTTPS)
+# Redirects the naked domain to the secure, primary domain.
+http://ryzethakidd.com/* https://www.ryzethakidd.com/:splat 301!
+
+# 3. HTTP TO HTTPS (Forces SSL/Security on the primary domain)
+# Forces HTTPS on the primary domain.
+http://www.ryzethakidd.com/* https://www.ryzethakidd.com/:splat 301!
+
+# 4. SUCCESS PAGE REWRITE (For clean form submission URL)
 /success /components/success.html 200
 
-# 3. HTML FILE CLEANUP (Best Practice)
-# This rule ensures that if someone links to /contact.html, it redirects
-# them permanently to the cleaner /contact URL.
+# 5. HTML FILE CLEANUP (For pretty URLs)
 /*.html /:splat 301!
