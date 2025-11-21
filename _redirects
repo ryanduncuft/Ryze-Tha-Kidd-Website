@@ -1,3 +1,7 @@
+# Ensure SEO files are served directly
+/robots.txt /robots.txt 200
+/sitemap.xml /sitemap.xml 200
+
 # 1. NETLIFY.APP REDIRECT (Specific and Safe)
 # Redirects the old Netlify subdomain to the secure, primary domain.
 https://ryzethakidd.netlify.app/* https://www.ryzethakidd.com/:splat 301!
