@@ -35,11 +35,11 @@ A modern code editor (such as VS Code) is recommended for development.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/ryanduncuft/RTK.git](https://github.com/ryanduncuft/RTK.git)
+    git clone [https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website.git](https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website.git)
     ```
 2.  **Navigate to the project directory:**
     ```bash
-    cd RTK
+    cd Ryze-Tha-Kidd-Website
     ```
 3.  **No Dependencies:** This is a static site utilizing client-side JavaScript only, requiring no external package installation (`npm install`, etc.).
 
