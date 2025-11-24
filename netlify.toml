@@ -1,0 +1,62 @@
+# =========================================================================
+# GLOBAL SETTINGS (Recommended for all projects)
+# =========================================================================
+
+# =========================================================================
+# PRIMARY REDIRECT RULES (Prioritized 301 Permanent Redirects)
+# =========================================================================
+
+[[redirects]]
+  # Rule 1: Redirect old Netlify subdomain to the canonical domain (For SEO migration)
+  from = "https://ryzethakidd.netlify.app/*"
+  to = "https://www.ryzethakidd.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  # Rule 2: Redirect HTTP (all domains) to secure HTTPS (www.ryzethakidd.com)
+  from = "http://*"
+  to = "https://www.ryzethakidd.com/:splat"
+  status = 301
+  force = true
+
+# ---
+# =========================================================================
+# REWRITE RULES (For clean URLs and functionality)
+# =========================================================================
+
+[[redirects]]
+  # Rule 4: HTML File Cleanup (For "pretty URLs" like /about instead of /about.html)
+  # FIX: Changed from 301 redirect to 200 rewrite to prevent redirect loops.
+  from = "/*.html"
+  to = "/:splat"
+  status = 200 # <-- Changed from 301 to 200
+  # force = true # <-- 'force' is not strictly needed for 200 rewrites, but harmless
+
+[[redirects]]
+  # Rule 5: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)
+  from = "/success"
+  to = "/components/success.html"
+  status = 200
+
+[[redirects]]
+  # Rule 6: SEO File Cleanup (Serve robots.txt and sitemap.xml directly)
+  from = "/robots.txt"
+  to = "/robots.txt"
+  status = 200
+
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/sitemap.xml"
+  status = 200
+
+# ---
+# =========================================================================
+# FALLBACK (Custom 404 Page)
+# =========================================================================
+
+[[redirects]]
+  # Rule 7: Custom 404 Page (Serve a dedicated 404 page for any unhandled path)
+  from = "/*"
+  to = "/404.html"
+  status = 404
