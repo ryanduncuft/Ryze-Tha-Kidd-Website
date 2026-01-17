@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="../css/custom.css" rel="stylesheet" />
+
+    <title>Success! | Transmission Complete</title>
+    
+    <meta name="robots" content="noindex, follow" /> 
+    <meta name="author" content="Ryze Tha Kidd" />
+    <meta name="description" content="Your message to Ryze Tha Kidd has been successfully sent. You'll receive a response as soon as possible." />
+
+    <link rel="icon" type="image/x-icon" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.ico" />
+    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
+
+    <style>
+        @keyframes pulse-icon { 0%,100%{transform:scale(1)}50%{transform:scale(1.1)} }
+        .animate-pulse-icon { animation: pulse-icon 1.5s infinite ease-in-out; }
+    </style>
+</head>
+
+<body>
+    <canvas id="interactive-bg" aria-hidden="true"></canvas>
+
+    <div id="main-content" class="d-flex flex-column position-relative" style="z-index: 10; min-height: 100vh;">
+        <main class="flex-grow-1 d-flex align-items-center justify-content-center">
+            <section class="py-5 py-md-6 w-100" aria-labelledby="success-heading">
+                <div class="container">
+                    <div class="card mx-auto text-center p-5 p-md-6 max-w-card">
+                        <div class="d-inline-block p-3 rounded-circle mb-4 border-2 text-gradient shadow-lg border-accent-light bg-accent-minimal">
+                            <i class="fa-solid fa-circle-check text-gradient display-1 animate-pulse-icon"></i>
+                        </div>
+
+                        <h1 id="success-heading" class="display-4 display-md-3 fw-bolder mb-3 text-gradient lh-1">
+                            TRANSMISSION COMPLETE
+                        </h1>
+
+                        <p class="fs-5 fs-md-4 text-muted mx-auto mt-4 max-w-card">
+                            Your message has been successfully beamed to the network. I'll
+                            review the data and get back to you as soon as possible.
+                        </p>
+
+                        <a
+                            href="/"
+                            class="mt-5 btn btn-primary btn-lg px-5 py-3"
+                            aria-label="Return to Home Hub"
+                        >
+                            <i class="fas fa-arrow-left me-2"></i> RETURN TO HUB
+                        </a>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
