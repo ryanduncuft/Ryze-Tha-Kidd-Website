@@ -1,107 +1,57 @@
-<header
-    class="bg-transparent backdrop-blur-sm border-b border-violet-900/50 sticky top-0 z-50 shadow-xl shadow-violet-900/10"
-    role="banner"
->
-    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <a
-            class="text-3xl font-extrabold text-violet-400 tracking-wider neon-glow-text transition-all duration-300 hover:text-white hover:scale-[1.01]"
-            href="/"
-            aria-label="Home - RYZE THA KIDD"
-        >
+<nav class="navbar navbar-expand-lg sticky-top navbar-light" role="banner">
+    <div class="container-fluid px-md-5">
+        <a class="navbar-brand" href="/" aria-label="Home - RYZE THA KIDD">
             RYZE THA KIDD
         </a>
 
-        <nav role="navigation" aria-label="Main Navigation">
-            <ul class="hidden md:flex space-x-10">
-                <li>
-                    <a
-                        class="text-lg font-medium text-gray-300 relative group transition-colors duration-300 hover:text-violet-400"
-                        href="/"
-                    >
-                        Home
-                        <span
-                            class="absolute bottom-0 left-0 w-full h-0.5 bg-violet-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"
-                        ></span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="text-lg font-medium text-gray-300 relative group transition-colors duration-300 hover:text-violet-400"
-                        href="about"
-                    >
-                        About
-                        <span
-                            class="absolute bottom-0 left-0 w-full h-0.5 bg-violet-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"
-                        ></span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="text-lg font-medium text-gray-300 relative group transition-colors duration-300 hover:text-violet-400"
-                        href="discography"
-                    >
-                        Discography
-                        <span
-                            class="absolute bottom-0 left-0 w-full h-0.5 bg-violet-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"
-                        ></span>
-                    </a>
-                </li>
-                <li>
-                    <a
-                        class="text-lg font-medium text-gray-300 relative group transition-colors duration-300 hover:text-violet-400"
-                        href="contact"
-                    >
-                        Contact
-                        <span
-                            class="absolute bottom-0 left-0 w-full h-0.5 bg-violet-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-out"
-                        ></span>
-                    </a>
-                </li>
-            </ul>
+        <button class="navbar-toggler d-lg-none" id="menu-toggle-btn" aria-label="Open Mobile Menu" aria-expanded="false" aria-controls="mobile-menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar">
+            <i class="fa fa-bars"></i>
+        </button>
 
-            <button
-                id="menu-toggle-btn"
-                aria-label="Open Mobile Menu"
-                aria-expanded="false"
-                aria-controls="mobile-menu"
-                class="md:hidden text-violet-400 p-2 rounded-lg hover:bg-violet-900/50 transition-colors duration-300 border border-violet-800/50"
-            >
-                <i class="fa fa-bars text-xl"></i>
-            </button>
-        </nav>
-    </div>
-
-    <nav
-        id="mobile-menu"
-        class="fixed inset-0 z-[100] transform -translate-x-full transition-transform ease-in-out duration-500 md:hidden"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Mobile Navigation Menu"
-    >
-        <div class="absolute inset-0 bg-black/80"></div>
-
-        <div
-            class="relative w-full max-w-xs h-full bg-zinc-900/90 border-r border-violet-700/50 shadow-2xl p-6 flex flex-col"
-            role="menu"
-        >
-            <div class="flex justify-between items-center mb-10">
-                <span class="text-2xl font-bold text-violet-400 neon-glow-text"
-                    >ACCESS GRANTED</span
-                >
-                <button
-                    id="menu-close-btn"
-                    aria-label="Close Mobile Menu"
-                    class="text-gray-300 p-2 rounded-full hover:bg-violet-800/50 transition-colors duration-300"
-                >
-                    <i class="fa fa-times text-2xl"></i>
-                </button>
-            </div>
-            <ul
-                id="mobile-menu-links"
-                class="flex flex-col space-y-6 text-xl font-medium"
-            >
-                <li class="hidden"></li> 
+        <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/" aria-label="Home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about" aria-label="About">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="discography" aria-label="Discography">Discography</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="faq" aria-label="FAQ">FAQ</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact" aria-label="Contact">Contact</a>
+                </li>
             </ul>
         </div>
-    </nav>
-</header>
+
+        <div class="offcanvas offcanvas-end d-lg-none custom-offcanvas" id="offcanvasNavbar" tabindex="-1" aria-labelledby="offcanvasNavbarLabel" role="dialog" aria-modal="true">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close Mobile Menu"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul id="mobile-menu-links" class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/" data-bs-dismiss="offcanvas">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about" data-bs-dismiss="offcanvas">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="discography" data-bs-dismiss="offcanvas">Discography</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="faq" aria-label="FAQ">FAQ</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact" data-bs-dismiss="offcanvas">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>

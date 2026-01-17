@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preload" href="./dist/output.css" as="style" />
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="./css/custom.css" rel="stylesheet" />
 
     <title>About | Ryze Tha Kidd</title>
 
@@ -58,57 +59,11 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous"
     />
-    <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico" />
-    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./dist/output.css" />
+    <link rel="shortcut icon" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.png">
 
     <style>
-        #interactive-bg-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: -2;
-            background-color: #0a0a0a;
-            overflow: hidden;
-        }
-
-        .neon-glow-text {
-            text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 20px #8b5cf6;
-        }
-
-        .futuristic-card {
-            background-color: rgba(25, 25, 25, 0.7);
-            border: 1px solid rgba(44, 44, 46, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 2.5rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 60px rgba(139, 92, 246, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Merged card-hover logic into the main class for cleaner HTML/CSS separation */
-        .futuristic-card-hover:hover {
-            box-shadow: 0 4px 80px rgba(139, 92, 246, 0.25);
-            transform: translateY(-2px);
-        }
-
-        .bio-icon {
-            color: #8b5cf6;
-            margin-right: 0.75rem;
-            font-size: 1.5rem;
-        }
-
-        .data-label {
-            color: #a78bfa;
-            font-weight: 600;
-            flex-basis: 40%;
-        }
-
-        .data-value {
-            color: #d1d5db;
-            text-align: right;
-            flex-basis: 60%;
-        }
+        /* small page-specific helpers removed; background handled by canvas */
     </style>
 
     <script type="application/ld+json">
@@ -171,142 +126,100 @@
     </script>
 </head>
 
-<body
-    class="bg-black text-gray-200 font-sans"
-    style="scroll-behavior: smooth"
->
-    <div id="interactive-bg-wrapper" aria-hidden="true">
-        <canvas id="interactive-bg"></canvas>
-    </div>
+<body>
+    <canvas id="interactive-bg" aria-hidden="true"></canvas>
 
     <div id="navbar-container"></div>
 
-    <div class="min-h-screen flex flex-col relative z-10" id="main-content">
-        <main class="flex-grow max-w-7xl mx-auto px-6 py-12 md:py-20 w-full">
-            <header class="mb-12 text-center lg:text-left">
-                <h1
-                    class="text-5xl md:text-7xl lg:text-8xl font-black text-violet-400 neon-glow-text tracking-tight mb-4"
-                >
+    <div class="d-flex flex-column position-relative" style="z-index: 10; min-height: 100vh;" id="main-content">
+        <main class="flex-grow-1 container py-5 py-md-7 w-100">
+            <header class="mb-6 mb-md-8 text-center text-lg-start">
+                <h1 class="display-3 display-md-1 fw-black text-gradient lh-1 mb-4">
                     RYZE THA KIDD
                 </h1>
-                <p
-                    class="text-xl md:text-2xl text-gray-400 font-light tracking-widest uppercase"
-                >
+                <p class="fs-5 fs-md-4 text-muted fw-light letter-spacing-widest text-uppercase">
                     // ARTIST PROFILE FILE //
                 </p>
             </header>
 
-            <div
-                class="flex flex-col lg:flex-row-reverse lg:gap-x-16 space-y-12 lg:space-y-0"
-            >
-                <aside
-                    class="w-full lg:w-96 futuristic-card futuristic-card-hover p-6 flex-shrink-0 lg:self-start"
-                    aria-label="Artist System Data Infobox"
-                >
-                    <div class="infobox-header text-center">
+            <div class="row flex-column-reverse flex-lg-row g-5 g-lg-6">
+                <aside class="col-12 col-lg-5 card p-5 align-self-lg-start" aria-label="Artist System Data Infobox">
+                    <div class="text-center mb-5 pb-4 border-bottom border-accent-light">
                         <img
-                            src="images/me.jpg"
+                            data-src="images/me.jpg"
                             alt="Portrait of Ryze Tha Kidd"
                             loading="lazy"
-                            class="w-full h-auto object-cover rounded-xl mb-6 shadow-2xl border-2 border-violet-800/50"
+                            class="lazy-load img-fluid rounded-3 mb-5 border border-2 shadow-lg border-accent-light max-w-image"
                         />
-                        <h2 class="text-2xl font-bold mb-4 text-violet-300">
-                            SYSTEM DATA
-                        </h2>
+                        <h2 class="fs-4 fw-bold mb-0 text-gradient">SYSTEM DATA</h2>
                     </div>
 
-                    <ul class="space-y-4 text-sm" role="list">
-                        <li
-                            class="flex justify-between items-center border-b border-violet-900/40 pb-2"
-                        >
+                    <ul class="list-unstyled" role="list">
+                        <li class="d-flex justify-content-between align-items-center border-bottom border-1 pb-3 mb-4 border-accent-subtle">
                             <strong class="data-label">Full Name:</strong>
                             <span class="data-value">Ryan William Duncuft</span>
                         </li>
-                        <li
-                            class="flex justify-between items-center border-b border-violet-900/40 pb-2"
-                        >
+                        <li class="d-flex justify-content-between align-items-center border-bottom border-1 pb-3 mb-4 border-accent-subtle">
                             <strong class="data-label">Born:</strong>
-                            <span class="data-value text-right">
+                            <span class="data-value text-end">
                                 <span id="birthdate-display"></span>
-                                <br class="lg:hidden" />
+                                <br class="d-lg-none" />
                                 (<span id="current-age" aria-live="polite">Loading age...</span>)
                             </span>
                         </li>
-                        <li
-                            class="flex justify-between items-center border-b border-violet-900/40 pb-2"
-                        >
+                        <li class="d-flex justify-content-between align-items-center border-bottom border-1 pb-3 mb-4 border-accent-subtle">
                             <strong class="data-label">Origin:</strong>
                             <span class="data-value">
-                                <a
-                                    href="https://en.wikipedia.org/wiki/Mossley"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    class="text-violet-400 hover:text-violet-300 hover:underline"
-                                    >Mossley, Manchester, UK</a
-                                >
+                                <a href="https://en.wikipedia.org/wiki/Mossley" target="_blank" rel="noopener noreferrer" class="text-primary">Mossley, Manchester, UK</a>
                             </span>
                         </li>
-                        <li
-                            class="flex justify-between items-center border-b border-violet-900/40 pb-2"
-                        >
+                        <li class="d-flex justify-content-between align-items-center border-bottom border-1 pb-3 mb-4 border-accent-subtle">
                             <strong class="data-label">Primary Genres:</strong>
                             <span class="data-value">Hip Hop, Emo Rap, Trap</span>
                         </li>
-                        <li
-                            class="flex justify-between items-center border-b border-violet-900/40 pb-2"
-                        >
+                        <li class="d-flex justify-content-between align-items-center border-bottom border-1 pb-3 mb-4 border-accent-subtle">
                             <strong class="data-label">Occupation(s):</strong>
                             <span class="data-value">Rapper, Singer, Producer</span>
                         </li>
-                        <li
-                            class="flex justify-between items-center border-b border-violet-900/40 pb-2"
-                        >
+                        <li class="d-flex justify-content-between align-items-center border-bottom border-1 pb-3 mb-4 border-accent-subtle">
                             <strong class="data-label">Years Active:</strong>
                             <span class="data-value">2019 - present</span>
                         </li>
-                        <li class="flex justify-between items-center pb-2">
+                        <li class="d-flex justify-content-between align-items-center">
                             <strong class="data-label">Label/Collective:</strong>
                             <span class="data-value">Ryze Collective Media Group</span>
                         </li>
                     </ul>
                 </aside>
 
-                <article class="flex-1 space-y-12 md:space-y-16">
-                    <section class="futuristic-card" aria-labelledby="summary-title">
-                        <h2
-                            id="summary-title"
-                            class="text-3xl md:text-4xl font-bold text-violet-400 mb-6 flex items-center"
-                        >
-                            <i class="fas fa-terminal bio-icon"></i>
-                            INITIAL REPORT
+                <article class="col-12 col-lg-7">
+                    <section class="card mb-6 p-5">
+                        <h2 id="summary-title" class="fs-3 fs-md-2 fw-bold text-gradient mb-5">
+                            <i class="fas fa-terminal bio-icon"></i> INITIAL REPORT
                         </h2>
-                        <p class="text-base md:text-lg leading-relaxed text-gray-300">
-                            **Ryan William Duncuft** (born September 15, 2007) is a rapidly
-                            emerging **British rapper, singer, and songwriter** from the
+                        <p class="fs-6 fs-md-5 lh-lg text-secondary">
+                            <strong>Ryan William Duncuft</strong> (born September 15, 2007) is a rapidly
+                            emerging <strong>British rapper, singer, and songwriter</strong> from the
                             Greater Manchester town of Mossley. Known professionally as
-                            **Ryze Tha Kidd**, his music is defined by a distinctive fusion
-                            of **hip hop, melodic emo rap, and hard-hitting trap music**.
+                            <strong>Ryze Tha Kidd</strong>, his music is defined by a distinctive fusion
+                            of <strong>hip hop, melodic emo rap, and hard-hitting trap music</strong>.
                             Operating as a fiercely independent artist, he is not only the
-                            voice of his music but also the architect, **self-producing** a
-                            significant portion of his discography using **FL Studio** and
-                            delivering his work through his own label, **Ryze Collective
-                            Media Group**.
+                            voice of his music but also the architect, <strong>self-producing</strong> a
+                            significant portion of his discography using <strong>FL Studio</strong> and
+                            delivering his work through his own label, <strong>Ryze Collective
+                            Media Group</strong>.
                         </p>
                     </section>
 
-                    <section class="futuristic-card" aria-labelledby="origin-title">
-                        <h2
-                            id="origin-title"
-                            class="text-3xl md:text-4xl font-bold text-violet-400 mb-6 flex items-center"
-                        >
-                            <i class="fas fa-seedling bio-icon"></i>
-                            ORIGIN & GENESIS
+                    <section class="card mb-6 p-5">
+                        <h2 id="origin-title" class="fs-3 fs-md-2 fw-bold text-gradient mb-5">
+                            <i class="fas fa-seedling bio-icon"></i> ORIGIN & GENESIS
                         </h2>
-                        <p class="text-base md:text-lg leading-relaxed text-gray-300">
-                            Duncuft embarked on his musical journey in **2019**, drawing
+                        <p class="fs-6 fs-md-5 lh-lg text-secondary">
+                            Duncuft embarked on his musical journey in <strong>2019</strong>, drawing
                             inspiration from a diverse palette of genres, including rock,
                             alternative, and, crucially, the emotive depth of the late
-                            **Juice WRLD**. His early work was a testament to his raw
+                            <strong>Juice WRLD</strong>. His early work was a testament to his raw
                             talent, initially recorded using little more than a cell phone
                             and basic earphones on the BandLab app. This period of
                             resourcefulness laid the foundation for his hands-on approach,
@@ -316,15 +229,11 @@
                         </p>
                     </section>
 
-                    <section class="futuristic-card" aria-labelledby="trajectory-title">
-                        <h2
-                            id="trajectory-title"
-                            class="text-3xl md:text-4xl font-bold text-violet-400 mb-6 flex items-center"
-                        >
-                            <i class="fas fa-chart-line bio-icon"></i>
-                            ARTISTIC TRAJECTORY
+                    <section class="card mb-6 p-5">
+                        <h2 id="trajectory-title" class="fs-3 fs-md-2 fw-bold text-gradient mb-5">
+                            <i class="fas fa-chart-line bio-icon"></i> ARTISTIC TRAJECTORY
                         </h2>
-                        <p class="text-base md:text-lg leading-relaxed text-gray-300">
+                        <p class="fs-6 fs-md-5 lh-lg text-secondary">
                             Ryze Tha Kidd quickly made a name for himself in the UK music
                             scene with his innovative, genre-blending sound. His music often
                             serves as a candid reflection of his personal experiences,
@@ -335,66 +244,39 @@
                         </p>
                     </section>
 
-                    <section class="futuristic-card" aria-labelledby="discography-title">
-                        <h2
-                            id="discography-title"
-                            class="text-3xl md:text-4xl font-bold text-violet-400 mb-6 flex items-center"
-                        >
-                            <i class="fas fa-compact-disc bio-icon"></i>
-                            KEY DISCOGRAPHY
+                    <section class="card mb-6 p-5">
+                        <h2 id="discography-title" class="fs-3 fs-md-2 fw-bold text-gradient mb-5">
+                            <i class="fas fa-compact-disc bio-icon"></i> KEY DISCOGRAPHY
                         </h2>
-                        <ul
-                            class="list-none space-y-4 text-base md:text-lg leading-relaxed text-gray-300 pl-0"
-                            role="list"
-                        >
-                            <li
-                                class="font-bold text-violet-300 border-l-4 border-violet-500 pl-4 transition-all duration-300 hover:text-white"
-                            >
-                                <span class="font-extrabold text-lg mr-2">2025:</span> Healing
-                                Wounds (Digital Deluxe)
+                        <ul class="list-unstyled fs-6 fs-md-5 lh-lg text-secondary" role="list">
+                            <li class="fw-bold text-secondary ps-4 mb-4 pb-3 border-start border-3 transition-all border-accent-minimal">
+                                <span class="fw-bolder fs-5 me-2">2025:</span> Healing Wounds (Digital Deluxe)
                             </li>
-                            <li
-                                class="border-l-4 border-zinc-700/50 pl-4 transition-all duration-300 hover:text-white"
-                            >
-                                <span class="font-extrabold text-lg mr-2">2024:</span> 'Til
-                                The End
+                            <li class="ps-4 mb-4 pb-3 border-start border-3 transition-all border-gray-light">
+                                <span class="fw-bolder fs-5 me-2">2024:</span> 'Til The End
                             </li>
-                            <li
-                                class="border-l-4 border-zinc-700/50 pl-4 transition-all duration-300 hover:text-white"
-                            >
-                                <span class="font-extrabold text-lg mr-2">2024:</span> Is This
-                                A Dream (Digital Deluxe)
+                            <li class="ps-4 mb-4 pb-3 border-start border-3 transition-all border-gray-light">
+                                <span class="fw-bolder fs-5 me-2">2024:</span> Is This A Dream (Digital Deluxe)
                             </li>
-                            <li
-                                class="border-l-4 border-zinc-700/50 pl-4 transition-all duration-300 hover:text-white"
-                            >
-                                <span class="font-extrabold text-lg mr-2">2024:</span> Patient
-                                Zero
+                            <li class="ps-4 border-start border-3 transition-all border-gray-light">
+                                <span class="fw-bolder fs-5 me-2">2024:</span> Patient Zero
                             </li>
                         </ul>
-                        <a
-                            href="discography"
-                            class="mt-6 inline-block text-violet-400 hover:text-violet-300 font-semibold underline transition-colors duration-300"
-                        >
-                            View Full Discography
-                            <i class="fas fa-arrow-right ml-1 text-sm"></i>
+                        <a href="discography" class="mt-5 d-inline-block text-primary fw-semibold text-decoration-underline transition-all">
+                            View Full Discography <i class="fas fa-arrow-right ms-1 small"></i>
                         </a>
                     </section>
 
-                    <section class="futuristic-card" aria-labelledby="ventures-title">
-                        <h2
-                            id="ventures-title"
-                            class="text-3xl md:text-4xl font-bold text-violet-400 mb-6 flex items-center"
-                        >
-                            <i class="fas fa-rocket bio-icon"></i>
-                            EXTENDED VENTURES
+                    <section class="card p-5">
+                        <h2 id="ventures-title" class="fs-3 fs-md-2 fw-bold text-gradient mb-5">
+                            <i class="fas fa-rocket bio-icon"></i> EXTENDED VENTURES
                         </h2>
-                        <p class="text-base md:text-lg leading-relaxed text-gray-300">
+                        <p class="fs-6 fs-md-5 lh-lg text-secondary">
                             Demonstrating a vision that extends far beyond music, Ryze Tha
                             Kidd actively expands his creative and business portfolio. He is
-                            the founder of **Ryze VFX Film**, a production company dedicated
+                            the founder of <strong>Ryze VFX Film</strong>, a production company dedicated
                             to visual storytelling and high-concept music videos.
-                            Furthermore, he is developing **RTK+**, a comprehensive
+                            Furthermore, he is developing <strong>RTK+</strong>, a comprehensive
                             streaming platform set to become the exclusive home for his
                             official music videos, behind-the-scenes content, and future
                             film projects, showcasing his multifaceted artistic and
@@ -408,15 +290,14 @@
         <div id="footer-container"></div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const birthDate = new Date("2007-09-15T00:00:00");
             const ageElement = document.getElementById("current-age");
-            const birthDateDisplayElement =
-                document.getElementById("birthdate-display");
+            const birthDateDisplayElement = document.getElementById("birthdate-display");
 
             if (birthDateDisplayElement) {
-                // Ensure the date is formatted only once
                 const britishFormattedBirthDate = birthDate.toLocaleDateString(
                     "en-GB",
                     { day: "2-digit", month: "2-digit", year: "numeric" }
@@ -426,33 +307,19 @@
 
             function calculateAndDisplayAge() {
                 if (!ageElement) return;
-
                 const now = new Date();
-                // Simple age calculation (in years)
                 let ageInYears = now.getFullYear() - birthDate.getFullYear();
                 const monthDifference = now.getMonth() - birthDate.getMonth();
                 
                 if (monthDifference < 0 || (monthDifference === 0 && now.getDate() < birthDate.getDate())) {
                     ageInYears--;
                 }
-
-                // Simplified display to just show years, avoiding complex date math reflows
-                // The detailed calculation is left here if needed, but for display, 
-                // years is often enough and faster to compute.
                 ageElement.textContent = `age ${ageInYears} years`;
             }
 
-            // Run age calculation immediately
             calculateAndDisplayAge();
-            
-            // Optional: Re-run age calculation every day to keep it current
-            // setInterval(calculateAndDisplayAge, 86400000); 
         });
     </script>
-    
-    <script src="js/app.js" defer></script> 
-    <script src="js/navbar.js" defer></script>
-    <script src="js/footer.js" defer></script>
-    <script src="js/background.js" defer></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>
