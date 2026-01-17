@@ -4,141 +4,52 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="../css/custom.css" rel="stylesheet" />
+
     <title>Success! | Transmission Complete</title>
     
     <meta name="robots" content="noindex, follow" /> 
     <meta name="author" content="Ryze Tha Kidd" />
     <meta name="description" content="Your message to Ryze Tha Kidd has been successfully sent. You'll receive a response as soon as possible." />
 
-    <link rel="preload" href="/dist/output.css" as="style" />
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style" />
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        crossorigin="anonymous"
-    />
-    <link rel="stylesheet" href="/dist/output.css" />
     <link rel="icon" type="image/x-icon" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.ico" />
     <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
 
     <style>
-        /* --- Custom Animations --- */
-        @keyframes pulse-glow {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 0 25px rgba(139, 92, 246, 0.8),
-                    0 0 10px rgba(255, 255, 255, 0.2);
-            }
-        }
-
-        @keyframes pulse-icon {
-            0%, 100% {
-                transform: scale(1);
-            }
-            50% {
-                transform: scale(1.1);
-            }
-        }
-
-        .animate-pulse-glow {
-            animation: pulse-glow 2s infinite ease-in-out;
-            /* 🔑 Removed inline style overrides and defined them here for consistency */
-            animation-duration: 3s; 
-            animation-iteration-count: infinite;
-        }
-
-        .animate-pulse-icon {
-            animation: pulse-icon 1.5s infinite ease-in-out;
-        }
-
-        /* --- Base Styles for Consistency --- */
-        /* Since background.js is removed, we must ensure the background looks acceptable */
-        #interactive-bg-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            /* Fallback gradient is a good idea */
-            background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-            overflow: hidden;
-        }
-
-        /* Standard body classes simplified */
-        body {
-            background-color: #0a0a0a;
-            color: #e5e7eb;
-            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-                "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-            scroll-behavior: smooth;
-        }
-
-        .futuristic-card {
-            background-color: rgba(25, 25, 25, 0.7);
-            border: 1px solid rgba(44, 44, 46, 0.3);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 60px rgba(139, 92, 246, 0.1);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .neon-glow-text {
-            text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 20px #8b5cf6;
-        }
+        @keyframes pulse-icon { 0%,100%{transform:scale(1)}50%{transform:scale(1.1)} }
+        .animate-pulse-icon { animation: pulse-icon 1.5s infinite ease-in-out; }
     </style>
 </head>
 
-<body
-    class="bg-black text-gray-100 font-sans min-h-screen flex flex-col"
->
-    <div id="interactive-bg-wrapper" aria-hidden="true">
-        </div>
+<body>
+    <canvas id="interactive-bg" aria-hidden="true"></canvas>
 
-    <div id="main-content" class="min-h-screen flex flex-col relative z-10">
-        <main class="flex-grow flex items-center justify-center">
-            <section class="py-16 md:py-24 w-full" aria-labelledby="success-heading">
-                <div class="max-w-7xl mx-auto px-6">
-                    <div
-                        class="futuristic-card max-w-xl mx-auto text-center p-8 md:p-12"
-                        role="alert"
-                    >
-                        <div
-                            class="inline-block p-4 rounded-full mb-6 border-2 border-violet-500 bg-violet-900/20 shadow-xl animate-pulse-glow"
-                        >
-                            <i
-                                class="fa-solid fa-circle-check text-violet-400 text-6xl md:text-8xl animate-pulse-icon"
-                            ></i>
+    <div id="main-content" class="d-flex flex-column position-relative" style="z-index: 10; min-height: 100vh;">
+        <main class="flex-grow-1 d-flex align-items-center justify-content-center">
+            <section class="py-5 py-md-6 w-100" aria-labelledby="success-heading">
+                <div class="container">
+                    <div class="card mx-auto text-center p-5 p-md-6 max-w-card">
+                        <div class="d-inline-block p-3 rounded-circle mb-4 border-2 text-gradient shadow-lg border-accent-light bg-accent-minimal">
+                            <i class="fa-solid fa-circle-check text-gradient display-1 animate-pulse-icon"></i>
                         </div>
 
-                        <h1
-                            id="success-heading"
-                            class="text-4xl sm:text-5xl lg:text-6xl font-extrabold mb-4 text-violet-400 neon-glow-text tracking-tight leading-tight md:leading-snug"
-                        >
+                        <h1 id="success-heading" class="display-4 display-md-3 fw-bolder mb-3 text-gradient lh-1">
                             TRANSMISSION COMPLETE
                         </h1>
 
-                        <p
-                            class="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mt-6"
-                        >
+                        <p class="fs-5 fs-md-4 text-muted mx-auto mt-4 max-w-card">
                             Your message has been successfully beamed to the network. I'll
                             review the data and get back to you as soon as possible.
                         </p>
 
                         <a
                             href="/"
-                            class="mt-8 inline-block px-8 py-3 bg-violet-600 text-white font-semibold text-lg rounded-full shadow-lg transition-all duration-300 hover:bg-violet-500 transform hover:scale-[1.03]"
+                            class="mt-5 btn btn-primary btn-lg px-5 py-3"
                             aria-label="Return to Home Hub"
                         >
-                            <i class="fas fa-arrow-left mr-2"></i> RETURN TO HUB
+                            <i class="fas fa-arrow-left me-2"></i> RETURN TO HUB
                         </a>
                     </div>
                 </div>
@@ -146,5 +57,6 @@
         </main>
     </div>
 
-    </body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

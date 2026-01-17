@@ -1,6 +1,9 @@
 {
+  "name": "ryze-tha-kidd-website",
+  "version": "1.0.0",
+  "description": "Official website for British Rapper Ryze Tha Kidd",
   "dependencies": {
-    "@tailwindcss/cli": "^4.1.13",
-    "tailwindcss": "^4.1.13"
+    "bootstrap": "^5.3.2",
+    "bootstrap-icons": "^1.11.1"
   }
 }

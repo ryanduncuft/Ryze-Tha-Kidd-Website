@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="preload" href="./dist/output.css" as="style" />
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="./css/custom.css" rel="stylesheet" />
     
     <title>Discography | Ryze Tha Kidd</title>
 
@@ -36,126 +37,16 @@
     />
     <meta name="twitter:image" content="https://www.ryzethakidd.com/images/me.jpg" />
 
-    <link rel="icon" type="image/x-icon" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.ico" />
-    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.png">
     <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="./dist/output.css" />
 
     <style>
-        /* (Inlined styles left intact, as they are crucial for component design) */
-        #interactive-bg-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background-color: #0a0a0a;
-            overflow: hidden;
-        }
-
-        .neon-glow-text {
-            text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 20px #8b5cf6;
-        }
-
-        .filter-btn {
-            padding: 0.5rem 1.25rem;
-            border-radius: 9999px;
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .filter-btn-active {
-            background-color: #8b5cf6;
-            color: white;
-            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
-        }
-
-        .filter-btn-inactive {
-            background-color: rgba(63, 63, 70, 0.4);
-            color: #d4d4d8;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            backdrop-filter: blur(5px);
-        }
-
-        .filter-btn-inactive:hover {
-            background-color: rgba(139, 92, 246, 0.2);
-            color: white;
-        }
-
-        .release-card {
-            background-color: rgba(25, 25, 25, 0.7);
-            border: 1px solid rgba(44, 44, 46, 0.3);
-            backdrop-filter: blur(8px);
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .release-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
-        }
-
-        .release-type-tag {
-            position: absolute;
-            top: 0.5rem;
-            left: 0.5rem;
-            padding: 0.25rem 0.5rem;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 0.5rem;
-            background-color: rgba(139, 92, 246, 0.8);
-            color: white;
-            z-index: 10;
-        }
-
-        .release-title {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: #d4d4d8;
-        }
-        
-        /* UPDATED style for the sort dropdown (Dark Mode implementation) */
-        #sort-by {
-            background-color: rgba(30, 30, 35, 0.9);
-            color: #d4d4d8;
-            border: 1px solid rgba(139, 92, 246, 0.4);
-            backdrop-filter: blur(5px);
-            padding: 0.5rem 1rem;
-            border-radius: 0.75rem;
-            cursor: pointer;
-            font-weight: 500;
-            
-            appearance: none; 
-            -webkit-appearance: none;
-            -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23a78bfa'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 10.94l3.71-3.71a.75.75 0 111.06 1.06l-4.25 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z' clip-rule='evenodd' /%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1.5em;
-            transition: all 0.2s ease;
-        }
-
-        #sort-by option {
-            background-color: #1f1f1f;
-            color: #d4d4d8;
-        }
-
-        #sort-by:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5);
-        }
+        /* Page-specific helpers removed; use shared canvas */
     </style>
 
     <script type="application/ld+json">
@@ -183,33 +74,25 @@
     </script>
 </head>
 
-<body
-    class="bg-black text-gray-200 font-sans"
-    style="scroll-behavior: smooth"
->
-    <div id="interactive-bg-wrapper" aria-hidden="true">
-        <canvas id="interactive-bg"></canvas>
-    </div>
+<body>
+    <canvas id="interactive-bg" aria-hidden="true"></canvas>
 
     <div id="navbar-container"></div>
 
-    <div class="min-h-screen flex flex-col relative z-10" id="main-content">
-        <main class="flex-grow max-w-7xl mx-auto px-6 py-12 md:py-20 w-full" aria-labelledby="discography-title">
-            <header class="text-center mb-12 md:mb-16">
-                <h1
-                    id="discography-title"
-                    class="text-5xl md:text-7xl font-black text-violet-400 neon-glow-text tracking-tight mb-4"
-                >
+    <div class="d-flex flex-column position-relative" style="z-index: 10; min-height: 100vh;" id="main-content">
+        <main class="flex-grow-1 container py-5 py-md-7 w-100" aria-labelledby="discography-title">
+            <header class="text-center mb-6 mb-md-8">
+                <h1 id="discography-title" class="display-3 display-md-2 fw-black text-gradient lh-1 mb-4">
                     ARCHIVE // DISCOGRAPHY
                 </h1>
-                <p class="text-xl text-gray-400 font-light">
+                <p class="fs-5 text-muted fw-light mb-0">
                     All Official Releases from 2019 to Present
                 </p>
             </header>
 
-            <div class="flex justify-center flex-wrap gap-4 mb-6" role="group" aria-label="Discography controls">
-                <label for="sort-by" class="text-sm text-gray-400 mr-3 self-center font-medium">Sort By:</label>
-                <select id="sort-by" name="sort-by" class="block sm:text-sm" aria-label="Sort discography releases">
+            <div class="d-flex justify-content-center flex-wrap gap-3 gap-md-4 mb-5 mb-md-6" role="group" aria-label="Discography controls">
+                <label for="sort-by" class="small text-muted align-self-center fw-medium me-3">Sort By:</label>
+                <select id="sort-by" name="sort-by" class="form-select" style="width: auto; max-width: 200px;" aria-label="Sort discography releases">
                     <option value="date-desc">Release Date (Newest First)</option>
                     <option value="date-asc">Release Date (Oldest First)</option>
                     <option value="title-asc">Title (A-Z)</option>
@@ -218,7 +101,7 @@
             </div>
             <div
                 id="filter-container"
-                class="flex justify-center flex-wrap gap-3 sm:gap-4 mb-10 md:mb-16 overflow-x-auto pb-2"
+                class="d-flex justify-content-center flex-wrap gap-3 gap-md-4 mb-6 mb-md-7 overflow-auto pb-3"
                 role="toolbar"
                 aria-label="Filter releases by type"
             >
@@ -241,41 +124,34 @@
 
             <div
                 id="releases-grid"
-                class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 md:gap-8"
+                class="row row-cols-2 row-cols-sm-3 row-cols-lg-4 row-cols-xl-5 g-4 g-md-5"
                 role="region"
                 aria-live="polite"
                 aria-atomic="true"
             >
-                </div>
-
-            <div id="loading-state" class="text-center text-gray-400 mt-16" aria-live="polite">
-                <i class="fas fa-compact-disc fa-spin text-5xl text-violet-500"></i>
-                <p class="mt-4 text-lg">Accessing Music Archive...</p>
             </div>
 
-            <div id="error-state" class="hidden text-center text-red-500 mt-16" aria-live="assertive">
-                <p class="text-lg">
+            <div id="loading-state" class="text-center text-muted mt-8" aria-live="polite">
+                <i class="fas fa-compact-disc fa-spin fs-1 text-gradient"></i>
+                <p class="mt-4 fs-5">Accessing Music Archive...</p>
+            </div>
+
+            <div id="error-state" class="text-center text-danger mt-8 d-none" aria-live="assertive">
+                <p class="fs-5">
                     <strong>ERROR 404:</strong> Failed to retrieve discography data. Please check
                     connection.
                 </p>
             </div>
 
-            <div
-                id="no-releases-message"
-                class="hidden text-center text-gray-400 mt-16"
-                aria-live="polite"
-            >
-                <p class="text-lg">No releases found in this category.</p>
+            <div id="no-releases-message" class="text-center text-muted mt-8 d-none" aria-live="polite">
+                <p class="fs-5">No releases found in this category.</p>
             </div>
         </main>
 
         <div id="footer-container"></div>
     </div>
 
-    <script src="js/app.js" defer></script> 
-    <script src="js/navbar.js" defer></script>
-    <script src="js/footer.js" defer></script>
-    <script src="js/background.js" defer></script>
-    <script src="js/discography.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>

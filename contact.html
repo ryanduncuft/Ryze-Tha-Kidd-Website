@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
-    <link rel="preload" href="./dist/output.css" as="style" />
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" as="style" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="./css/custom.css" rel="stylesheet" />
     
     <title>Contact Ryze Tha Kidd | Collaborations & Inquiries</title>
 
@@ -51,167 +52,62 @@
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         crossorigin="anonymous"
     />
-    <link rel="icon" type="image/x-icon" href="images/logos/WebpageIcon.ico" />
-    <link rel="apple-touch-icon" href="Images/apple-touch-icon.png" />
-    <link rel="stylesheet" href="./dist/output.css" />
-
-    <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "ContactPage",
-            "url": "https://www.ryzethakidd.com/contact",
-            "name": "Contact Ryze Tha Kidd",
-            "description": "Contact form and professional details for the British Rapper Ryze Tha Kidd.",
-            "mainEntity": {
-                "@type": "MusicGroup",
-                "name": "Ryze Tha Kidd",
-                "url": "https://www.ryzethakidd.com",
-                "contactPoint": {
-                    "@type": "ContactPoint",
-                    "contactType": "general or business inquiry",
-                    "email": "ryanduncuft23@gmail.com",
-                    "areaServed": "GB",
-                    "availableLanguage": "en"
-                },
-                "sameAs": [
-                    "https://www.youtube.com/@RyzeThaKidd",
-                    "https://www.instagram.com/ryzethakidd/",
-                    "https://twitter.com/ryzethakidd",
-                    "https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H?si=vA1eSYX_Qjiy5xtQpRYEOA",
-                    "https://soundcloud.com/ryzethakidd"
-                ]
-            }
-        }
-    </script>
+    <link rel="shortcut icon" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.ico">
+    <link rel="icon" type="image/png" sizes="192x192" href="https://www.ryzethakidd.com/images/logos/WebpageIcon.png">
 
     <style>
-        /* (RETAINED STYLES) */
-        #interactive-bg-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -2;
-            background-color: #0a0a0a;
-            overflow: hidden;
-        }
-
-        .neon-glow-text {
-            text-shadow: 0 0 5px #8b5cf6, 0 0 10px #8b5cf6, 0 0 20px #8b5cf6;
-        }
-
-        .futuristic-card {
-            background-color: rgba(25, 25, 25, 0.8);
-            border: 2px solid rgba(139, 92, 246, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 1.5rem;
-            box-shadow: 0 4px 60px rgba(139, 92, 246, 0.1);
-            transition: all 0.4s ease;
-        }
-
-        .futuristic-input {
-            background-color: #1a1a1a;
-            border: 1px solid #4b4b4b;
-            color: #d1d5db;
-            transition: all 0.3s;
-        }
-
-        .futuristic-input:focus {
-            background-color: #1a1a1a;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.5);
-            outline: none;
-        }
-
-        @keyframes pulse-light {
-            0%, 100% {
-                box-shadow: 0 0 5px #a78bfa;
-            }
-            50% {
-                box-shadow: 0 0 15px #8b5cf6, 0 0 25px #8b5cf6;
-            }
-        }
-
-        .social-icon-box:hover i {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .social-icon-box:hover {
-            animation: pulse-light 1.5s infinite;
-        }
-
-        .social-icon-box {
-            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
+        /* Page helpers — keep minimal; background rendered in shared canvas */
+        .social-icon-box { transition: all 0.25s ease; }
+        .social-icon-box:hover i { transform: scale(1.08) rotate(4deg); }
     </style>
 </head>
 
-<body
-    class="bg-black text-gray-200 font-sans"
-    style="scroll-behavior: smooth"
->
-    <div id="interactive-bg-wrapper" aria-hidden="true">
-        <canvas id="interactive-bg"></canvas>
-    </div>
+<body>
+    <canvas id="interactive-bg" aria-hidden="true"></canvas>
 
     <div id="navbar-container"></div>
 
-    <div class="min-h-screen flex flex-col relative z-10" id="main-content">
-        <main class="flex-grow max-w-7xl mx-auto px-6 py-12 md:py-20 w-full" aria-labelledby="contact-title">
-            <header class="text-center mb-12 md:mb-16">
-                <h1
-                    id="contact-title"
-                    class="text-5xl md:text-7xl font-black text-violet-400 neon-glow-text tracking-tight mb-4"
-                >
+    <div class="d-flex flex-column position-relative" style="z-index: 10; min-height: 100vh;" id="main-content">
+        <main class="flex-grow-1 container py-5 py-md-7 w-100" aria-labelledby="contact-title">
+            <header class="text-center mb-6 mb-md-8">
+                <h1 id="contact-title" class="display-3 display-md-2 fw-black text-gradient lh-1 mb-4">
                     // CONNECT_RTK //
                 </h1>
-                <p class="text-xl text-gray-400 font-light tracking-wider uppercase">
+                <p class="fs-5 text-muted fw-light letter-spacing-wider text-uppercase">
                     SYSTEM ACCESS: CONTACT PORTAL
                 </p>
             </header>
 
-            <div class="futuristic-card max-w-5xl mx-auto p-8 md:p-12">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-                    <div class="space-y-8">
-                        <div class="contact-details-panel space-y-4">
-                            <h2
-                                class="text-3xl font-bold text-violet-300 flex items-center mb-4"
-                            >
-                                <i class="fa-solid fa-headset mr-3 text-violet-500"></i>
-                                CONNECTION LOG
+            <div class="card mx-auto p-5 p-md-6 max-w-form">
+                <div class="row g-5 g-md-6">
+                    <div class="col-12 col-md-6 d-flex flex-column">
+                        <div class="contact-details-panel mb-6 pb-6 border-bottom border-accent-minimal">
+                            <h2 class="fs-4 fw-bold text-secondary mb-4">
+                                <i class="fa-solid fa-headset me-3 text-gradient"></i> CONNECTION LOG
                             </h2>
-                            <p class="text-base text-gray-400">
+                            <p class="fs-6 text-muted mb-4">
                                 Whether you're a promoter, a fellow artist looking to collab,
                                 or just a fan, choose your method of contact below.
                             </p>
 
-                            <div class="space-y-4 pt-4 border-t border-violet-900/50">
-                                <div class="flex items-start space-x-4">
-                                    <i
-                                        class="fa-solid fa-envelope-open-text text-violet-500 text-2xl mt-1"
-                                    ></i>
+                            <div class="mt-5 pt-5 border-top border-accent-light">
+                                <div class="d-flex gap-4 mb-5">
+                                    <i class="fa-solid fa-envelope-open-text text-gradient fs-5 mt-1 flex-shrink-0"></i>
                                     <div>
-                                        <h3 class="font-semibold text-gray-100 text-lg">
+                                        <h3 class="fs-6 fw-semibold text-primary mb-2">
                                             Direct Email Access
                                         </h3>
-                                        <a
-                                            href="mailto:ryanduncuft23@gmail.com"
-                                            class="text-violet-400 hover:text-violet-300 transition-colors text-sm break-all"
-                                            >ryanduncuft23@gmail.com</a
-                                        >
+                                        <a href="mailto:ryanduncuft23@gmail.com" class="text-primary small text-break">ryanduncuft23@gmail.com</a>
                                     </div>
                                 </div>
 
-                                <div class="flex items-start space-x-4">
-                                    <i
-                                        class="fa-solid fa-location-dot text-violet-500 text-2xl mt-1"
-                                    ></i>
+                                <div class="d-flex gap-4 mb-5">
+                                    <i class="fa-solid fa-location-dot text-gradient fs-5 mt-1 flex-shrink-0"></i>
                                     <div>
-                                        <h3 class="font-semibold text-gray-100 text-lg">
+                                        <h3 class="fs-6 fw-semibold text-primary mb-2">
                                             Location Origin
                                         </h3>
-                                        <p class="text-sm text-gray-400">
+                                        <p class="small text-muted mb-0">
                                             Mossley, Greater Manchester, UK
                                         </p>
                                     </div>
@@ -219,21 +115,17 @@
                             </div>
                         </div>
 
-                        <div
-                            class="social-links-panel space-y-4 pt-6 border-t border-violet-900/50"
-                        >
-                            <h2
-                                class="text-3xl font-bold text-violet-300 flex items-center mb-4"
-                            >
-                                <i class="fa-solid fa-bolt mr-3 text-violet-500"></i>
-                                SOCIAL FREQUENCIES
+                        <div class="social-links-panel">
+                            <h2 class="fs-4 fw-bold text-secondary mb-4">
+                                <i class="fa-solid fa-bolt me-3 text-gradient"></i> SOCIAL FREQUENCIES
                             </h2>
-                            <div class="flex flex-wrap gap-4 justify-start" aria-label="Social media links">
+                            <div class="d-flex flex-wrap gap-4" aria-label="Social media links">
                                 <a
                                     href="https://www.youtube.com/@RyzeThaKidd"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="social-icon-box bg-red-700/60 p-4 rounded-xl text-3xl text-white transition-all duration-300"
+                                    class="social-icon-box p-4 rounded-3 fs-4 text-white transition-all"
+                                    style="background-color: rgba(185, 28, 28, 0.6);"
                                     aria-label="YouTube Channel"
                                 >
                                     <i class="fab fa-youtube"></i>
@@ -242,7 +134,8 @@
                                     href="https://www.instagram.com/ryzethakidd/"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="social-icon-box bg-pink-600/60 p-4 rounded-xl text-3xl text-white transition-all duration-300"
+                                    class="social-icon-box p-4 rounded-3 fs-4 text-white transition-all"
+                                    style="background-color: rgba(190, 24, 93, 0.6);"
                                     aria-label="Instagram Profile"
                                 >
                                     <i class="fab fa-instagram"></i>
@@ -251,7 +144,8 @@
                                     href="https://twitter.com/ryzethakidd"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="social-icon-box bg-blue-500/60 p-4 rounded-xl text-3xl text-white transition-all duration-300"
+                                    class="social-icon-box p-4 rounded-3 fs-4 text-white transition-all"
+                                    style="background-color: rgba(59, 130, 246, 0.6);"
                                     aria-label="Twitter / X Profile"
                                 >
                                     <i class="fab fa-twitter"></i>
@@ -260,7 +154,8 @@
                                     href="https://open.spotify.com/artist/2TOX7bcrnVTOe3hbzvdi0H?si=vA1eSYX_Qjiy5xtQpRYEOA"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="social-icon-box bg-green-500/60 p-4 rounded-xl text-3xl text-white transition-all duration-300"
+                                    class="social-icon-box p-4 rounded-3 fs-4 text-white transition-all"
+                                    style="background-color: rgba(34, 197, 94, 0.6);"
                                     aria-label="Spotify Link"
                                 >
                                     <i class="fab fa-spotify"></i>
@@ -269,7 +164,8 @@
                                     href="https://soundcloud.com/ryzethakidd"
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    class="social-icon-box bg-orange-600/60 p-4 rounded-xl text-3xl text-white transition-all duration-300"
+                                    class="social-icon-box p-4 rounded-3 fs-4 text-white transition-all"
+                                    style="background-color: rgba(200, 120, 40, 0.6);"
                                     aria-label="SoundCloud Profile"
                                 >
                                     <i class="fab fa-soundcloud"></i>
@@ -278,66 +174,54 @@
                         </div>
                     </div>
 
-                    <div>
-                        <h2
-                            class="text-3xl font-bold text-violet-300 flex items-center mb-6"
-                        >
-                            <i class="fa-solid fa-code-branch mr-3 text-violet-500"></i>
-                            SEND DATA PACKET
+                    <div class="col-12 col-md-6">
+                        <h2 class="fs-4 fw-bold text-secondary mb-5">
+                            <i class="fa-solid fa-code-branch me-3 text-gradient"></i> SEND DATA PACKET
                         </h2>
                         <form
                             name="contact"
                             method="post"
                             action="/success"
                             data-netlify="true"
-                            class="space-y-6"
+                            class="d-flex flex-column gap-5"
                             aria-label="Contact Form"
                         >
                             <input type="hidden" name="form-name" value="contact" />
-                            <p class="hidden"> 
+                            <p class="d-none"> 
                                 <label>Don't fill this out if you're human:
                                 <input name="bot-field" /></label>
                             </p>
 
-                            <div class="relative">
-                                <i
-                                    class="fa-solid fa-user absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"
-                                    aria-label="Name icon"
-                                ></i>
+                            <div class="position-relative">
+                                <i class="fa-solid fa-user position-absolute start-3 top-50 translate-middle-y text-muted small"></i>
                                 <input
                                     type="text"
                                     name="name"
                                     placeholder="Name"
                                     required
-                                    class="w-full futuristic-input rounded-xl pl-12 pr-4 py-4"
+                                    class="form-control ps-5"
                                 />
                             </div>
 
-                            <div class="relative">
-                                <i
-                                    class="fa-solid fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm"
-                                    aria-label="Email icon"
-                                ></i>
+                            <div class="position-relative">
+                                <i class="fa-solid fa-envelope position-absolute start-3 top-50 translate-middle-y text-muted small"></i>
                                 <input
                                     type="email"
                                     name="email"
                                     placeholder="Email Address"
                                     required
-                                    class="w-full futuristic-input rounded-xl pl-12 pr-4 py-4"
+                                    class="form-control ps-5"
                                 />
                             </div>
 
-                            <div class="relative">
-                                <i
-                                    class="fa-solid fa-message-dots absolute left-4 top-4 text-gray-400 text-sm"
-                                    aria-label="Message icon"
-                                ></i>
+                            <div class="position-relative">
+                                <i class="fa-solid fa-message-dots position-absolute start-3 top-3 text-muted small"></i>
                                 <textarea
                                     name="message"
                                     placeholder="Message/Inquiry Details"
                                     required
-                                    rows="7"
-                                    class="w-full futuristic-input rounded-xl pl-12 pr-4 py-4"
+                                    rows="8"
+                                    class="form-control ps-5"
                                 ></textarea>
                             </div>
 
@@ -345,7 +229,7 @@
 
                             <button
                                 type="submit"
-                                class="w-full bg-violet-600 text-white font-extrabold tracking-widest uppercase py-4 px-6 rounded-xl text-lg hover:bg-violet-700 transition-colors duration-300 transform hover:scale-[1.01] shadow-xl shadow-violet-900/50"
+                                class="btn btn-primary btn-lg fw-bold letter-spacing-wider text-uppercase mt-3"
                             >
                                 TRANSMIT DATA PACKET
                             </button>
@@ -358,9 +242,7 @@
         <div id="footer-container"></div>
     </div>
 
-    <script src="js/app.js" defer></script> 
-    <script src="js/navbar.js" defer></script>
-    <script src="js/footer.js" defer></script>
-    <script src="js/background.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js" defer></script>
 </body>
 </html>
