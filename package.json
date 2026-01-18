@@ -1,9 +1,8 @@
 {
   "name": "ryze-tha-kidd-website",
   "version": "1.0.0",
-  "description": "Official website for British Rapper Ryze Tha Kidd",
-  "dependencies": {
-    "bootstrap": "^5.3.2",
-    "bootstrap-icons": "^1.11.1"
-  }
+  "description": "Official website for British Rapper Ryze Tha Kidd - Pure Bootstrap 5 with CDN",
+  "keywords": ["bootstrap5", "responsive", "music", "ryze", "kidd"],
+  "author": "Ryze Tha Kidd",
+  "license": "MIT"
 }
