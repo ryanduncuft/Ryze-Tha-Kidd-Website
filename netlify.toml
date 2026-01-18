@@ -26,49 +26,53 @@
 # =========================================================================
 
 [[redirects]]
-  # Rule 4: DISCOGRAPHY CLEAN URLs - Album/EP Pages
+  # Rule 3: DISCOGRAPHY CLEAN URLs - Album/EP Pages
   # Rewrites clean URLs like /album/album-name to album.html with slug parameter
   from = "/album/:slug"
   to = "/album.html?slug=:slug"
   status = 200
+  force = true
 
 [[redirects]]
-  # Rule 4b: DISCOGRAPHY CLEAN URLs - Single Pages
+  # Rule 3b: DISCOGRAPHY CLEAN URLs - Single Pages
   # Rewrites clean URLs like /single/song-name to single.html with slug parameter
   from = "/single/:slug"
   to = "/single.html?slug=:slug"
   status = 200
+  force = true
 
 [[redirects]]
-  # Rule 4c: DISCOGRAPHY CLEAN URLs - Collaboration Pages
+  # Rule 3c: DISCOGRAPHY CLEAN URLs - Collaboration Pages
   # Rewrites clean URLs like /collab/collab-name to single.html with slug parameter
   from = "/collab/:slug"
   to = "/single.html?slug=:slug"
   status = 200
+  force = true
 
 [[redirects]]
-  # Rule 4d: DISCOGRAPHY CLEAN URLs - EP Pages (alternative naming)
+  # Rule 3d: DISCOGRAPHY CLEAN URLs - EP Pages (alternative naming)
   # Rewrites clean URLs like /ep/ep-name to album.html with slug parameter
   from = "/ep/:slug"
   to = "/album.html?slug=:slug"
   status = 200
+  force = true
 
 [[redirects]]
-  # Rule 5: HTML File Cleanup (For "pretty URLs" like /about instead of /about.html)
-  # FIX: Changed from 301 redirect to 200 rewrite to prevent redirect loops.
-  from = "/*.html"
-  to = "/:splat"
-  status = 200 # <-- Changed from 301 to 200
-  # force = true # <-- 'force' is not strictly needed for 200 rewrites, but harmless
+  # Rule 4: Clean URLs for other pages (about, contact, faq, etc)
+  # /about → /about.html, /contact → /contact.html, etc.
+  from = "/:page"
+  to = "/:page.html"
+  status = 200
+  conditions = {Language = [], Domain = [], Role = []}
 
 [[redirects]]
-  # Rule 6: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)
+  # Rule 5: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)
   from = "/success"
   to = "/components/success.html"
   status = 200
 
 [[redirects]]
-  # Rule 7: SEO File Cleanup (Serve robots.txt and sitemap.xml directly)
+  # Rule 6: SEO File Cleanup (Serve robots.txt and sitemap.xml directly)
   from = "/robots.txt"
   to = "/robots.txt"
   status = 200
