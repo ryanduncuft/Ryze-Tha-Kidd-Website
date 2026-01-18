@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+    <link href="./css/custom.css" rel="stylesheet" />
+    
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Single | Ryze Tha Kidd</title>
+
+    <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
+    <link rel="icon" type="image/png" sizes="192x192" href="/WebpageIcon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
+
+    <style>
+        /* Page-specific helpers removed; use shared canvas */
+    </style>
+</head>
+
+<body>
+    <canvas id="interactive-bg" aria-hidden="true"></canvas>
+
+    <div id="navbar-container"></div>
+
+    <div class="d-flex flex-column position-relative" style="min-height: 100vh;" id="main-content">
+        <main class="flex-grow-1 container py-5 py-md-7 py-lg-8 w-100">
+            <div id="loading-state" class="text-center text-muted mt-8" aria-live="polite">
+                <i class="fas fa-compact-disc fa-spin fs-1 text-gradient"></i>
+                <p class="mt-4 fs-5">Loading Single...</p>
+            </div>
+
+            <div id="error-state" class="text-center text-danger mt-8 d-none" aria-live="assertive">
+                <p class="fs-5">
+                    <strong>ERROR 404:</strong> Single not found. Please check the URL.
+                </p>
+                <a href="/discography" class="btn btn-primary mt-4">Back to Discography</a>
+            </div>
+
+            <section id="single-details" class="d-none">
+                <div class="row g-5 g-lg-8 align-items-start mb-7 mb-md-9 mb-lg-10">
+                    <div class="col-12 col-lg-5">
+                        <div class="single-cover-container">
+                            <img id="single-image" src="" alt="Single Cover" class="w-100 rounded-3 shadow-lg" />
+                            <div class="single-type-badge mt-3">
+                                <span id="single-type" class="badge bg-gradient fs-6"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-7">
+                        <div class="single-info">
+                            <h1 id="single-title" class="display-4 display-md-3 fw-black text-gradient lh-1 mb-4"></h1>
+                            <p id="single-artist" class="fs-4 fs-md-3 text-muted fw-light mb-5"></p>
+
+                            <div class="single-metadata mb-6">
+                                <div class="row g-3 g-md-4 mb-4">
+                                    <div class="col-6">
+                                        <small class="text-muted text-uppercase fw-bold d-block mb-2">Release Date</small>
+                                        <p id="single-date" class="fs-6 mb-0"></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted text-uppercase fw-bold d-block mb-2">Type</small>
+                                        <p id="single-type-text" class="fs-6 mb-0 text-capitalize"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="single-actions">
+                                <a id="listen-btn" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-lg mb-3 mb-md-0 me-0 me-md-3">
+                                    <i class="fas fa-play-circle me-2"></i>Listen Now
+                                </a>
+                                <a href="/discography" class="btn btn-outline-primary btn-lg">
+                                    <i class="fas fa-arrow-left me-2"></i>Back to Discography
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-5 g-lg-8 mt-2">
+                    <div class="col-12">
+                        <div class="single-description card border-subtle">
+                            <div class="card-body p-5 p-md-6">
+                                <h3 class="h4 fw-bold mb-4">About This Track</h3>
+                                <div id="single-description-content" class="lh-lg">
+                                    <p class="text-secondary mb-0">
+                                        Discover more about this release by visiting the artist's official platforms and streaming services.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <div id="footer-container"></div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js" defer></script>
+</body>
+</html>

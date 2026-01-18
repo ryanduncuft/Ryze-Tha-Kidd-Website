@@ -27,13 +27,13 @@ I’ve built the site using modern web standards to keep things lightweight and 
 
 ### Version History
 
-**v3.0 — The Evolution (Current)**
+**v3.0 - The Evolution (Current)**
 This was a complete ground-up reconstruction. I moved the design system over to Bootstrap 5, added the Dark Mode toggle, and launched the new community FAQ section.
 
-**v2.1.5 — Performance Overhaul**
+**v2.1.5 - Performance Overhaul**
 I focused heavily on speed and fixing mobile "jank." I implemented deferred script loading, CSS preloading, and lazy-loading for heavy elements like YouTube iframes to make the site feel much snappier.
 
-**v1.1.5 — Dynamic Architecture**
+**v1.1.5 - Dynamic Architecture**
 This was a major technical shift where I moved from static HTML files to a data-driven model. I created single and album templates that pull content dynamically, which makes the site much easier for me to update.
 
 ---
