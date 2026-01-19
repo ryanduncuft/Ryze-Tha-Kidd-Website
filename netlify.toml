@@ -36,35 +36,7 @@
 # =========================================================================
 
 [[redirects]]
-  # Rule 3: DISCOGRAPHY CLEAN URLs - Album/EP Pages
-  # Rewrites clean URLs like /album/healing-wounds to album.html with id parameter
-  from = "/album/:id"
-  to = "/album.html?id=:id"
-  status = 200
-
-[[redirects]]
-  # Rule 3b: DISCOGRAPHY CLEAN URLs - Single Pages
-  # Rewrites clean URLs like /single/song-name to single.html with id parameter
-  from = "/single/:id"
-  to = "/single.html?id=:id"
-  status = 200
-
-[[redirects]]
-  # Rule 3c: DISCOGRAPHY CLEAN URLs - Collaboration Pages
-  # Rewrites clean URLs like /collab/collab-name to single.html with id parameter
-  from = "/collab/:id"
-  to = "/single.html?id=:id"
-  status = 200
-
-[[redirects]]
-  # Rule 3d: DISCOGRAPHY CLEAN URLs - EP Pages (alternative naming)
-  # Rewrites clean URLs like /ep/ep-name to album.html with id parameter
-  from = "/ep/:id"
-  to = "/album.html?id=:id"
-  status = 200
-
-[[redirects]]
-  # Rule 4: Clean URLs for static pages (about, contact, faq, etc)
+  # Rule 3: Clean URLs for static pages (about, contact, faq, etc)
   # /about → /about.html, /contact → /contact.html, etc.
   # This rule must come AFTER the specific discography routes above
   from = "/:page"
@@ -72,13 +44,13 @@
   status = 200
 
 [[redirects]]
-  # Rule 5: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)
+  # Rule 4: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)
   from = "/success"
   to = "/components/success.html"
   status = 200
 
 [[redirects]]
-  # Rule 6: SEO File Cleanup (Serve robots.txt and sitemap.xml directly)
+  # Rule 5: SEO File Cleanup (Serve robots.txt and sitemap.xml directly)
   from = "/robots.txt"
   to = "/robots.txt"
   status = 200
@@ -94,7 +66,7 @@
 # =========================================================================
 
 [[redirects]]
-  # Rule 7: Custom 404 Page (Serve a dedicated 404 page for any unhandled path)
+  # Rule 6: Custom 404 Page (Serve a dedicated 404 page for any unhandled path)
   from = "/*"
   to = "/404.html"
   status = 404
