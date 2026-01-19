@@ -1,6 +1,16 @@
 # =========================================================================
-# GLOBAL SETTINGS (Recommended for all projects)
+# SECURITY HEADERS
 # =========================================================================
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' cdnjs.cloudflare.com; connect-src 'self' gist.githubusercontent.com; frame-src 'self' www.youtube.com; form-action 'self'; base-uri 'self'; object-src 'none'"
 
 # =========================================================================
 # PRIMARY REDIRECT RULES (Prioritized 301 Permanent Redirects)
@@ -27,43 +37,39 @@
 
 [[redirects]]
   # Rule 3: DISCOGRAPHY CLEAN URLs - Album/EP Pages
-  # Rewrites clean URLs like /album/album-name to album.html with slug parameter
-  from = "/album/:slug"
-  to = "/album.html?slug=:slug"
+  # Rewrites clean URLs like /album/healing-wounds to album.html with id parameter
+  from = "/album/:id"
+  to = "/album.html?id=:id"
   status = 200
-  force = true
 
 [[redirects]]
   # Rule 3b: DISCOGRAPHY CLEAN URLs - Single Pages
-  # Rewrites clean URLs like /single/song-name to single.html with slug parameter
-  from = "/single/:slug"
-  to = "/single.html?slug=:slug"
+  # Rewrites clean URLs like /single/song-name to single.html with id parameter
+  from = "/single/:id"
+  to = "/single.html?id=:id"
   status = 200
-  force = true
 
 [[redirects]]
   # Rule 3c: DISCOGRAPHY CLEAN URLs - Collaboration Pages
-  # Rewrites clean URLs like /collab/collab-name to single.html with slug parameter
-  from = "/collab/:slug"
-  to = "/single.html?slug=:slug"
+  # Rewrites clean URLs like /collab/collab-name to single.html with id parameter
+  from = "/collab/:id"
+  to = "/single.html?id=:id"
   status = 200
-  force = true
 
 [[redirects]]
   # Rule 3d: DISCOGRAPHY CLEAN URLs - EP Pages (alternative naming)
-  # Rewrites clean URLs like /ep/ep-name to album.html with slug parameter
-  from = "/ep/:slug"
-  to = "/album.html?slug=:slug"
+  # Rewrites clean URLs like /ep/ep-name to album.html with id parameter
+  from = "/ep/:id"
+  to = "/album.html?id=:id"
   status = 200
-  force = true
 
 [[redirects]]
-  # Rule 4: Clean URLs for other pages (about, contact, faq, etc)
+  # Rule 4: Clean URLs for static pages (about, contact, faq, etc)
   # /about → /about.html, /contact → /contact.html, etc.
+  # This rule must come AFTER the specific discography routes above
   from = "/:page"
   to = "/:page.html"
   status = 200
-  conditions = {Language = [], Domain = [], Role = []}
 
 [[redirects]]
   # Rule 5: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)

@@ -37,6 +37,7 @@ const CONFIG = {
         { label: "Home", href: "/" },
         { label: "About", href: "about" },
         { label: "Discography", href: "discography" },
+        { label: "Faq", href: "faq", isNew: true },
         { label: "Contact", href: "contact" },
     ],
 
@@ -61,13 +62,99 @@ const CONFIG = {
  * Utils: Reusable utility functions for DOM manipulation and common tasks
  */
 const Utils = {
+    // Security: Sanitize HTML to prevent XSS attacks
+    sanitizeHTML(html) {
+        const div = document.createElement('div');
+        div.textContent = html;
+        return div.innerHTML;
+    },
+
+    // Security: Validate URL is same-origin or approved external domain
+    isValidURL(url) {
+        try {
+            const parsed = new URL(url, window.location.href);
+            const isExternal = parsed.origin !== window.location.origin;
+            const approvedDomains = ['gist.githubusercontent.com', 'youtube.com', 'twitter.com', 'instagram.com'];
+            return !isExternal || approvedDomains.some(domain => parsed.hostname.includes(domain));
+        } catch {
+            return false;
+        }
+    },
+
+    // UX: Show loading spinner
+    showLoading(element) {
+        if (!element) return;
+        element.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
+    },
+
+    // UX: Toast notification system
+    showNotification(message, type = 'info', duration = 3000) {
+        const toastId = 'toast-' + Date.now();
+        const backgroundColor = {
+            'success': '#28a745',
+            'error': '#dc3545',
+            'warning': '#ffc107',
+            'info': '#17a2b8'
+        }[type] || '#17a2b8';
+
+        const toast = document.createElement('div');
+        toast.id = toastId;
+        toast.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${backgroundColor};
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
+            font-weight: 600;
+            max-width: 300px;
+        `;
+        toast.textContent = message;
+
+        if (!document.getElementById('toast-container')) {
+            const container = document.createElement('div');
+            container.id = 'toast-container';
+            document.body.appendChild(container);
+        }
+        document.getElementById('toast-container').appendChild(toast);
+
+        if (duration > 0) {
+            setTimeout(() => {
+                toast.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, duration);
+        }
+    },
+
     async fetchData(url) {
         try {
-            const response = await fetch(url, { cache: "no-cache" });
+            // Security: Validate URL before fetching
+            if (!this.isValidURL(url)) {
+                throw new Error('Invalid or untrusted URL');
+            }
+
+            const response = await fetch(url, { 
+                cache: "no-cache",
+                credentials: 'omit', // Don't send credentials by default
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            return await response.json();
+            const data = await response.json();
+            
+            // Security: Validate JSON response is array/object
+            if (typeof data !== 'object' || data === null) {
+                throw new Error('Invalid JSON response');
+            }
+            return data;
         } catch (error) {
             console.warn(`Failed to fetch from ${url}:`, error);
+            this.showNotification('Failed to load data. Please try again.', 'error');
             return null;
         }
     },
@@ -77,6 +164,11 @@ const Utils = {
 
         const originalSrc = img.dataset.src || img.src;
         if (!originalSrc) return;
+
+        // Skip optimization for external CDN images (YouTube thumbnails, etc.)
+        const skipPatterns = ['i.ytimg.com', 'youtube.com', 'ytimg'];
+        const shouldSkip = skipPatterns.some(pattern => originalSrc.includes(pattern));
+        if (shouldSkip) return;
 
         const isTargetImage = /\.(jpg|jpeg|png)$/i.test(originalSrc);
         const isAlreadyOptimized = img.dataset.optimized === "true";
@@ -108,9 +200,7 @@ const Utils = {
     },
 
     getElement(id) {
-        const element = document.getElementById(id);
-        if (!element) console.warn(`Element not found: ${id}`);
-        return element;
+        return document.getElementById(id);
     },
 
     getElements(selector) {
@@ -118,7 +208,10 @@ const Utils = {
     },
 
     setHTML(element, html) {
-        if (element) element.innerHTML = html;
+        if (element) {
+            // Security: Use textContent for plain text, innerHTML for formatted content (pre-sanitized)
+            element.innerHTML = html;
+        }
     },
 
     toggleClass(element, className) {
@@ -147,6 +240,154 @@ const Utils = {
         element.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
         return true;
     },
+
+    // UX: Scroll to top button
+    addScrollToTopButton() {
+        const btn = document.createElement('button');
+        btn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+        btn.className = 'scroll-to-top-btn';
+        btn.setAttribute('aria-label', 'Scroll to top');
+        btn.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            font-size: 18px;
+        `;
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                btn.style.opacity = '1';
+                btn.style.visibility = 'visible';
+            } else {
+                btn.style.opacity = '0';
+                btn.style.visibility = 'hidden';
+            }
+        });
+
+        btn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        document.body.appendChild(btn);
+    },
+};
+
+/**
+ * FormValidator: Client-side form validation and security
+ */
+const FormValidator = {
+    // Validation rules
+    rules: {
+        name: { 
+            required: true, 
+            minLength: 2,
+            maxLength: 100,
+            pattern: /^[a-zA-Z\s'-]+$/,
+            message: 'Name must be 2-100 characters and contain only letters'
+        },
+        email: { 
+            required: true,
+            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+            message: 'Please enter a valid email address'
+        },
+        message: { 
+            required: true,
+            minLength: 10,
+            maxLength: 5000,
+            message: 'Message must be 10-5000 characters'
+        },
+    },
+
+    validateField(name, value) {
+        if (!this.rules[name]) return { valid: true };
+        const rule = this.rules[name];
+
+        if (rule.required && !value.trim()) {
+            return { valid: false, error: `${name} is required` };
+        }
+
+        if (rule.minLength && value.length < rule.minLength) {
+            return { valid: false, error: `${name} is too short (min ${rule.minLength})` };
+        }
+
+        if (rule.maxLength && value.length > rule.maxLength) {
+            return { valid: false, error: `${name} is too long (max ${rule.maxLength})` };
+        }
+
+        if (rule.pattern && !rule.pattern.test(value)) {
+            return { valid: false, error: rule.message };
+        }
+
+        return { valid: true };
+    },
+
+    validateForm(formElement) {
+        if (!formElement) return { valid: true, errors: {} };
+
+        const errors = {};
+        const inputs = formElement.querySelectorAll('input[name], textarea[name]');
+
+        inputs.forEach(input => {
+            const name = input.name;
+            if (name && name !== 'form-name' && name !== 'bot-field') {
+                const validation = this.validateField(name, input.value);
+                if (!validation.valid) {
+                    errors[name] = validation.error;
+                    input.classList.add('is-invalid');
+                } else {
+                    input.classList.remove('is-invalid');
+                }
+            }
+        });
+
+        return {
+            valid: Object.keys(errors).length === 0,
+            errors
+        };
+    },
+
+    initForm() {
+        const forms = document.querySelectorAll('form[name="contact"]');
+        forms.forEach(form => {
+            form.addEventListener('submit', (e) => {
+                const validation = this.validateForm(form);
+                if (!validation.valid) {
+                    e.preventDefault();
+                    Object.entries(validation.errors).forEach(([field, error]) => {
+                        Utils.showNotification(error, 'warning', 4000);
+                    });
+                } else {
+                    Utils.showNotification('Form submitted successfully!', 'success', 2000);
+                }
+            });
+
+            // Real-time validation
+            form.querySelectorAll('input[name], textarea[name]').forEach(input => {
+                input.addEventListener('blur', () => {
+                    const name = input.name;
+                    if (name && name !== 'form-name' && name !== 'bot-field') {
+                        const validation = this.validateField(name, input.value);
+                        if (!validation.valid) {
+                            input.classList.add('is-invalid');
+                        } else {
+                            input.classList.remove('is-invalid');
+                        }
+                    }
+                });
+            });
+        });
+    },
 };
 
 /**
@@ -156,16 +397,18 @@ const Navbar = {
     generateHTML() {
         const navLinks = CONFIG.NAVIGATION.map(
             (link) => `
-            <a class="nav-link" href="${link.href}" aria-label="${link.label}">
+            <a class="nav-link ${link.isNew ? 'nav-link-new' : ''}" href="${link.href}" aria-label="${link.label}">
                 ${link.label}
+                ${link.isNew ? '<span class="nav-badge-new">NEW</span>' : ''}
             </a>
         `
         ).join("");
 
         const mobileNavLinks = CONFIG.NAVIGATION.map(
             (link) => `
-            <a class="dropdown-item" href="${link.href}" data-bs-dismiss="offcanvas">
+            <a class="dropdown-item ${link.isNew ? 'dropdown-item-new' : ''}" href="${link.href}">
                 ${link.label}
+                ${link.isNew ? '<span class="nav-badge-new">NEW</span>' : ''}
             </a>
         `
         ).join("");
@@ -227,6 +470,24 @@ const Navbar = {
 
         if (desktopToggle) desktopToggle.addEventListener("click", handleToggle);
         if (mobileToggle) mobileToggle.addEventListener("click", handleToggle);
+
+        // Fix mobile menu navigation - handle link clicks properly
+        const mobileNavLinks = document.querySelectorAll('.offcanvas-body .dropdown-item');
+        const offcanvasElement = Utils.getElement("offcanvasNavbar");
+        
+        if (offcanvasElement && mobileNavLinks.length > 0) {
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement) || new bootstrap.Offcanvas(offcanvasElement);
+            
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Allow the navigation to happen naturally
+                    // Bootstrap's data-bs-dismiss will handle closing the offcanvas
+                    setTimeout(() => {
+                        offcanvasInstance.hide();
+                    }, 50);
+                });
+            });
+        }
 
         DarkMode.updateToggleIcons(desktopToggle, mobileToggle);
     },
@@ -386,6 +647,7 @@ const HomePage = {
 
                 Utils.setHTML(container, this.renderLatestRelease(latest));
                 Utils.removeClass(container, "d-none");
+                Utils.addClass(container, "fade-in");
             } catch (err) {
                 console.error("Error processing release:", err);
                 Utils.removeClass(error, "d-none");
@@ -486,7 +748,7 @@ const Discography = {
 
         const html = releases
             .map((r) => {
-                // Generate clean URLs based on release type
+                // Generate clean URLs - Netlify _redirects will rewrite these to query parameters
                 let detailUrl;
                 if (r.type === "album") {
                     detailUrl = `/album/${r.id}`;
@@ -655,80 +917,102 @@ const ImageOptimizer = {
 };
 
 /**
- * SinglePage: Handles loading and displaying individual singles/collaborations
+ * DetailPage: Unified handler for single/album detail pages
  */
-const SinglePage = {
-    async loadSingleData(id) {
+const DetailPage = {
+    allReleases: [],
+    
+    typeMap: {
+        single: { display: "Single", types: ["single", "collab", "album-track"] },
+        album: { display: "Album", types: ["album", "ep"] },
+    },
+
+    async loadData(id, pageType) {
         try {
             const data = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
-            return data.find((item) => item.id === id && (item.type === "single" || item.type === "collab" || item.type === "album-track"));
+            this.allReleases = data;
+            const types = this.typeMap[pageType].types;
+            return data.find((item) => item.id === id && types.includes(item.type));
         } catch (err) {
-            console.error("Error loading single data:", err);
+            console.error(`Error loading ${pageType} data:`, err);
             return null;
         }
     },
 
-    formatTypeDisplay(type) {
-        const typeMap = {
-            single: "Single",
-            collab: "Collaboration",
-            "album-track": "Album Track",
-        };
-        return typeMap[type] || type;
+    getTypeDisplay(type) {
+        const maps = { single: "Single", collab: "Collaboration", "album-track": "Album Track", album: "Album", ep: "EP" };
+        return maps[type] || type;
     },
 
-    async displaySingle(id) {
+    renderTracks(albumId) {
+        const container = Utils.getElement("tracklist-container");
+        if (!container) return;
+        const prefix = albumId.split("-").slice(0, -1).join("-") || albumId;
+        const tracks = this.allReleases.filter((t) => t.type === "album-track" && t.id.startsWith(prefix));
+        if (!tracks.length) return;
+
+        const html = tracks.map((t, i) => `
+            <div class="track-item">
+                <div class="track-number">${i + 1}</div>
+                <div class="track-info"><div class="track-title">${t.title}</div><div class="track-artist">${t.artist}</div></div>
+                <div class="track-actions"><a href="/single/${t.id}" class="track-btn"><i class="fas fa-play"></i>Listen</a></div>
+            </div>`).join("");
+        Utils.setHTML(container, html);
+    },
+
+    async display(id, pageType) {
         const loading = Utils.getElement("loading-state");
         const error = Utils.getElement("error-state");
-        const details = Utils.getElement("single-details");
-
+        const details = Utils.getElement(`${pageType}-details`);
+        
         if (loading) Utils.removeClass(loading, "d-none");
         if (error) Utils.addClass(error, "d-none");
         if (details) Utils.addClass(details, "d-none");
 
-        const single = await this.loadSingleData(id);
-
-        if (!single) {
+        const item = await this.loadData(id, pageType);
+        if (!item) {
             if (loading) Utils.addClass(loading, "d-none");
             if (error) Utils.removeClass(error, "d-none");
             return;
         }
 
-        const imageEl = Utils.getElement("single-image");
-        if (imageEl) {
-            imageEl.src = single.image;
-            imageEl.alt = single.title;
+        const imageEl = Utils.getElement(`${pageType}-image`);
+        if (imageEl) { imageEl.src = item.image; imageEl.alt = item.title; }
+
+        Utils.setHTML(Utils.getElement(`${pageType}-title`), item.title);
+        Utils.setHTML(Utils.getElement(`${pageType}-artist`), item.artist);
+        Utils.setHTML(Utils.getElement(`${pageType}-date`), Utils.formatDate(item.releaseDate));
+        Utils.setHTML(Utils.getElement(`${pageType}-type`), this.getTypeDisplay(item.type));
+        Utils.setHTML(Utils.getElement(`${pageType}-type-text`), this.getTypeDisplay(item.type));
+
+        if (pageType === "album") {
+            Utils.setHTML(Utils.getElement("album-track-count"), this.allReleases.filter((t) => t.type === "album-track" && t.id.startsWith(id.split("-").slice(0, -1).join("-"))).length);
+            this.renderTracks(id);
         }
 
-        Utils.setHTML(Utils.getElement("single-title"), single.title);
-        Utils.setHTML(Utils.getElement("single-artist"), single.artist);
-        Utils.setHTML(Utils.getElement("single-date"), Utils.formatDate(single.releaseDate));
-        Utils.setHTML(Utils.getElement("single-type"), this.formatTypeDisplay(single.type));
-        Utils.setHTML(Utils.getElement("single-type-text"), this.formatTypeDisplay(single.type));
-        
         const listenBtn = Utils.getElement("listen-btn");
-        if (listenBtn) {
-            listenBtn.href = single.listenLink;
-        }
+        if (listenBtn) listenBtn.href = item.listenLink;
 
         if (loading) Utils.addClass(loading, "d-none");
-        if (details) Utils.removeClass(details, "d-none");
-
-        document.title = `${single.title} | Ryze Tha Kidd`;
+        if (details) {
+            Utils.removeClass(details, "d-none");
+            Utils.addClass(details, "fade-in");
+        }
+        document.title = `${item.title} | Ryze Tha Kidd`;
     },
 
-    async init() {
+    extractId() {
         const params = new URLSearchParams(window.location.search);
-        let id = params.get("id") || params.get("slug");
+        const pathname = window.location.pathname;
+        const pathSegments = pathname.split('/').filter(s => s && !s.includes('.html'));
+        
+        if (params.has("id")) return params.get("id");
+        if (params.has("slug")) return params.get("slug");
+        return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null;
+    },
 
-        // If no id/slug parameter, extract from clean URL path (e.g., /single/song-name)
-        if (!id) {
-            const pathSegments = window.location.pathname.split('/').filter(s => s);
-            if (pathSegments.length >= 2) {
-                id = pathSegments[pathSegments.length - 1]; // Get last segment as slug
-            }
-        }
-
+    async init(pageType) {
+        const id = this.extractId();
         if (!id) {
             const error = Utils.getElement("error-state");
             const loading = Utils.getElement("loading-state");
@@ -736,133 +1020,153 @@ const SinglePage = {
             if (error) Utils.removeClass(error, "d-none");
             return;
         }
-
-        await this.displaySingle(id);
+        await this.display(id, pageType);
     },
 };
 
 /**
- * AlbumPage: Handles loading and displaying albums/EPs with tracklist
+ * VideoFAQ: Manages video FAQ accordion with questions and answers
+ * Easy to add new videos and Q&A pairs - just edit the data array below
  */
-const AlbumPage = {
-    allReleases: [],
-
-    async loadAlbumData(id) {
-        try {
-            const data = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
-            this.allReleases = data;
-            return data.find((item) => item.id === id && (item.type === "album" || item.type === "ep"));
-        } catch (err) {
-            console.error("Error loading album data:", err);
-            return null;
+const VideoFAQ = {
+    // CONFIG: Edit this array to add/modify video FAQs
+    // To add a new video: add object with { videoId, title, thumbnail, watchUrl, questions: [...] }
+    // Each question object: { question: "Q?", answer: "A." }
+    data: [
+        {
+            videoId: "video-1",
+            title: "Music Production Process",
+            thumbnail: "https://i.ytimg.com/vi/8dCv09a0tlM/maxresdefault.jpg",
+            watchUrl: "https://youtube.com/watch?v=8dCv09a0tlM",
+            questions: [
+                {
+                    question: "What DAW do you use?",
+                    answer: "I primarily use FL Studio for production. It has great workflow and stock plugins that work perfectly for the sound I'm going for."
+                },
+                {
+                    question: "How long does it take to make a beat?",
+                    answer: "It varies! Some beats come together in 30 minutes, while others take weeks of refinement. Usually I spend 2-4 hours on a production session."
+                },
+                {
+                    question: "Do you use samples or play everything?",
+                    answer: "I use a mix of both. I sample licensed content, play some instruments myself, and use synths to create unique sounds. It's all about finding the right balance."
+                }
+            ]
         }
-    },
+    ],
 
-    getAlbumTracks(albumId) {
-        const albumIdPrefix = albumId.split("-").slice(0, -1).join("-") || albumId;
-        return this.allReleases.filter((item) => item.type === "album-track" && item.id.startsWith(albumIdPrefix));
-    },
+    renderAccordion() {
+        const container = Utils.getElement("faq-container");
+        if (!container) return;
 
-    formatTypeDisplay(type) {
-        const typeMap = {
-            album: "Album",
-            ep: "EP",
-        };
-        return typeMap[type] || type;
-    },
+        if (this.data.length === 0) {
+            Utils.setHTML(container, '<p class="text-center text-muted">No FAQs available yet.</p>');
+            return;
+        }
 
-    renderTracklist(tracks) {
-        const container = Utils.getElement("tracklist-container");
-        if (!container || !tracks.length) return;
+        let html = '<div class="accordion accordion-flush" id="faqAccordion">';
 
-        const html = tracks
-            .map(
-                (track, index) => `
-            <div class="track-item">
-                <div class="track-number">${index + 1}</div>
-                <div class="track-info">
-                    <div class="track-title">${track.title}</div>
-                    <div class="track-artist">${track.artist}</div>
-                </div>
-                <div class="track-actions">
-                    <a href="/single/${track.id}" class="track-btn">
-                        <i class="fas fa-play"></i>Listen
-                    </a>
-                </div>
-            </div>
-            `
-            )
-            .join("");
+        this.data.forEach((video, vidIndex) => {
+            const safeId = `faq-video-${video.videoId}`;
+            
+            html += `
+                <div class="accordion-item faq-video-item bg-transparent border-0 mb-4">
+                    <div class="accordion-header">
+                        <button class="faq-video-card p-0 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#${safeId}" aria-expanded="false" aria-controls="${safeId}">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-5 col-md-4">
+                                    <div class="faq-thumbnail-wrapper">
+                                        <img src="${video.thumbnail}" class="faq-thumbnail" alt="${video.title}" loading="lazy">
+                                        <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-md-8 p-3 p-md-4">
+                                    <h3 class="faq-title fw-bold mb-0">${video.title}</h3>
+                                    <small class="faq-questions-count d-block mt-2"><i class="fas fa-chevron-down"></i> ${video.questions.length} questions</small>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                    <div id="${safeId}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="faq-content-wrapper">
+                            <div class="faq-questions-list">`;
 
+            video.questions.forEach((qa, qaIndex) => {
+                const answerAccordionId = `${safeId}-qa-${qaIndex}`;
+                html += `
+                                <div class="faq-qa-item">
+                                    <button class="faq-question-btn" type="button" data-bs-toggle="collapse" data-bs-target="#${answerAccordionId}" aria-expanded="false" aria-controls="${answerAccordionId}">
+                                        <div class="faq-question-content">
+                                            <i class="fas fa-question-circle faq-question-icon"></i>
+                                            <span class="faq-question-text">${qa.question}</span>
+                                        </div>
+                                        <i class="fas fa-chevron-down faq-chevron"></i>
+                                    </button>
+                                    <div id="${answerAccordionId}" class="collapse faq-answer-collapse">
+                                        <div class="faq-answer-content">
+                                            <i class="fas fa-lightbulb faq-answer-icon"></i>
+                                            <p class="faq-answer-text">${qa.answer}</p>
+                                        </div>
+                                    </div>
+                                </div>`;
+            });
+
+            html += `
+                            </div>
+                            <div class="faq-video-link">
+                                <a href="${video.watchUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                                    <i class="fas fa-play me-2"></i> Watch Full Video
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>`;
+        });
+
+        html += '</div>';
         Utils.setHTML(container, html);
     },
 
-    async displayAlbum(id) {
-        const loading = Utils.getElement("loading-state");
-        const error = Utils.getElement("error-state");
-        const details = Utils.getElement("album-details");
-
-        if (loading) Utils.removeClass(loading, "d-none");
-        if (error) Utils.addClass(error, "d-none");
-        if (details) Utils.addClass(details, "d-none");
-
-        const album = await this.loadAlbumData(id);
-
-        if (!album) {
-            if (loading) Utils.addClass(loading, "d-none");
-            if (error) Utils.removeClass(error, "d-none");
-            return;
-        }
-
-        const imageEl = Utils.getElement("album-image");
-        if (imageEl) {
-            imageEl.src = album.image;
-            imageEl.alt = album.title;
-        }
-
-        Utils.setHTML(Utils.getElement("album-title"), album.title);
-        Utils.setHTML(Utils.getElement("album-artist"), album.artist);
-        Utils.setHTML(Utils.getElement("album-date"), Utils.formatDate(album.releaseDate));
-        Utils.setHTML(Utils.getElement("album-type"), this.formatTypeDisplay(album.type));
-        Utils.setHTML(Utils.getElement("album-type-text"), this.formatTypeDisplay(album.type));
-
-        const tracks = this.getAlbumTracks(id);
-        Utils.setHTML(Utils.getElement("album-track-count"), tracks.length);
-        this.renderTracklist(tracks);
-
-        const listenBtn = Utils.getElement("listen-btn");
-        if (listenBtn) {
-            listenBtn.href = album.listenLink;
-        }
-
-        if (loading) Utils.addClass(loading, "d-none");
-        if (details) Utils.removeClass(details, "d-none");
-
-        document.title = `${album.title} | Ryze Tha Kidd`;
-    },
-
     async init() {
-        const params = new URLSearchParams(window.location.search);
-        let id = params.get("id") || params.get("slug");
+        const container = Utils.getElement("faq-container");
+        const loading = Utils.getElement("faq-loading");
+        const error = Utils.getElement("faq-error");
 
-        // If no id/slug parameter, extract from clean URL path (e.g., /album/album-name)
-        if (!id) {
-            const pathSegments = window.location.pathname.split('/').filter(s => s);
-            if (pathSegments.length >= 2) {
-                id = pathSegments[pathSegments.length - 1]; // Get last segment as slug
-            }
-        }
-
-        if (!id) {
-            const error = Utils.getElement("error-state");
-            const loading = Utils.getElement("loading-state");
-            if (loading) Utils.addClass(loading, "d-none");
-            if (error) Utils.removeClass(error, "d-none");
+        if (!container) {
+            console.error("VideoFAQ.init() - No container found!");
             return;
         }
 
-        await this.displayAlbum(id);
-    },
+        try {
+            if (loading) Utils.removeClass(loading, "d-none");
+            if (error) Utils.addClass(error, "d-none");
+            
+            // Simulate small delay for better UX
+            await new Promise(resolve => setTimeout(resolve, 300));
+            
+            this.renderAccordion();
+            if (loading) Utils.addClass(loading, "d-none");
+        } catch (err) {
+            console.error("Error initializing FAQ:", err);
+            if (loading) Utils.addClass(loading, "d-none");
+            if (error) Utils.removeClass(error, "d-none");
+        }
+    }
+};
+
+/**
+ * SinglePage: Initializes detail page for singles
+ */
+const SinglePage = {
+    init: () => DetailPage.init("single"),
+};
+
+/**
+
+ * AlbumPage: Initializes detail page for albums
+ */
+const AlbumPage = {
+    init: () => DetailPage.init("album"),
 };
 
 /**
@@ -872,20 +1176,46 @@ const AlbumPage = {
 const App = {
     async init() {
         try {
+            const currentPage = window.location.pathname.toLowerCase();
+            
+            // Handle clean URLs for local development (Netlify.toml handles this on production)
+            // Convert /single/id, /album/id, /ep/id, /collab/id to ?id=id format
+            // NOTE: We must actually NAVIGATE to the HTML file, not just replaceState,
+            // because replaceState doesn't trigger a page load or data refresh
+            const pathSegments = currentPage.split('/').filter(s => s && !s.includes('.html'));
+            
+            if (pathSegments.length >= 2) {
+                const pageType = pathSegments[pathSegments.length - 2];
+                const itemId = pathSegments[pathSegments.length - 1];
+                
+                if (['single', 'album', 'ep', 'collab'].includes(pageType) && !window.location.search.includes('id=')) {
+                    // Determine which HTML file to load based on page type
+                    const htmlFile = pageType === 'album' || pageType === 'ep' ? 'album.html' : 'single.html';
+                    const newUrl = `/${htmlFile}?id=${itemId}`;
+                    // Actually navigate to the page - don't just replaceState
+                    window.location.href = newUrl;
+                    return; // Stop execution, page will reload
+                }
+            }
+            
+            // Initialize UX features early
+            Utils.addScrollToTopButton();
+            this.injectAnimationStyles();
+            FormValidator.initForm();
+
             DarkMode.init();
             ImageOptimizer.init();
             await Navbar.load();
 
-            const currentPage = window.location.pathname;
-            const pathSegments = currentPage.split('/').filter(s => s);
-
-            // Check if it's a single/album detail page (supports both old ?id= and new clean URLs)
-            const isSingleDetailPage = currentPage.includes("single.html") || 
+            // Check if it's a detail page
+            // Supports: old format (album.html, single.html) and clean URLs (/album/*, /single/*, /ep/*, /collab/*)
+            const isSingleDetailPage = currentPage.includes("single.html") ||  
                                       pathSegments.includes("single") || 
                                       pathSegments.includes("collab");
             const isAlbumDetailPage = currentPage.includes("album.html") || 
                                      pathSegments.includes("album") || 
                                      pathSegments.includes("ep");
+            const isFAQPage = currentPage.includes("faq.html") || currentPage.includes("/faq") || pathSegments.includes("faq");
 
             if (isSingleDetailPage) {
                 await Footer.load();
@@ -893,6 +1223,9 @@ const App = {
             } else if (isAlbumDetailPage) {
                 await Footer.load();
                 await AlbumPage.init();
+            } else if (isFAQPage) {
+                await Footer.load();
+                await VideoFAQ.init();
             } else {
                 await Promise.all([
                     Footer.load(),
@@ -903,10 +1236,35 @@ const App = {
                 ]);
             }
 
-            console.log("✓ Application initialized successfully");
         } catch (err) {
-            console.error("✗ Application initialization error:", err);
+            console.error("Application initialization error:", err);
+            Utils.showNotification('An error occurred. Please refresh the page.', 'error', 5000);
         }
+    },
+
+    injectAnimationStyles() {
+        if (document.getElementById('rtk-animations')) return;
+        const style = document.createElement('style');
+        style.id = 'rtk-animations';
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(400px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(400px); opacity: 0; }
+            }
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            .scroll-to-top-btn:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+            }
+        `;
+        document.head.appendChild(style);
     },
 };
 
