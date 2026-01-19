@@ -1035,21 +1035,21 @@ const VideoFAQ = {
     data: [
         {
             videoId: "video-1",
-            title: "Music Production Process",
+            title: "How to get an Official Artist Channel on YouTube with DistroKid",
             thumbnail: "https://i.ytimg.com/vi/8dCv09a0tlM/maxresdefault.jpg",
             watchUrl: "https://youtube.com/watch?v=8dCv09a0tlM",
             questions: [
                 {
-                    question: "What DAW do you use?",
-                    answer: "I primarily use FL Studio for production. It has great workflow and stock plugins that work perfectly for the sound I'm going for."
+                    question: "How do I do it?",
+                    answer: "Press the \"Watch Full Video\" button to get a full comprehensive guide. In short, distribute your music via DistroKid, claim your channel through the <a href=\"https://distrokid.com/YouTubeOfficialArtistChannels/?ref=globalmenu\" target=\"_blank\">YouTube Official Artist Channels</a> section, and follow the steps on screen.<br><br> Visit <a href=\"https://support.google.com/youtube/answer/7336634?hl=en-GB#zippy=%2Cprogramme-criteria-and-eligibility\" target=\"_blank\">Google's official guide article</a> to make sure you meet the current criteria. Here is DistroKid's own <a href=\"https://support.distrokid.com/hc/en-us/articles/360036924633-Claiming-an-Official-Artist-Channel-on-YouTube\" target=\"_blank\">guide</a> <br><br> This guide is only for DistroKid, you can do it with other distributors as well but the process may differ."
                 },
                 {
-                    question: "How long does it take to make a beat?",
-                    answer: "It varies! Some beats come together in 30 minutes, while others take weeks of refinement. Usually I spend 2-4 hours on a production session."
+                    question: "How long does it take to recieve the Official Artist Channel?",
+                    answer: "It varies! It can take up to 6 weeks after you initially claim your channel. Be patient and keep an eye on your email for updates from YouTube. If it has not been completed after 6 weeks, consider reaching out to <a href=\"https://support.distrokid.com/hc/en-us\" target=\"_blank\">DistroKid support</a> for assistance. Or, visit <a href=\"/contact\">my Contact page</a> to contact me and I will try to help."
                 },
                 {
-                    question: "Do you use samples or play everything?",
-                    answer: "I use a mix of both. I sample licensed content, play some instruments myself, and use synths to create unique sounds. It's all about finding the right balance."
+                    question: "Do I have to pay?",
+                    answer: "You do have to pay for DistroKid's distribution service, but claiming the Official Artist Channel through DistroKid is free of charge. Just make sure you have an active subscription with DistroKid to distribute your music. <br><br> Check DistroKid's <a href=\"https://distrokid.com/pricing/\" target=\"_blank\">pricing page</a> for more details on their plans."
                 }
             ]
         }
