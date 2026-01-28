@@ -1,109 +1,79 @@
-/**
- * Ryze Tha Kidd - Main Application
- * Modern modular JavaScript architecture with light/dark mode support
- * All editable configuration is at the top for easy customization
- */
-
-/**
- * CONFIG: Central configuration object
- * Edit these values to customize the site without touching code logic
- */
 const CONFIG = {
     ARTIST: {
-        NAME: "RYZE THA KIDD",
-        DISPLAY_NAME: "Ryze Tha Kidd",
+      NAME: "RYZE THA KIDD",
+      DISPLAY_NAME: "Ryze Tha Kidd"
     },
-
     API: {
-        DISCOGRAPHY: "https://gist.githubusercontent.com/ryanduncuft/39ade5f46c7b0a11618f5f016606ecc2/raw/rtk_data.json",
-        VIDEO: "https://gist.githubusercontent.com/ryanduncuft/d67c1848410f5d6a77d914794848bc7d/raw/video_link.json",
+      DISCOGRAPHY: "https://gist.githubusercontent.com/ryanduncuft/39ade5f46c7b0a11618f5f016606ecc2/raw/rtk_data.json",
+      VIDEO: "https://gist.githubusercontent.com/ryanduncuft/d67c1848410f5d6a77d914794848bc7d/raw/video_link.json"
     },
-
     DISCOGRAPHY: {
-        PRIMARY_TYPES: ["album", "ep", "single", "collab"],
-        CACHE_KEY: "discography-data",
+      PRIMARY_TYPES: ["album", "ep", "single", "collab"],
+      CACHE_KEY: "discography-data"
     },
-
     SOCIAL: {
-        TWITTER: "https://twitter.com/ryzethakidd",
-        INSTAGRAM: "https://instagram.com/ryzethakidd",
-        YOUTUBE: "https://youtube.com/@RyzeThaKidd",
-        SPOTIFY: "https://open.spotify.com",
-        APPLE_MUSIC: "https://music.apple.com",
-        SOUNDCLOUD: "https://soundcloud.com",
+      TWITTER: "https://twitter.com/ryzethakidd",
+      INSTAGRAM: "https://instagram.com/ryzethakidd",
+      YOUTUBE: "https://youtube.com/@RyzeThaKidd",
+      SPOTIFY: "https://open.spotify.com",
+      APPLE_MUSIC: "https://music.apple.com",
+      SOUNDCLOUD: "https://soundcloud.com"
     },
-
-    NAVIGATION: [
-        { label: "Home", href: "/" },
-        { label: "About", href: "about" },
-        { label: "Discography", href: "discography" },
-        { label: "Faq", href: "faq", isNew: true },
-        { label: "Contact", href: "contact" },
-    ],
-
+    NAVIGATION: [{
+      label: "Home",
+      href: "/"
+    }, {
+      label: "About",
+      href: "about"
+    }, {
+      label: "Discography",
+      href: "discography"
+    }, {
+      label: "Faq",
+      href: "faq",
+      isNew: !0
+    }, {
+      label: "Contact",
+      href: "contact"
+    }, ],
     DARK_MODE: {
-        STORAGE_KEY: "dark-mode",
-        DEFAULT_DARK: false,
+      STORAGE_KEY: "dark-mode",
+      DEFAULT_DARK: !1
     },
-
     CACHE: {
-        DURATION_MS: 3600000,
-        STORAGE_PREFIX: "rtk_",
+      DURATION_MS: 36e5,
+      STORAGE_PREFIX: "rtk_"
     },
-
     DATE_FORMAT: {
-        YEAR: "numeric",
-        MONTH: "long",
-        DAY: "numeric",
+      YEAR: "numeric",
+      MONTH: "long",
+      DAY: "numeric"
+    }
+  },
+  Utils = {
+    sanitizeHTML(e) {
+      let t = document.createElement("div");
+      return t.textContent = e, t.innerHTML
     },
-};
-
-/**
- * Utils: Reusable utility functions for DOM manipulation and common tasks
- */
-const Utils = {
-    // Security: Sanitize HTML to prevent XSS attacks
-    sanitizeHTML(html) {
-        const div = document.createElement('div');
-        div.textContent = html;
-        return div.innerHTML;
+    isValidURL(e) {
+      try {
+        let t = new URL(e, window.location.href);
+        return !(t.origin !== window.location.origin) || ["gist.githubusercontent.com", "youtube.com", "twitter.com", "instagram.com"].some(e => t.hostname.includes(e))
+      } catch {
+        return !1
+      }
     },
-
-    // Security: Validate URL is same-origin or approved external domain
-    isValidURL(url) {
-        try {
-            const parsed = new URL(url, window.location.href);
-            const isExternal = parsed.origin !== window.location.origin;
-            const approvedDomains = ['gist.githubusercontent.com', 'youtube.com', 'twitter.com', 'instagram.com'];
-            return !isExternal || approvedDomains.some(domain => parsed.hostname.includes(domain));
-        } catch {
-            return false;
-        }
+    showLoading(e) {
+      e && (e.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>')
     },
-
-    // UX: Show loading spinner
-    showLoading(element) {
-        if (!element) return;
-        element.innerHTML = '<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div>';
-    },
-
-    // UX: Toast notification system
-    showNotification(message, type = 'info', duration = 3000) {
-        const toastId = 'toast-' + Date.now();
-        const backgroundColor = {
-            'success': '#28a745',
-            'error': '#dc3545',
-            'warning': '#ffc107',
-            'info': '#17a2b8'
-        }[type] || '#17a2b8';
-
-        const toast = document.createElement('div');
-        toast.id = toastId;
-        toast.style.cssText = `
+    showNotification(e, t = "info", a = 3e3) {
+      let i = "toast-" + Date.now(),
+        s = document.createElement("div");
+      if (s.id = i, s.style.cssText = `
             position: fixed;
             top: 20px;
             right: 20px;
-            background: ${backgroundColor};
+            background: ${({success:"#28a745",error:"#dc3545",warning:"#ffc107",info:"#17a2b8"})[t]||"#17a2b8"};
             color: white;
             padding: 12px 20px;
             border-radius: 6px;
@@ -112,142 +82,86 @@ const Utils = {
             animation: slideIn 0.3s ease;
             font-weight: 600;
             max-width: 300px;
-        `;
-        toast.textContent = message;
-
-        if (!document.getElementById('toast-container')) {
-            const container = document.createElement('div');
-            container.id = 'toast-container';
-            document.body.appendChild(container);
-        }
-        document.getElementById('toast-container').appendChild(toast);
-
-        if (duration > 0) {
-            setTimeout(() => {
-                toast.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, duration);
-        }
+        `, s.textContent = e, !document.getElementById("toast-container")) {
+        let l = document.createElement("div");
+        l.id = "toast-container", document.body.appendChild(l)
+      }
+      document.getElementById("toast-container")
+        .appendChild(s), a > 0 && setTimeout(() => {
+          s.style.animation = "slideOut 0.3s ease", setTimeout(() => s.remove(), 300)
+        }, a)
     },
-
-    async fetchData(url) {
-        try {
-            // Security: Validate URL before fetching
-            if (!this.isValidURL(url)) {
-                throw new Error('Invalid or untrusted URL');
-            }
-
-            const response = await fetch(url, { 
-                cache: "no-cache",
-                credentials: 'omit', // Don't send credentials by default
-                headers: {
-                    'Accept': 'application/json'
-                }
-            });
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const data = await response.json();
-            
-            // Security: Validate JSON response is array/object
-            if (typeof data !== 'object' || data === null) {
-                throw new Error('Invalid JSON response');
-            }
-            return data;
-        } catch (error) {
-            console.warn(`Failed to fetch from ${url}:`, error);
-            this.showNotification('Failed to load data. Please try again.', 'error');
-            return null;
-        }
+    async fetchData(e) {
+      try {
+        if (!this.isValidURL(e)) throw Error("Invalid or untrusted URL");
+        let t = await fetch(e, {
+          cache: "no-cache",
+          credentials: "omit",
+          headers: {
+            Accept: "application/json"
+          }
+        });
+        if (!t.ok) throw Error(`HTTP ${t.status}`);
+        let a = await t.json();
+        if ("object" != typeof a || null === a) throw Error("Invalid JSON response");
+        return a
+      } catch (i) {
+        return console.warn(`Failed to fetch from ${e}:`, i), this.showNotification("Failed to load data. Please try again.", "error"), null
+      }
     },
-
-    optimizeImage(img) {
-        if (!img) return;
-
-        const originalSrc = img.dataset.src || img.src;
-        if (!originalSrc) return;
-
-        // Skip optimization for external CDN images (YouTube thumbnails, etc.)
-        const skipPatterns = ['i.ytimg.com', 'youtube.com', 'ytimg'];
-        const shouldSkip = skipPatterns.some(pattern => originalSrc.includes(pattern));
-        if (shouldSkip) return;
-
-        const isTargetImage = /\.(jpg|jpeg|png)$/i.test(originalSrc);
-        const isAlreadyOptimized = img.dataset.optimized === "true";
-
-        if (isTargetImage && !isAlreadyOptimized) {
-            const newSrc = originalSrc.replace(/\.(jpg|jpeg|png)$/i, ".webp");
-            img.dataset.optimized = "true";
-
-            img.onerror = () => {
-                console.warn(`WebP not found, falling back to: ${originalSrc}`);
-                img.src = originalSrc;
-            };
-
-            img.src = newSrc;
-        } else if (img.dataset.src) {
-            img.src = img.dataset.src;
-        }
+    optimizeImage(e) {
+      if (!e) return;
+      let t = e.dataset.src || e.src;
+      if (!t) return;
+      if (["i.ytimg.com", "youtube.com", "ytimg"].some(e => t.includes(e))) return;
+      let a = /\.(jpg|jpeg|png)$/i.test(t),
+        i = "true" === e.dataset.optimized;
+      if (a && !i) {
+        let s = t.replace(/\.(jpg|jpeg|png)$/i, ".webp");
+        e.dataset.optimized = "true", e.onerror = () => {
+          console.warn(`WebP not found, falling back to: ${t}`), e.src = t
+        }, e.src = s
+      } else e.dataset.src && (e.src = e.dataset.src)
     },
-
-    formatDate(dateString) {
-        if (!dateString) return "TBD";
-        try {
-            const date = new Date(dateString);
-            if (isNaN(date)) return "TBD";
-            return date.toLocaleDateString("en-US", CONFIG.DATE_FORMAT);
-        } catch {
-            return "TBD";
-        }
+    formatDate(e) {
+      if (!e) return "TBD";
+      try {
+        let t = new Date(e);
+        if (isNaN(t)) return "TBD";
+        return t.toLocaleDateString("en-US", CONFIG.DATE_FORMAT)
+      } catch {
+        return "TBD"
+      }
     },
-
-    getElement(id) {
-        return document.getElementById(id);
+    getElement: e => document.getElementById(e),
+    getElements: e => document.querySelectorAll(e),
+    setHTML(e, t) {
+      e && (e.innerHTML = t)
     },
-
-    getElements(selector) {
-        return document.querySelectorAll(selector);
+    toggleClass(e, t) {
+      e && e.classList.toggle(t)
     },
-
-    setHTML(element, html) {
-        if (element) {
-            // Security: Use textContent for plain text, innerHTML for formatted content (pre-sanitized)
-            element.innerHTML = html;
-        }
+    addClass(e, t) {
+      e && e.classList.add(t)
     },
-
-    toggleClass(element, className) {
-        if (element) element.classList.toggle(className);
+    removeClass(e, t) {
+      e && e.classList.remove(t)
     },
-
-    addClass(element, className) {
-        if (element) element.classList.add(className);
+    debounce(e, t) {
+      let a;
+      return function(...i) {
+        clearTimeout(a), a = setTimeout(() => e(...i), t)
+      }
     },
-
-    removeClass(element, className) {
-        if (element) element.classList.remove(className);
+    scrollToElement(e, t = !0) {
+      let a = document.querySelector(e);
+      return !!a && (a.scrollIntoView({
+        behavior: t ? "smooth" : "auto"
+      }), !0)
     },
-
-    debounce(func, delay) {
-        let timeoutId;
-        return function (...args) {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func(...args), delay);
-        };
-    },
-
-    scrollToElement(selector, smooth = true) {
-        const element = document.querySelector(selector);
-        if (!element) return false;
-        element.scrollIntoView({ behavior: smooth ? "smooth" : "auto" });
-        return true;
-    },
-
-    // UX: Scroll to top button
     addScrollToTopButton() {
-        const btn = document.createElement('button');
-        btn.innerHTML = '<i class="fas fa-chevron-up"></i>';
-        btn.className = 'scroll-to-top-btn';
-        btn.setAttribute('aria-label', 'Scroll to top');
-        btn.style.cssText = `
+      let e = document.createElement("button");
+      e.innerHTML = '<i class="fas fa-chevron-up"></i>', e.className = "scroll-to-top-btn", e.setAttribute("aria-label", "Scroll to top"), e.style.cssText = `
             position: fixed;
             bottom: 20px;
             right: 20px;
@@ -263,157 +177,101 @@ const Utils = {
             transition: all 0.3s ease;
             z-index: 999;
             font-size: 18px;
-        `;
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                btn.style.opacity = '1';
-                btn.style.visibility = 'visible';
-            } else {
-                btn.style.opacity = '0';
-                btn.style.visibility = 'hidden';
-            }
-        });
-
-        btn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        document.body.appendChild(btn);
-    },
-};
-
-/**
- * FormValidator: Client-side form validation and security
- */
-const FormValidator = {
-    // Validation rules
+        `, window.addEventListener("scroll", () => {
+        window.pageYOffset > 300 ? (e.style.opacity = "1", e.style.visibility = "visible") : (e.style.opacity = "0", e.style.visibility = "hidden")
+      }), e.addEventListener("click", () => {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        })
+      }), document.body.appendChild(e)
+    }
+  },
+  FormValidator = {
     rules: {
-        name: { 
-            required: true, 
-            minLength: 2,
-            maxLength: 100,
-            pattern: /^[a-zA-Z\s'-]+$/,
-            message: 'Name must be 2-100 characters and contain only letters'
-        },
-        email: { 
-            required: true,
-            pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-            message: 'Please enter a valid email address'
-        },
-        message: { 
-            required: true,
-            minLength: 10,
-            maxLength: 5000,
-            message: 'Message must be 10-5000 characters'
-        },
+      name: {
+        required: !0,
+        minLength: 2,
+        maxLength: 100,
+        pattern: /^[a-zA-Z\s'-]+$/,
+        message: "Name must be 2-100 characters and contain only letters"
+      },
+      email: {
+        required: !0,
+        pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+        message: "Please enter a valid email address"
+      },
+      message: {
+        required: !0,
+        minLength: 10,
+        maxLength: 5e3,
+        message: "Message must be 10-5000 characters"
+      }
     },
-
-    validateField(name, value) {
-        if (!this.rules[name]) return { valid: true };
-        const rule = this.rules[name];
-
-        if (rule.required && !value.trim()) {
-            return { valid: false, error: `${name} is required` };
-        }
-
-        if (rule.minLength && value.length < rule.minLength) {
-            return { valid: false, error: `${name} is too short (min ${rule.minLength})` };
-        }
-
-        if (rule.maxLength && value.length > rule.maxLength) {
-            return { valid: false, error: `${name} is too long (max ${rule.maxLength})` };
-        }
-
-        if (rule.pattern && !rule.pattern.test(value)) {
-            return { valid: false, error: rule.message };
-        }
-
-        return { valid: true };
+    validateField(e, t) {
+      if (!this.rules[e]) return {
+        valid: !0
+      };
+      let a = this.rules[e];
+      return a.required && !t.trim() ? {
+        valid: !1,
+        error: `${e} is required`
+      } : a.minLength && t.length < a.minLength ? {
+        valid: !1,
+        error: `${e} is too short (min ${a.minLength})`
+      } : a.maxLength && t.length > a.maxLength ? {
+        valid: !1,
+        error: `${e} is too long (max ${a.maxLength})`
+      } : a.pattern && !a.pattern.test(t) ? {
+        valid: !1,
+        error: a.message
+      } : {
+        valid: !0
+      }
     },
-
-    validateForm(formElement) {
-        if (!formElement) return { valid: true, errors: {} };
-
-        const errors = {};
-        const inputs = formElement.querySelectorAll('input[name], textarea[name]');
-
-        inputs.forEach(input => {
-            const name = input.name;
-            if (name && name !== 'form-name' && name !== 'bot-field') {
-                const validation = this.validateField(name, input.value);
-                if (!validation.valid) {
-                    errors[name] = validation.error;
-                    input.classList.add('is-invalid');
-                } else {
-                    input.classList.remove('is-invalid');
-                }
-            }
-        });
-
-        return {
-            valid: Object.keys(errors).length === 0,
-            errors
-        };
+    validateForm(e) {
+      if (!e) return {
+        valid: !0,
+        errors: {}
+      };
+      let t = {};
+      return e.querySelectorAll("input[name], textarea[name]")
+        .forEach(e => {
+          let a = e.name;
+          if (a && "form-name" !== a && "bot-field" !== a) {
+            let i = this.validateField(a, e.value);
+            i.valid ? e.classList.remove("is-invalid") : (t[a] = i.error, e.classList.add("is-invalid"))
+          }
+        }), {
+          valid: 0 === Object.keys(t)
+            .length,
+          errors: t
+        }
     },
-
     initForm() {
-        const forms = document.querySelectorAll('form[name="contact"]');
-        forms.forEach(form => {
-            form.addEventListener('submit', (e) => {
-                const validation = this.validateForm(form);
-                if (!validation.valid) {
-                    e.preventDefault();
-                    Object.entries(validation.errors).forEach(([field, error]) => {
-                        Utils.showNotification(error, 'warning', 4000);
-                    });
-                } else {
-                    Utils.showNotification('Form submitted successfully!', 'success', 2000);
-                }
-            });
-
-            // Real-time validation
-            form.querySelectorAll('input[name], textarea[name]').forEach(input => {
-                input.addEventListener('blur', () => {
-                    const name = input.name;
-                    if (name && name !== 'form-name' && name !== 'bot-field') {
-                        const validation = this.validateField(name, input.value);
-                        if (!validation.valid) {
-                            input.classList.add('is-invalid');
-                        } else {
-                            input.classList.remove('is-invalid');
-                        }
-                    }
-                });
-            });
-        });
-    },
-};
-
-/**
- * Navbar: Handles navigation bar rendering and interactions
- */
-const Navbar = {
+      document.querySelectorAll('form[name="contact"]')
+        .forEach(e => {
+          e.addEventListener("submit", t => {
+              let a = this.validateForm(e);
+              a.valid ? Utils.showNotification("Form submitted successfully!", "success", 2e3) : (t.preventDefault(), Object.entries(a.errors)
+                .forEach(([e, t]) => {
+                  Utils.showNotification(t, "warning", 4e3)
+                }))
+            }), e.querySelectorAll("input[name], textarea[name]")
+            .forEach(e => {
+              e.addEventListener("blur", () => {
+                let t = e.name;
+                t && "form-name" !== t && "bot-field" !== t && (this.validateField(t, e.value)
+                  .valid ? e.classList.remove("is-invalid") : e.classList.add("is-invalid"))
+              })
+            })
+        })
+    }
+  },
+  Navbar = {
     generateHTML() {
-        const navLinks = CONFIG.NAVIGATION.map(
-            (link) => `
-            <a class="nav-link ${link.isNew ? 'nav-link-new' : ''}" href="${link.href}" aria-label="${link.label}">
-                ${link.label}
-                ${link.isNew ? '<span class="nav-badge-new">NEW</span>' : ''}
-            </a>
-        `
-        ).join("");
-
-        const mobileNavLinks = CONFIG.NAVIGATION.map(
-            (link) => `
-            <a class="dropdown-item ${link.isNew ? 'dropdown-item-new' : ''}" href="${link.href}">
-                ${link.label}
-                ${link.isNew ? '<span class="nav-badge-new">NEW</span>' : ''}
-            </a>
-        `
-        ).join("");
-
-        return `
+      let e;
+      return `
             <nav class="navbar navbar-expand-lg sticky-top navbar-light" role="banner">
                 <div class="container-fluid navbar-container-layout">
                     <a class="navbar-brand" href="/" aria-label="Home - ${CONFIG.ARTIST.NAME}">
@@ -421,7 +279,12 @@ const Navbar = {
                     </a>
 
                     <div class="navbar-nav d-none d-lg-flex navbar-center">
-                        ${navLinks}
+                        ${CONFIG.NAVIGATION.map(e=>`
+            <a class="nav-link ${e.isNew?"nav-link-new":""}" href="${e.href}" aria-label="${e.label}">
+                ${e.label}
+                ${e.isNew?'<span class="nav-badge-new">NEW</span>':""}
+            </a>
+        `).join("")}
                     </div>
 
                     <div class="navbar-controls d-none d-lg-flex">
@@ -441,7 +304,12 @@ const Navbar = {
                         </div>
                         <div class="offcanvas-body">
                             <div class="navbar-nav flex-column w-100">
-                                ${mobileNavLinks}
+                                ${CONFIG.NAVIGATION.map(e=>`
+            <a class="dropdown-item ${e.isNew?"dropdown-item-new":""}" href="${e.href}">
+                ${e.label}
+                ${e.isNew?'<span class="nav-badge-new">NEW</span>':""}
+            </a>
+        `).join("")}
                                 <hr class="my-3">
                                 <button id="dark-mode-toggle-mobile" class="btn btn-sm btn-outline-primary w-100" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
                                     <i class="fa-solid fa-moon"></i> Dark Mode
@@ -451,69 +319,48 @@ const Navbar = {
                     </div>
                 </div>
             </nav>
-        `;
+        `
     },
-
     async load() {
-        const container = Utils.getElement("navbar-container");
-        if (!container) return;
-
-        Utils.setHTML(container, this.generateHTML());
-
-        const desktopToggle = Utils.getElement("dark-mode-toggle-desktop");
-        const mobileToggle = Utils.getElement("dark-mode-toggle-mobile");
-
-        const handleToggle = () => {
-            DarkMode.toggle();
-            DarkMode.updateToggleIcons(desktopToggle, mobileToggle);
+      let e = Utils.getElement("navbar-container");
+      if (!e) return;
+      Utils.setHTML(e, this.generateHTML());
+      let t = Utils.getElement("dark-mode-toggle-desktop"),
+        a = Utils.getElement("dark-mode-toggle-mobile"),
+        i = () => {
+          DarkMode.toggle(), DarkMode.updateToggleIcons(t, a)
         };
-
-        if (desktopToggle) desktopToggle.addEventListener("click", handleToggle);
-        if (mobileToggle) mobileToggle.addEventListener("click", handleToggle);
-
-        // Fix mobile menu navigation - handle link clicks properly
-        const mobileNavLinks = document.querySelectorAll('.offcanvas-body .dropdown-item');
-        const offcanvasElement = Utils.getElement("offcanvasNavbar");
-        
-        if (offcanvasElement && mobileNavLinks.length > 0) {
-            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement) || new bootstrap.Offcanvas(offcanvasElement);
-            
-            mobileNavLinks.forEach(link => {
-                link.addEventListener('click', (e) => {
-                    // Allow the navigation to happen naturally
-                    // Bootstrap's data-bs-dismiss will handle closing the offcanvas
-                    setTimeout(() => {
-                        offcanvasInstance.hide();
-                    }, 50);
-                });
-            });
-        }
-
-        DarkMode.updateToggleIcons(desktopToggle, mobileToggle);
-    },
-};
-
-/**
- * Footer: Handles footer rendering and cache management
- */
-const Footer = {
-    generateHTML() {
-        return `
+      t && t.addEventListener("click", i), a && a.addEventListener("click", i);
+      let s = document.querySelectorAll(".offcanvas-body .dropdown-item"),
+        l = Utils.getElement("offcanvasNavbar");
+      if (l && s.length > 0) {
+        let r = bootstrap.Offcanvas.getInstance(l) || new bootstrap.Offcanvas(l);
+        s.forEach(e => {
+          e.addEventListener("click", e => {
+            setTimeout(() => {
+              r.hide()
+            }, 50)
+          })
+        })
+      }
+      DarkMode.updateToggleIcons(t, a)
+    }
+  },
+  Footer = {
+    generateHTML: () => `
             <footer class="py-5">
                 <div class="container">
                     <div class="row g-4 justify-content-center text-center">
                         <div class="col-12 col-sm-6 col-md-3">
                             <h3 class="mb-3">Navigation</h3>
                             <ul class="list-unstyled">
-                                ${CONFIG.NAVIGATION.map(
-                                    (link) => `
+                                ${CONFIG.NAVIGATION.map(e=>`
                                     <li>
-                                        <a href="${link.href}" class="text-decoration-none">
-                                            ${link.label}
+                                        <a href="${e.href}" class="text-decoration-none">
+                                            ${e.label}
                                         </a>
                                     </li>
-                                `
-                                ).join("")}
+                                `).join("")}
                             </ul>
                         </div>
 
@@ -555,7 +402,7 @@ const Footer = {
 
                         <div class="col-12 col-sm-6 col-md-3">
                             <h3 class="mb-3">System</h3>
-                            <p class="text-muted">© <span id="current-year">2024</span> ${CONFIG.ARTIST.DISPLAY_NAME}</p>
+                            <p class="text-muted">\xa9 <span id="current-year">2024</span> ${CONFIG.ARTIST.DISPLAY_NAME}</p>
                             <button id="clear-cache-btn" class="btn btn-sm btn-outline-secondary">
                                 Clear Cache
                             </button>
@@ -566,55 +413,38 @@ const Footer = {
                     </div>
                 </div>
             </footer>
-        `;
-    },
-
+        `,
     async load() {
-        const container = Utils.getElement("footer-container");
-        if (!container) return;
-
-        Utils.setHTML(container, this.generateHTML());
-
-        const yearSpan = Utils.getElement("current-year");
-        if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
-        this.setupCacheButton();
+      let e = Utils.getElement("footer-container");
+      if (!e) return;
+      Utils.setHTML(e, this.generateHTML());
+      let t = Utils.getElement("current-year");
+      t && (t.textContent = new Date()
+        .getFullYear()), this.setupCacheButton()
     },
-
     setupCacheButton() {
-        const btn = Utils.getElement("clear-cache-btn");
-        if (!btn) return;
-
-        btn.addEventListener("click", () => {
-            if (confirm("Clear cache and reload?")) {
-                localStorage.clear();
-                sessionStorage.clear();
-                location.reload();
-            }
-        });
-    },
-};
-
-/**
- * HomePage: Manages the homepage content (latest release, videos, etc.)
- */
-const HomePage = {
-    renderLatestRelease(release) {
-        return `
+      let e = Utils.getElement("clear-cache-btn");
+      e && e.addEventListener("click", () => {
+        confirm("Clear cache and reload?") && (localStorage.clear(), sessionStorage.clear(), location.reload())
+      })
+    }
+  },
+  HomePage = {
+    renderLatestRelease: e => `
             <div class="row align-items-center">
                 <div class="col-12 col-md-6 mb-4 mb-md-0">
                     <img
                         class="img-fluid rounded-3 shadow-lg"
-                        src="${release.image}"
-                        alt="${release.title} cover"
+                        src="${e.image}"
+                        alt="${e.title} cover"
                         loading="lazy"
                     />
                 </div>
                 <div class="col-12 col-md-6">
-                    <h2 class="display-4 fw-bold mb-3">Latest Drop: ${release.title}</h2>
-                    <p class="fs-5 text-muted mb-4">${Utils.formatDate(release.releaseDate)}</p>
+                    <h2 class="display-4 fw-bold mb-3">Latest Drop: ${e.title}</h2>
+                    <p class="fs-5 text-muted mb-4">${Utils.formatDate(e.releaseDate)}</p>
                     <a
-                        href="${release.listenLink}"
+                        href="${e.listenLink}"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="btn btn-primary btn-lg"
@@ -623,630 +453,390 @@ const HomePage = {
                     </a>
                 </div>
             </div>
-        `;
-    },
-
+        `,
     async loadLatestRelease() {
-        const container = Utils.getElement("latest-release-container");
-        const loading = Utils.getElement("latest-release-loading");
-        const error = Utils.getElement("latest-release-error");
-
-        if (!container || !loading || !error) return;
-
-        Utils.removeClass(loading, "d-none");
-        Utils.addClass(error, "d-none");
-        Utils.addClass(container, "d-none");
-
-        const releases = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
-
-        if (releases && Array.isArray(releases) && releases.length > 0) {
-            try {
-                const latest = releases.reduce((prev, curr) =>
-                    new Date(curr.releaseDate) > new Date(prev.releaseDate) ? curr : prev
-                );
-
-                Utils.setHTML(container, this.renderLatestRelease(latest));
-                Utils.removeClass(container, "d-none");
-                Utils.addClass(container, "fade-in");
-            } catch (err) {
-                console.error("Error processing release:", err);
-                Utils.removeClass(error, "d-none");
-            }
-        } else {
-            Utils.setHTML(container, '<p class="text-center text-muted">No releases found.</p>');
-            Utils.removeClass(container, "d-none");
-        }
-
-        Utils.addClass(loading, "d-none");
+      let e = Utils.getElement("latest-release-container"),
+        t = Utils.getElement("latest-release-loading"),
+        a = Utils.getElement("latest-release-error");
+      if (!e || !t || !a) return;
+      Utils.removeClass(t, "d-none"), Utils.addClass(a, "d-none"), Utils.addClass(e, "d-none");
+      let i = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
+      if (i && Array.isArray(i) && i.length > 0) try {
+        let s = i.reduce((e, t) => new Date(t.releaseDate) > new Date(e.releaseDate) ? t : e);
+        Utils.setHTML(e, this.renderLatestRelease(s)), Utils.removeClass(e, "d-none"), Utils.addClass(e, "fade-in")
+      } catch (l) {
+        console.error("Error processing release:", l), Utils.removeClass(a, "d-none")
+      } else Utils.setHTML(e, '<p class="text-center text-muted">No releases found.</p>'), Utils.removeClass(e, "d-none");
+      Utils.addClass(t, "d-none")
     },
-
     async loadYouTubeVideo() {
-        const container = Utils.getElement("youtube-video-container");
-        if (!container) return;
-
-        const data = await Utils.fetchData(CONFIG.API.VIDEO);
-
-        if (data && data.youtube_embed_url) {
-            Utils.setHTML(
-                container,
-                `
+      let e = Utils.getElement("youtube-video-container");
+      if (!e) return;
+      let t = await Utils.fetchData(CONFIG.API.VIDEO);
+      t && t.youtube_embed_url && Utils.setHTML(e, `
                 <div class="position-relative w-100 h-100">
                     <iframe
                         width="100%"
                         height="100%"
-                        src="${data.youtube_embed_url}?autoplay=1"
+                        src="${t.youtube_embed_url}?autoplay=1"
                         frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen
                         class="rounded-3"
                     ></iframe>
                 </div>
-            `
-            );
-        }
+            `)
     },
-
     setupSmoothScroll() {
-        const btn = Utils.getElement("latest-drop-button");
-        if (!btn) return;
-
-        btn.addEventListener("click", (e) => {
-            e.preventDefault();
-            const href = btn.getAttribute("href");
-            Utils.scrollToElement(href, true);
-        });
-    },
-};
-
-/**
- * Discography: Manages release filtering, sorting, and display
- */
-const Discography = {
+      let e = Utils.getElement("latest-drop-button");
+      e && e.addEventListener("click", t => {
+        t.preventDefault();
+        let a = e.getAttribute("href");
+        Utils.scrollToElement(a, !0)
+      })
+    }
+  },
+  Discography = {
     allReleases: [],
     activeFilter: "all",
     activeSort: "date-desc",
-
-    prepareReleases(data) {
-        return data
-            .filter((r) => CONFIG.DISCOGRAPHY.PRIMARY_TYPES.includes(r.type))
-            .map((r) => ({
-                ...r,
-                displayDate: Utils.formatDate(r.releaseDate),
-                typeTag: r.type ? r.type.toUpperCase() : "",
-                dateValue: new Date(r.releaseDate).getTime() || 0,
-                titleLower: (r.title || "").toLowerCase(),
-                artistLower: (r.artist || "").toLowerCase(),
-            }));
+    prepareReleases: e => e.filter(e => CONFIG.DISCOGRAPHY.PRIMARY_TYPES.includes(e.type))
+      .map(e => ({
+        ...e,
+        displayDate: Utils.formatDate(e.releaseDate),
+        typeTag: e.type ? e.type.toUpperCase() : "",
+        dateValue: new Date(e.releaseDate)
+          .getTime() || 0,
+        titleLower: (e.title || "")
+          .toLowerCase(),
+        artistLower: (e.artist || "")
+          .toLowerCase()
+      })),
+    sortReleases(e, t) {
+      let a = [...e];
+      switch (t) {
+        case "title-asc":
+          a.sort((e, t) => e.titleLower.localeCompare(t.titleLower));
+          break;
+        case "artist-asc":
+          a.sort((e, t) => e.artistLower.localeCompare(t.artistLower));
+          break;
+        case "date-asc":
+          a.sort((e, t) => e.dateValue - t.dateValue);
+          break;
+        default:
+          a.sort((e, t) => t.dateValue - e.dateValue)
+      }
+      return a
     },
-
-    sortReleases(releases, sortValue) {
-        const sorted = [...releases];
-        switch (sortValue) {
-            case "title-asc":
-                sorted.sort((a, b) => a.titleLower.localeCompare(b.titleLower));
-                break;
-            case "artist-asc":
-                sorted.sort((a, b) => a.artistLower.localeCompare(b.artistLower));
-                break;
-            case "date-asc":
-                sorted.sort((a, b) => a.dateValue - b.dateValue);
-                break;
-            default:
-                sorted.sort((a, b) => b.dateValue - a.dateValue);
-        }
-        return sorted;
-    },
-
-    renderCards(releases) {
-        const grid = Utils.getElement("releases-grid");
-        if (!grid) return;
-
-        if (releases.length === 0) {
-            Utils.setHTML(grid, '<div class="col-12"><p class="text-center text-muted">No releases found.</p></div>');
-            return;
-        }
-
-        const html = releases
-            .map((r) => {
-                // Generate clean URLs - Netlify _redirects will rewrite these to query parameters
-                let detailUrl;
-                if (r.type === "album") {
-                    detailUrl = `/album/${r.id}`;
-                } else if (r.type === "ep") {
-                    detailUrl = `/ep/${r.id}`;
-                } else if (r.type === "collab") {
-                    detailUrl = `/collab/${r.id}`;
-                } else {
-                    detailUrl = `/single/${r.id}`;
-                }
-                return `
+    renderCards(e) {
+      let t = Utils.getElement("releases-grid");
+      if (!t) return;
+      if (0 === e.length) {
+        Utils.setHTML(t, '<div class="col-12"><p class="text-center text-muted">No releases found.</p></div>');
+        return
+      }
+      let a = e.map(e => {
+          let t = ["album", "ep"].includes(e.type) ? "album.html" : "single.html";
+          return `
                 <div class="col">
                     <div class="release-card h-100">
-                        <a href="${detailUrl}" class="text-decoration-none">
+                        <a href="/${t}?id=${e.id}" class="text-decoration-none">
                             <div class="release-card-image position-relative overflow-hidden rounded-top-3">
-                                <img src="${r.image}" alt="${r.title}" class="w-100 h-100 object-fit-cover" loading="lazy" />
-                                <span class="release-type-tag">${r.typeTag}</span>
+                                <img src="${e.image}" alt="${e.title}" class="w-100 h-100 object-fit-cover" loading="lazy" />
+                                <span class="release-type-tag">${e.typeTag}</span>
                                 <div class="release-card-overlay position-absolute inset-0 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center opacity-0">
                                     <i class="fas fa-play-circle fa-3x text-white"></i>
                                 </div>
                             </div>
                         </a>
                         <div class="release-card-content p-3 p-md-4">
-                            <h3 class="release-title text-truncate mb-2" title="${r.title}">${r.title}</h3>
-                            <p class="text-muted small text-truncate mb-2">${r.artist}</p>
-                            <p class="text-secondary small mb-0">${r.displayDate}</p>
+                            <h3 class="release-title text-truncate mb-2" title="${e.title}">${e.title}</h3>
+                            <p class="text-muted small text-truncate mb-2">${e.artist}</p>
+                            <p class="text-secondary small mb-0">${e.displayDate}</p>
                         </div>
                     </div>
                 </div>
-            `;
-            })
-            .join("");
-
-        Utils.setHTML(grid, html);
+            `
+        })
+        .join("");
+      Utils.setHTML(t, a)
     },
-
     updateDisplay() {
-        let filtered =
-            this.activeFilter === "all"
-                ? this.allReleases
-                : this.allReleases.filter((r) => r.type === this.activeFilter);
-
-        const sorted = this.sortReleases(filtered, this.activeSort);
-        this.renderCards(sorted);
+      let e = "all" === this.activeFilter ? this.allReleases : this.allReleases.filter(e => e.type === this.activeFilter),
+        t = this.sortReleases(e, this.activeSort);
+      this.renderCards(t)
     },
-
     async loadData() {
-        const loading = Utils.getElement("loading-state");
-        const error = Utils.getElement("error-state");
-        const noReleases = Utils.getElement("no-releases-message");
-
-        if (loading) Utils.removeClass(loading, "d-none");
-        if (error) Utils.addClass(error, "d-none");
-        if (noReleases) Utils.addClass(noReleases, "d-none");
-
-        try {
-            const data = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
-
-            if (data && Array.isArray(data) && data.length > 0) {
-                this.allReleases = this.prepareReleases(data);
-                this.updateDisplay();
-            } else {
-                if (noReleases) Utils.removeClass(noReleases, "d-none");
-            }
-        } catch (err) {
-            console.error("Error loading discography:", err);
-            if (error) Utils.removeClass(error, "d-none");
-        } finally {
-            if (loading) Utils.addClass(loading, "d-none");
-        }
+      let e = Utils.getElement("loading-state"),
+        t = Utils.getElement("error-state"),
+        a = Utils.getElement("no-releases-message");
+      e && Utils.removeClass(e, "d-none"), t && Utils.addClass(t, "d-none"), a && Utils.addClass(a, "d-none");
+      try {
+        let i = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
+        i && Array.isArray(i) && i.length > 0 ? (this.allReleases = this.prepareReleases(i), this.updateDisplay()) : a && Utils.removeClass(a, "d-none")
+      } catch (s) {
+        console.error("Error loading discography:", s), t && Utils.removeClass(t, "d-none")
+      } finally {
+        e && Utils.addClass(e, "d-none")
+      }
     },
-
     async init() {
-        const filterBtns = Utils.getElements(".filter-btn");
-        const sortDropdown = Utils.getElement("sort-by");
-
-        if (!filterBtns.length || !sortDropdown) return;
-
-        filterBtns.forEach((btn) => {
-            btn.addEventListener("click", () => {
-                filterBtns.forEach((b) => {
-                    Utils.removeClass(b, "filter-btn-active");
-                    Utils.addClass(b, "filter-btn-inactive");
-                });
-                Utils.addClass(btn, "filter-btn-active");
-                Utils.removeClass(btn, "filter-btn-inactive");
-                this.activeFilter = btn.dataset.category || "all";
-                this.updateDisplay();
-            });
-        });
-
-        sortDropdown.addEventListener("change", (e) => {
-            this.activeSort = e.target.value;
-            this.updateDisplay();
-        });
-
-        await this.loadData();
-    },
-};
-
-/**
- * DarkMode: Handles light/dark theme switching with localStorage persistence
- */
-const DarkMode = {
+      let e = Utils.getElements(".filter-btn"),
+        t = Utils.getElement("sort-by");
+      e.length && t && (e.forEach(t => {
+        t.addEventListener("click", () => {
+          e.forEach(e => {
+            Utils.removeClass(e, "filter-btn-active"), Utils.addClass(e, "filter-btn-inactive")
+          }), Utils.addClass(t, "filter-btn-active"), Utils.removeClass(t, "filter-btn-inactive"), this.activeFilter = t.dataset.category || "all", this.updateDisplay()
+        })
+      }), t.addEventListener("change", e => {
+        this.activeSort = e.target.value, this.updateDisplay()
+      }), await this.loadData())
+    }
+  },
+  DarkMode = {
     init() {
-        const savedPreference = localStorage.getItem(CONFIG.DARK_MODE.STORAGE_KEY);
-        const isDark = savedPreference === "true" || CONFIG.DARK_MODE.DEFAULT_DARK;
-
-        if (isDark) {
-            document.documentElement.classList.add("dark-mode");
-        }
-
-        window.toggleDarkMode = () => this.toggle();
+      ("true" === localStorage.getItem(CONFIG.DARK_MODE.STORAGE_KEY) || CONFIG.DARK_MODE.DEFAULT_DARK) && document.documentElement.classList.add("dark-mode"), window.toggleDarkMode = () => this.toggle()
     },
-
     toggle() {
-        const isDark = document.documentElement.classList.toggle("dark-mode");
-        localStorage.setItem(CONFIG.DARK_MODE.STORAGE_KEY, isDark);
-        return isDark;
+      let e = document.documentElement.classList.toggle("dark-mode");
+      return localStorage.setItem(CONFIG.DARK_MODE.STORAGE_KEY, e), e
     },
-
-    isDark() {
-        return document.documentElement.classList.contains("dark-mode");
-    },
-
-    updateToggleIcons(desktopBtn, mobileBtn) {
-        const isDark = this.isDark();
-        const icon = isDark ? "fa-sun" : "fa-moon";
-        const label = isDark ? "Light Mode" : "Dark Mode";
-
-        if (desktopBtn) {
-            desktopBtn.innerHTML = `<i class="fa-solid ${icon}"></i>`;
-        }
-
-        if (mobileBtn) {
-            mobileBtn.innerHTML = `<i class="fa-solid ${icon}"></i> ${label}`;
-        }
-    },
-};
-
-/**
- * ImageOptimizer: Automatically converts images to WebP format where supported
- */
-const ImageOptimizer = {
+    isDark: () => document.documentElement.classList.contains("dark-mode"),
+    updateToggleIcons(e, t) {
+      let a = this.isDark(),
+        i = a ? "fa-sun" : "fa-moon";
+      e && (e.innerHTML = `<i class="fa-solid ${i}"></i>`), t && (t.innerHTML = `<i class="fa-solid ${i}"></i> ${a?"Light Mode":"Dark Mode"}`)
+    }
+  },
+  ImageOptimizer = {
     init() {
-        const allImgs = Utils.getElements("img, img[data-src]");
-        allImgs.forEach((img) => Utils.optimizeImage(img));
-
-        const observer = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                mutation.addedNodes.forEach((node) => {
-                    if (node.tagName === "IMG") {
-                        Utils.optimizeImage(node);
-                    } else if (node.querySelectorAll) {
-                        node.querySelectorAll("img").forEach((img) => Utils.optimizeImage(img));
-                    }
-                });
-            });
-        });
-
-        observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-        });
-    },
-};
-
-/**
- * DetailPage: Unified handler for single/album detail pages
- */
-const DetailPage = {
+      Utils.getElements("img, img[data-src]")
+        .forEach(e => Utils.optimizeImage(e));
+      new MutationObserver(e => {
+          e.forEach(e => {
+            e.addedNodes.forEach(e => {
+              "IMG" === e.tagName ? Utils.optimizeImage(e) : e.querySelectorAll && e.querySelectorAll("img")
+                .forEach(e => Utils.optimizeImage(e))
+            })
+          })
+        })
+        .observe(document.body, {
+          childList: !0,
+          subtree: !0
+        })
+    }
+  },
+  DetailPage = {
     allReleases: [],
-    
     typeMap: {
-        single: { display: "Single", types: ["single", "collab", "album-track"] },
-        album: { display: "Album", types: ["album", "ep"] },
+      single: {
+        display: "Single",
+        types: ["single", "collab", "album-track"]
+      },
+      album: {
+        display: "Album",
+        types: ["album", "ep"]
+      }
     },
-
-    async loadData(id, pageType) {
-        try {
-            const data = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
-            this.allReleases = data;
-            const types = this.typeMap[pageType].types;
-            return data.find((item) => item.id === id && types.includes(item.type));
-        } catch (err) {
-            console.error(`Error loading ${pageType} data:`, err);
-            return null;
-        }
+    async loadData(e, t) {
+      try {
+        let a = await Utils.fetchData(CONFIG.API.DISCOGRAPHY);
+        this.allReleases = a;
+        let i = this.typeMap[t].types;
+        return a.find(t => t.id === e && i.includes(t.type))
+      } catch (s) {
+        return console.error(`Error loading ${t} data:`, s), null
+      }
     },
-
-    getTypeDisplay(type) {
-        const maps = { single: "Single", collab: "Collaboration", "album-track": "Album Track", album: "Album", ep: "EP" };
-        return maps[type] || type;
-    },
-
-    renderTracks(albumId) {
-        const container = Utils.getElement("tracklist-container");
-        if (!container) return;
-        const prefix = albumId.split("-").slice(0, -1).join("-") || albumId;
-        const tracks = this.allReleases.filter((t) => t.type === "album-track" && t.id.startsWith(prefix));
-        if (!tracks.length) return;
-
-        const html = tracks.map((t, i) => `
+    getTypeDisplay: e => ({
+      single: "Single",
+      collab: "Collaboration",
+      "album-track": "Album Track",
+      album: "Album",
+      ep: "EP"
+    })[e] || e,
+    renderTracks(e) {
+      let t = Utils.getElement("tracklist-container");
+      if (!t) return;
+      let a = e.split("-")
+        .slice(0, -1)
+        .join("-") || e,
+        i = this.allReleases.filter(e => "album-track" === e.type && e.id.startsWith(a));
+      if (!i.length) return;
+      let s = i.map((e, t) => `
             <div class="track-item">
-                <div class="track-number">${i + 1}</div>
-                <div class="track-info"><div class="track-title">${t.title}</div><div class="track-artist">${t.artist}</div></div>
-                <div class="track-actions"><a href="/single/${t.id}" class="track-btn"><i class="fas fa-play"></i>Listen</a></div>
-            </div>`).join("");
-        Utils.setHTML(container, html);
+                <div class="track-number">${t+1}</div>
+                <div class="track-info"><div class="track-title">${e.title}</div><div class="track-artist">${e.artist}</div></div>
+                <div class="track-actions">
+                    <a href="/single.html?id=${e.id}" class="track-btn"><i class="fas fa-play"></i>Listen</a>
+                </div>
+            </div>`)
+        .join("");
+      Utils.setHTML(t, s)
     },
-
-    async display(id, pageType) {
-        const loading = Utils.getElement("loading-state");
-        const error = Utils.getElement("error-state");
-        const details = Utils.getElement(`${pageType}-details`);
-        
-        if (loading) Utils.removeClass(loading, "d-none");
-        if (error) Utils.addClass(error, "d-none");
-        if (details) Utils.addClass(details, "d-none");
-
-        const item = await this.loadData(id, pageType);
-        if (!item) {
-            if (loading) Utils.addClass(loading, "d-none");
-            if (error) Utils.removeClass(error, "d-none");
-            return;
-        }
-
-        const imageEl = Utils.getElement(`${pageType}-image`);
-        if (imageEl) { imageEl.src = item.image; imageEl.alt = item.title; }
-
-        Utils.setHTML(Utils.getElement(`${pageType}-title`), item.title);
-        Utils.setHTML(Utils.getElement(`${pageType}-artist`), item.artist);
-        Utils.setHTML(Utils.getElement(`${pageType}-date`), Utils.formatDate(item.releaseDate));
-        Utils.setHTML(Utils.getElement(`${pageType}-type`), this.getTypeDisplay(item.type));
-        Utils.setHTML(Utils.getElement(`${pageType}-type-text`), this.getTypeDisplay(item.type));
-
-        if (pageType === "album") {
-            Utils.setHTML(Utils.getElement("album-track-count"), this.allReleases.filter((t) => t.type === "album-track" && t.id.startsWith(id.split("-").slice(0, -1).join("-"))).length);
-            this.renderTracks(id);
-        }
-
-        const listenBtn = Utils.getElement("listen-btn");
-        if (listenBtn) listenBtn.href = item.listenLink;
-
-        if (loading) Utils.addClass(loading, "d-none");
-        if (details) {
-            Utils.removeClass(details, "d-none");
-            Utils.addClass(details, "fade-in");
-        }
-        document.title = `${item.title} | Ryze Tha Kidd`;
+    async display(e, t) {
+      let a = Utils.getElement("loading-state"),
+        i = Utils.getElement("error-state"),
+        s = Utils.getElement(`${t}-details`);
+      a && Utils.removeClass(a, "d-none"), i && Utils.addClass(i, "d-none"), s && Utils.addClass(s, "d-none");
+      let l = await this.loadData(e, t);
+      if (!l) {
+        a && Utils.addClass(a, "d-none"), i && Utils.removeClass(i, "d-none");
+        return
+      }
+      let r = Utils.getElement(`${t}-image`);
+      r && (r.src = l.image, r.alt = l.title), Utils.setHTML(Utils.getElement(`${t}-title`), l.title), Utils.setHTML(Utils.getElement(`${t}-artist`), l.artist), Utils.setHTML(Utils.getElement(`${t}-date`), Utils.formatDate(l.releaseDate)), Utils.setHTML(Utils.getElement(`${t}-type`), this.getTypeDisplay(l.type)), Utils.setHTML(Utils.getElement(`${t}-type-text`), this.getTypeDisplay(l.type)), "album" === t && (Utils.setHTML(Utils.getElement("album-track-count"), this.allReleases.filter(t => "album-track" === t.type && t.id.startsWith(e.split("-")
+          .slice(0, -1)
+          .join("-")))
+        .length), this.renderTracks(e));
+      let n = Utils.getElement("listen-btn");
+      n && (n.href = l.listenLink), a && Utils.addClass(a, "d-none"), s && (Utils.removeClass(s, "d-none"), Utils.addClass(s, "fade-in")), document.title = `${l.title} | Ryze Tha Kidd`
     },
-
     extractId() {
-        const params = new URLSearchParams(window.location.search);
-        const pathname = window.location.pathname;
-        const pathSegments = pathname.split('/').filter(s => s && !s.includes('.html'));
-        
-        if (params.has("id")) return params.get("id");
-        if (params.has("slug")) return params.get("slug");
-        return pathSegments.length > 0 ? pathSegments[pathSegments.length - 1] : null;
+      let e = new URLSearchParams(window.location.search),
+        t = window.location.pathname.split("/")
+        .filter(e => e && !e.includes(".html"));
+      return e.has("id") ? e.get("id") : e.has("slug") ? e.get("slug") : t.length > 0 ? t[t.length - 1] : null
     },
-
-    async init(pageType) {
-        const id = this.extractId();
-        if (!id) {
-            const error = Utils.getElement("error-state");
-            const loading = Utils.getElement("loading-state");
-            if (loading) Utils.addClass(loading, "d-none");
-            if (error) Utils.removeClass(error, "d-none");
-            return;
-        }
-        await this.display(id, pageType);
-    },
-};
-
-/**
- * VideoFAQ: Manages video FAQ accordion with questions and answers
- * Easy to add new videos and Q&A pairs - just edit the data array below
- */
-const VideoFAQ = {
-    // CONFIG: Edit this array to add/modify video FAQs
-    // To add a new video: add object with { videoId, title, thumbnail, watchUrl, questions: [...] }
-    // Each question object: { question: "Q?", answer: "A." }
-    data: [
-        {
-            videoId: "video-1",
-            title: "How to get an Official Artist Channel on YouTube with DistroKid",
-            thumbnail: "https://i.ytimg.com/vi/8dCv09a0tlM/maxresdefault.jpg",
-            watchUrl: "https://youtube.com/watch?v=8dCv09a0tlM",
-            questions: [
-                {
-                    question: "How do I do it?",
-                    answer: "Press the \"Watch Full Video\" button to get a full comprehensive guide. In short, distribute your music via DistroKid, claim your channel through the <a href=\"https://distrokid.com/YouTubeOfficialArtistChannels/?ref=globalmenu\" target=\"_blank\">YouTube Official Artist Channels</a> section, and follow the steps on screen.<br><br> Visit <a href=\"https://support.google.com/youtube/answer/7336634?hl=en-GB#zippy=%2Cprogramme-criteria-and-eligibility\" target=\"_blank\">Google's official guide article</a> to make sure you meet the current criteria. Here is DistroKid's own <a href=\"https://support.distrokid.com/hc/en-us/articles/360036924633-Claiming-an-Official-Artist-Channel-on-YouTube\" target=\"_blank\">guide</a> <br><br> This guide is only for DistroKid, you can do it with other distributors as well but the process may differ."
-                },
-                {
-                    question: "How long does it take to recieve the Official Artist Channel?",
-                    answer: "It varies! It can take up to 6 weeks after you initially claim your channel. Be patient and keep an eye on your email for updates from YouTube. If it has not been completed after 6 weeks, consider reaching out to <a href=\"https://support.distrokid.com/hc/en-us\" target=\"_blank\">DistroKid support</a> for assistance. Or, visit <a href=\"/contact\">my Contact page</a> to contact me and I will try to help."
-                },
-                {
-                    question: "Do I have to pay?",
-                    answer: "You do have to pay for DistroKid's distribution service, but claiming the Official Artist Channel through DistroKid is free of charge. Just make sure you have an active subscription with DistroKid to distribute your music. <br><br> Check DistroKid's <a href=\"https://distrokid.com/pricing/\" target=\"_blank\">pricing page</a> for more details on their plans."
-                }
-            ]
-        }
-    ],
-
+    async init(e) {
+      let t = this.extractId();
+      if (!t) {
+        let a = Utils.getElement("error-state"),
+          i = Utils.getElement("loading-state");
+        i && Utils.addClass(i, "d-none"), a && Utils.removeClass(a, "d-none");
+        return
+      }
+      await this.display(t, e)
+    }
+  },
+  VideoFAQ = {
+    data: [{
+      videoId: "video-1",
+      title: "How to get an Official Artist Channel on YouTube with DistroKid",
+      thumbnail: "https://i.ytimg.com/vi/8dCv09a0tlM/maxresdefault.jpg",
+      watchUrl: "https://youtube.com/watch?v=8dCv09a0tlM",
+      questions: [{
+        question: "How do I do it?",
+        answer: 'Press the "Watch Full Video" button to get a full comprehensive guide. In short, distribute your music via DistroKid, claim your channel through the <a href="https://distrokid.com/YouTubeOfficialArtistChannels/?ref=globalmenu" target="_blank">YouTube Official Artist Channels</a> section, and follow the steps on screen.<br><br> Visit <a href="https://support.google.com/youtube/answer/7336634?hl=en-GB#zippy=%2Cprogramme-criteria-and-eligibility" target="_blank">Google\'s official guide article</a> to make sure you meet the current criteria. Here is DistroKid\'s own <a href="https://support.distrokid.com/hc/en-us/articles/360036924633-Claiming-an-Official-Artist-Channel-on-YouTube" target="_blank">guide</a> <br><br> This guide is only for DistroKid, you can do it with other distributors as well but the process may differ.'
+      }, {
+        question: "How long does it take to recieve the Official Artist Channel?",
+        answer: 'It varies! It can take up to 6 weeks after you initially claim your channel. Be patient and keep an eye on your email for updates from YouTube. If it has not been completed after 6 weeks, consider reaching out to <a href="https://support.distrokid.com/hc/en-us" target="_blank">DistroKid support</a> for assistance. Or, visit <a href="/contact">my Contact page</a> to contact me and I will try to help.'
+      }, {
+        question: "Do I have to pay?",
+        answer: 'You do have to pay for DistroKid\'s distribution service, but claiming the Official Artist Channel through DistroKid is free of charge. Just make sure you have an active subscription with DistroKid to distribute your music. <br><br> Check DistroKid\'s <a href="https://distrokid.com/pricing/" target="_blank">pricing page</a> for more details on their plans.'
+      }]
+    }],
     renderAccordion() {
-        const container = Utils.getElement("faq-container");
-        if (!container) return;
-
-        if (this.data.length === 0) {
-            Utils.setHTML(container, '<p class="text-center text-muted">No FAQs available yet.</p>');
-            return;
-        }
-
-        let html = '<div class="accordion accordion-flush" id="faqAccordion">';
-
-        this.data.forEach((video, vidIndex) => {
-            const safeId = `faq-video-${video.videoId}`;
-            
-            html += `
+      let e = Utils.getElement("faq-container");
+      if (!e) return;
+      if (0 === this.data.length) {
+        Utils.setHTML(e, '<p class="text-center text-muted">No FAQs available yet.</p>');
+        return
+      }
+      let t = '<div class="accordion accordion-flush" id="faqAccordion">';
+      this.data.forEach((e, a) => {
+        let i = `faq-video-${e.videoId}`;
+        t += `
                 <div class="accordion-item faq-video-item bg-transparent border-0 mb-4">
                     <div class="accordion-header">
-                        <button class="faq-video-card p-0 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#${safeId}" aria-expanded="false" aria-controls="${safeId}">
+                        <button class="faq-video-card p-0 border-0 w-100" type="button" data-bs-toggle="collapse" data-bs-target="#${i}" aria-expanded="false" aria-controls="${i}">
                             <div class="row g-0 align-items-center">
                                 <div class="col-5 col-md-4">
                                     <div class="faq-thumbnail-wrapper">
-                                        <img src="${video.thumbnail}" class="faq-thumbnail" alt="${video.title}" loading="lazy">
+                                        <img src="${e.thumbnail}" class="faq-thumbnail" alt="${e.title}" loading="lazy">
                                         <div class="play-overlay"><i class="fas fa-play-circle"></i></div>
                                     </div>
                                 </div>
                                 <div class="col-7 col-md-8 p-3 p-md-4">
-                                    <h3 class="faq-title fw-bold mb-0">${video.title}</h3>
-                                    <small class="faq-questions-count d-block mt-2"><i class="fas fa-chevron-down"></i> ${video.questions.length} questions</small>
+                                    <h3 class="faq-title fw-bold mb-0">${e.title}</h3>
+                                    <small class="faq-questions-count d-block mt-2"><i class="fas fa-chevron-down"></i> ${e.questions.length} questions</small>
                                 </div>
                             </div>
                         </button>
                     </div>
-                    <div id="${safeId}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                    <div id="${i}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                         <div class="faq-content-wrapper">
-                            <div class="faq-questions-list">`;
-
-            video.questions.forEach((qa, qaIndex) => {
-                const answerAccordionId = `${safeId}-qa-${qaIndex}`;
-                html += `
+                            <div class="faq-questions-list">`, e.questions.forEach((e, a) => {
+          let s = `${i}-qa-${a}`;
+          t += `
                                 <div class="faq-qa-item">
-                                    <button class="faq-question-btn" type="button" data-bs-toggle="collapse" data-bs-target="#${answerAccordionId}" aria-expanded="false" aria-controls="${answerAccordionId}">
+                                    <button class="faq-question-btn" type="button" data-bs-toggle="collapse" data-bs-target="#${s}" aria-expanded="false" aria-controls="${s}">
                                         <div class="faq-question-content">
                                             <i class="fas fa-question-circle faq-question-icon"></i>
-                                            <span class="faq-question-text">${qa.question}</span>
+                                            <span class="faq-question-text">${e.question}</span>
                                         </div>
                                         <i class="fas fa-chevron-down faq-chevron"></i>
                                     </button>
-                                    <div id="${answerAccordionId}" class="collapse faq-answer-collapse">
+                                    <div id="${s}" class="collapse faq-answer-collapse">
                                         <div class="faq-answer-content">
                                             <i class="fas fa-lightbulb faq-answer-icon"></i>
-                                            <p class="faq-answer-text">${qa.answer}</p>
+                                            <p class="faq-answer-text">${e.answer}</p>
                                         </div>
                                     </div>
-                                </div>`;
-            });
-
-            html += `
+                                </div>`
+        }), t += `
                             </div>
                             <div class="faq-video-link">
-                                <a href="${video.watchUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                                <a href="${e.watchUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
                                     <i class="fas fa-play me-2"></i> Watch Full Video
                                 </a>
                             </div>
                         </div>
                     </div>
-                </div>`;
-        });
-
-        html += '</div>';
-        Utils.setHTML(container, html);
+                </div>`
+      }), t += "</div>", Utils.setHTML(e, t)
     },
-
     async init() {
-        const container = Utils.getElement("faq-container");
-        const loading = Utils.getElement("faq-loading");
-        const error = Utils.getElement("faq-error");
-
-        if (!container) {
-            console.error("VideoFAQ.init() - No container found!");
-            return;
-        }
-
-        try {
-            if (loading) Utils.removeClass(loading, "d-none");
-            if (error) Utils.addClass(error, "d-none");
-            
-            // Simulate small delay for better UX
-            await new Promise(resolve => setTimeout(resolve, 300));
-            
-            this.renderAccordion();
-            if (loading) Utils.addClass(loading, "d-none");
-        } catch (err) {
-            console.error("Error initializing FAQ:", err);
-            if (loading) Utils.addClass(loading, "d-none");
-            if (error) Utils.removeClass(error, "d-none");
-        }
+      let e = Utils.getElement("faq-container"),
+        t = Utils.getElement("faq-loading"),
+        a = Utils.getElement("faq-error");
+      if (!e) {
+        console.error("VideoFAQ.init() - No container found!");
+        return
+      }
+      try {
+        t && Utils.removeClass(t, "d-none"), a && Utils.addClass(a, "d-none"), await new Promise(e => setTimeout(e, 300)), this.renderAccordion(), t && Utils.addClass(t, "d-none")
+      } catch (i) {
+        console.error("Error initializing FAQ:", i), t && Utils.addClass(t, "d-none"), a && Utils.removeClass(a, "d-none")
+      }
     }
-};
-
-/**
- * SinglePage: Initializes detail page for singles
- */
-const SinglePage = {
-    init: () => DetailPage.init("single"),
-};
-
-/**
-
- * AlbumPage: Initializes detail page for albums
- */
-const AlbumPage = {
-    init: () => DetailPage.init("album"),
-};
-
-/**
- * App: Main application orchestrator
- * Coordinates initialization of all modules in proper order
- */
-const App = {
+  },
+  SinglePage = {
+    init: () => DetailPage.init("single")
+  },
+  AlbumPage = {
+    init: () => DetailPage.init("album")
+  },
+  App = {
     async init() {
-        try {
-            const currentPage = window.location.pathname.toLowerCase();
-            
-            // Handle clean URLs for local development (Netlify.toml handles this on production)
-            // Convert /single/id, /album/id, /ep/id, /collab/id to ?id=id format
-            // NOTE: We must actually NAVIGATE to the HTML file, not just replaceState,
-            // because replaceState doesn't trigger a page load or data refresh
-            const pathSegments = currentPage.split('/').filter(s => s && !s.includes('.html'));
-            
-            if (pathSegments.length >= 2) {
-                const pageType = pathSegments[pathSegments.length - 2];
-                const itemId = pathSegments[pathSegments.length - 1];
-                
-                if (['single', 'album', 'ep', 'collab'].includes(pageType) && !window.location.search.includes('id=')) {
-                    // Determine which HTML file to load based on page type
-                    const htmlFile = pageType === 'album' || pageType === 'ep' ? 'album.html' : 'single.html';
-                    const newUrl = `/${htmlFile}?id=${itemId}`;
-                    // Actually navigate to the page - don't just replaceState
-                    window.location.href = newUrl;
-                    return; // Stop execution, page will reload
-                }
-            }
-            
-            // Initialize UX features early
-            Utils.addScrollToTopButton();
-            this.injectAnimationStyles();
-            FormValidator.initForm();
-
-            DarkMode.init();
-            ImageOptimizer.init();
-            await Navbar.load();
-
-            // Check if it's a detail page
-            // Supports: old format (album.html, single.html) and clean URLs (/album/*, /single/*, /ep/*, /collab/*)
-            const isSingleDetailPage = currentPage.includes("single.html") ||  
-                                      pathSegments.includes("single") || 
-                                      pathSegments.includes("collab");
-            const isAlbumDetailPage = currentPage.includes("album.html") || 
-                                     pathSegments.includes("album") || 
-                                     pathSegments.includes("ep");
-            const isFAQPage = currentPage.includes("faq.html") || currentPage.includes("/faq") || pathSegments.includes("faq");
-
-            if (isSingleDetailPage) {
-                await Footer.load();
-                await SinglePage.init();
-            } else if (isAlbumDetailPage) {
-                await Footer.load();
-                await AlbumPage.init();
-            } else if (isFAQPage) {
-                await Footer.load();
-                await VideoFAQ.init();
-            } else {
-                await Promise.all([
-                    Footer.load(),
-                    HomePage.loadLatestRelease(),
-                    HomePage.loadYouTubeVideo(),
-                    HomePage.setupSmoothScroll(),
-                    Discography.init(),
-                ]);
-            }
-
-        } catch (err) {
-            console.error("Application initialization error:", err);
-            Utils.showNotification('An error occurred. Please refresh the page.', 'error', 5000);
+      try {
+        let e = window.location.pathname.toLowerCase(),
+          t = e.split("/")
+          .filter(e => e && !e.includes(".html"));
+        if (t.length >= 2) {
+          let a = t[t.length - 2],
+            i = t[t.length - 1];
+          if (["single", "album", "ep", "collab"].includes(a)) {
+            let s = ["album", "ep"].includes(a) ? "album.html" : "single.html";
+            window.location.href = `/${s}?id=${i}`;
+            return
+          }
         }
+        Utils.addScrollToTopButton(), this.injectAnimationStyles(), FormValidator.initForm(), DarkMode.init(), ImageOptimizer.init(), await Navbar.load();
+        let l = e.includes("single.html") || t.includes("single") || t.includes("collab"),
+          r = e.includes("album.html") || t.includes("album") || t.includes("ep"),
+          n = e.includes("faq.html") || e.includes("/faq") || t.includes("faq");
+        l ? (await Footer.load(), await SinglePage.init()) : r ? (await Footer.load(), await AlbumPage.init()) : n ? (await Footer.load(), await VideoFAQ.init()) : await Promise.all([Footer.load(), HomePage.loadLatestRelease(), HomePage.loadYouTubeVideo(), HomePage.setupSmoothScroll(), Discography.init(), ])
+      } catch (o) {
+        console.error("Application initialization error:", o), Utils.showNotification("An error occurred. Please refresh the page.", "error", 5e3)
+      }
     },
-
     injectAnimationStyles() {
-        if (document.getElementById('rtk-animations')) return;
-        const style = document.createElement('style');
-        style.id = 'rtk-animations';
-        style.textContent = `
+      if (document.getElementById("rtk-animations")) return;
+      let e = document.createElement("style");
+      e.id = "rtk-animations", e.textContent = `
             @keyframes slideIn {
                 from { transform: translateX(400px); opacity: 0; }
                 to { transform: translateX(0); opacity: 1; }
@@ -1263,14 +853,9 @@ const App = {
                 transform: scale(1.1);
                 box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
             }
-        `;
-        document.head.appendChild(style);
-    },
-};
-
-/**
- * Initialize app when DOM is ready
- */
+        `, document.head.appendChild(e)
+    }
+  };
 document.addEventListener("DOMContentLoaded", () => {
-    App.init();
+  App.init()
 });

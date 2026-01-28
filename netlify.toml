@@ -1,72 +1,46 @@
 # =========================================================================
-# SECURITY HEADERS
-# =========================================================================
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "SAMEORIGIN"
-    X-XSS-Protection = "1; mode=block"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=(), payment=()"
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' cdnjs.cloudflare.com; img-src 'self' data: https:; font-src 'self' cdnjs.cloudflare.com; connect-src 'self' gist.githubusercontent.com; frame-src 'self' www.youtube.com; form-action 'self'; base-uri 'self'; object-src 'none'"
-
-# =========================================================================
 # PRIMARY REDIRECT RULES (Prioritized 301 Permanent Redirects)
 # =========================================================================
 
 [[redirects]]
-  # Rule 1: Redirect old Netlify subdomain to the canonical domain (For SEO migration)
+  # Rule 1: Redirect old Netlify subdomain to the canonical domain
   from = "https://ryzethakidd.netlify.app/*"
   to = "https://www.ryzethakidd.com/:splat"
   status = 301
   force = true
 
 [[redirects]]
-  # Rule 2: Redirect HTTP (all domains) to secure HTTPS (www.ryzethakidd.com)
+  # Rule 2: Redirect HTTP (all domains) to secure HTTPS
   from = "http://*"
   to = "https://www.ryzethakidd.com/:splat"
   status = 301
   force = true
 
-# ---
 # =========================================================================
-# REWRITE RULES (For clean URLs and functionality)
+# REWRITE RULES (Modified for "Ugly" Single/Album URLs)
 # =========================================================================
 
 [[redirects]]
-  # Rule 3: Clean URLs for static pages (about, contact, faq, etc)
-  # /about → /about.html, /contact → /contact.html, etc.
-  # This rule must come AFTER the specific discography routes above
+  # EXCLUSION: If the path is /single or /album exactly, do NOT rewrite to .html.
+  # This forces the server to look for a folder instead of the file, making /single 404
+  # and requiring /single.html
+  from = "/single"
+  to = "/single"
+  status = 200
+
+[[redirects]]
+  from = "/album"
+  to = "/album"
+  status = 200
+
+[[redirects]]
+  # Rule 3: Clean URLs for OTHER static pages (about, contact, etc)
   from = "/:page"
   to = "/:page.html"
   status = 200
 
 [[redirects]]
-  # Rule 4: SUCCESS PAGE REWRITE (Internal rewrite for clean form submission URL)
-  from = "/success"
-  to = "/components/success.html"
-  status = 200
-
-[[redirects]]
-  # Rule 5: SEO File Cleanup (Serve robots.txt and sitemap.xml directly)
-  from = "/robots.txt"
-  to = "/robots.txt"
-  status = 200
-
-[[redirects]]
-  from = "/sitemap.xml"
-  to = "/sitemap.xml"
-  status = 200
-
-# ---
-# =========================================================================
-# FALLBACK (Custom 404 Page)
-# =========================================================================
-
-[[redirects]]
-  # Rule 6: Custom 404 Page (Serve a dedicated 404 page for any unhandled path)
+  # Rule 6: Custom 404 Page
   from = "/*"
   to = "/404.html"
   status = 404
