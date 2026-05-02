@@ -1,49 +1,85 @@
 # Ryze Tha Kidd Official Platform
 
-This is the source code for my official website. I built this platform to serve as the central hub for my music releases, project updates, and my journey as an artist. My main goal is to keep the site fast, modern, and easy to navigate on any device.
+[![Status](https://img.shields.io/badge/Status-Live-brightgreen)](https://ryzethakidd.com)
+[![Version](https://img.shields.io/badge/Version-3.2.2-blue)](https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website)
+
+The official source code for the **Ryze Tha Kidd** ecosystem. This platform serves as a centralized hub for music releases, project archives, and artist updates. Engineered for high performance, accessibility, and a modern cinematic aesthetic.
 
 ---
 
-### Tech Stack
+## 🚀 Tech Stack
 
-I’ve built the site using modern web standards to keep things lightweight and maintainable.
+Designed with a focus on lightweight architecture and maintainability:
 
-* **Frontend:** HTML5, CSS3, and JavaScript.
-* **Framework:** Bootstrap 5 (I recently migrated from Tailwind CSS for better consistency and a cleaner structure).
-* **Data Handling:** I use JavaScript to parse JSON data, which allows me to render my discography dynamically without duplicating code.
-* **Deployment:** Hosted and automated through Netlify.
-* **Version Control:** Managed with Git and hosted here on GitHub.
-
----
-
-### Core Features
-
-* **Dynamic Discography:** A full catalog of my music with custom sorting options for date, title, or artist.
-* **Responsive UI:** The entire interface is optimized for a seamless experience whether you're on a phone, tablet, or desktop.
-* **Theme Customization:** I’ve integrated a Light and Dark mode toggle that works across the whole site.
-* **Community FAQ:** A dedicated space where I answer the most common questions I get from my community.
+*   **Frontend:** HTML5, CSS3, ES6+ JavaScript.
+*   **Framework:** [Bootstrap 5](https://getbootstrap.com/).
+*   **Data Architecture:** JSON-driven dynamic rendering for automated discography management.
+*   **Infrastructure:** Version control via **Git**; continuous deployment via **Netlify**.
 
 ---
 
-### Version History
+## 💎 Core Features
 
-**v3.0 - The Evolution (Current)**
-This was a complete ground-up reconstruction. I moved the design system over to Bootstrap 5, added the Dark Mode toggle, and launched the new community FAQ section.
-
-**v2.1.5 - Performance Overhaul**
-I focused heavily on speed and fixing mobile "jank." I implemented deferred script loading, CSS preloading, and lazy-loading for heavy elements like YouTube iframes to make the site feel much snappier.
-
-**v1.1.5 - Dynamic Architecture**
-This was a major technical shift where I moved from static HTML files to a data-driven model. I created single and album templates that pull content dynamically, which makes the site much easier for me to update.
+*   **Dynamic Discography:** A data-driven catalog featuring advanced filtering by release date, title, and artist.
+*   **Cross-Platform Optimization:** Fully responsive UI/UX tailored for mobile, tablet, and desktop environments.
+*   **User Personalization:** Integrated global theme engine supporting Light, Dark, and System-preferred modes.
+*   **Interactive FAQ:** A dedicated community resource for artist information and platform support.
 
 ---
 
-### Getting Started
+## 📋 Release Notes
 
-#### Prerequisites
-I recommend using VS Code and a local web server (like the "Live Server" extension) to work on this project.
+### v3.2.2: Current Release (Live)
+This update focuses on refining HTML readability and optimizing asset delivery pipelines to enhance the end-user experience.
 
-#### Installation
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website.git](https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website.git)
+*   **Code Refactoring:** Standardized HTML formatting with comprehensive documentation/comments.
+*   **Performance Tuning:** Minified CSS and JavaScript assets to significantly reduce initial load times.
+
+---
+
+### 🛤️ Future Roadmap (In Development)
+*   **Visual Overhaul:** Implementation of a new color palette and standardized spatial system.
+*   **RTK+ Ecosystem:** Firebase-backed user accounts for high-fidelity (FLAC/ZIP) downloads.
+*   **Asset Modernization:** Transitioning to **WebP** as the global image standard.
+
+---
+
+<details>
+<summary><b>View Version History (Changelog)</b></summary>
+
+#### v3.2.1
+*   **Security & Stability:** Hardened site infrastructure against common vulnerabilities.
+*   **Logic Refactoring:** Streamlined codebase for improved maintainability.
+
+#### v3.2.0: Feature Surge
+*   Rebuilt UI/UX for a cleaner, more cinematic layout.
+*   Integrated global search and advanced discography filtering.
+*   Implemented AVIF → WebP image fallback logic.
+
+#### v3.1.0: Unified Update
+*   Reduced total site weight from 13.8MB to 432KB (96% reduction).
+*   Standardized interactive elements for a consistent "Look and Feel."
+
+#### v3.0: The Evolution
+*   Primary migration from Tailwind CSS to Bootstrap 5.
+*   Launch of the dedicated Dark Mode engine and new navigation flow.
+</details>
+
+---
+
+## 🛠️ Getting Started
+
+### Prerequisites
+*   **Editor:** [Visual Studio Code](https://code.visualstudio.com/) recommended.
+*   **Environment:** A local development server (e.g., VS Code "Live Server" extension).
+
+### Installation
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website.git](https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website.git)
+    ```
+2.  **Navigate to the directory:**
+    ```bash
+    cd Ryze-Tha-Kidd-Website
+    ```
+3.  **Launch:** Open `index.html` via your local server.
