@@ -1,68 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>FAQ | Ryze Tha Kidd - Music, Collaborations & Videos</title>
-    <meta name="description" content="Find answers to frequently asked questions about Ryze Tha Kidd's music, collaborations, upcoming projects, and video content." />
-    <meta name="keywords" content="Ryze Tha Kidd FAQ, questions, music collaborations, videos" />
-    <meta name="author" content="Ryze Tha Kidd" />
-    <link rel="canonical" href="https://www.ryzethakidd.com/faq" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
-    <link href="./css/custom.css" rel="stylesheet" />
-    <link href="./css/theme.css" rel="stylesheet" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://www.ryzethakidd.com/faq" />
-    <meta property="og:title" content="FAQ | Ryze Tha Kidd" />
-    <meta property="og:description" content="Frequently asked questions about Ryze Tha Kidd's music, collaborations, and videos." />
-    <meta property="og:locale" content="en_GB" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@ryzethakidd" />
-    <meta name="twitter:creator" content="@ryzethakidd" />
-    <meta name="twitter:title" content="FAQ | Ryze Tha Kidd" />
-    <meta name="twitter:description" content="Frequently asked questions about Ryze Tha Kidd's music and collaborations." />
-    <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
-    <link rel="icon" type="image/png" sizes="192x192" href="/WebpageIcon.png">
-  </head>
-  <body class="d-flex flex-column min-vh-100">
-    <canvas id="interactive-bg" aria-hidden="true">
-    </canvas>
-    <div id="navbar-container">
-    </div>
-    <main id="main-content" class="flex-grow-1">
-      <section class="page-hero text-center text-lg-start">
-        <div class="container">
-          <p class="eyebrow">FAQ</p>
-          <h1 class="display-4 fw-black mb-3">
-            <span class="text-gradient">Frequently</span> Asked Questions
-          </h1>
-          <p class="fs-5 max-w-text text-muted">
-            Find answers to common questions and dive deeper into the creative process.
-          </p>
+
+<head>
+  <!-- Basic Meta Tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FAQ | Ryze Tha Kidd - Music, Collaborations & Videos</title>
+  <meta name="description" content="Find answers to frequently asked questions about Ryze Tha Kidd's music, collaborations, upcoming projects, and video content." />
+  <meta name="keywords" content="Ryze Tha Kidd FAQ, questions, music collaborations, videos" />
+  <meta name="author" content="Ryze Tha Kidd" />
+  <link rel="canonical" href="https://www.ryzethakidd.com/faq" />
+
+  <!-- Stylesheets -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" rel="stylesheet" />
+  <link href="./css/custom.css" rel="stylesheet" />
+  <link href="./css/theme.css" rel="stylesheet" />
+
+  <!-- Social Meta (Open Graph / Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.ryzethakidd.com/faq" />
+  <meta property="og:title" content="FAQ | Ryze Tha Kidd" />
+  <meta property="og:description" content="Frequently asked questions about Ryze Tha Kidd's music, collaborations, and videos." />
+  <meta property="og:locale" content="en_GB" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:site" content="@ryzethakidd" />
+  <meta name="twitter:creator" content="@ryzethakidd" />
+  <meta name="twitter:title" content="FAQ | Ryze Tha Kidd" />
+  <meta name="twitter:description" content="Frequently asked questions about Ryze Tha Kidd's music and collaborations." />
+
+  <!-- Icons -->
+  <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
+  <link rel="icon" type="image/png" sizes="192x192" href="/WebpageIcon.png">
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- Interactive Background -->
+  <canvas id="interactive-bg" aria-hidden="true"></canvas>
+
+  <!-- Navigation -->
+  <div id="navbar-container"></div>
+
+  <!-- Main Content -->
+  <main id="main-content" class="flex-grow-1">
+
+    <!-- Header Section -->
+    <section class="page-hero text-center text-lg-start">
+      <div class="container">
+        <p class="eyebrow">FAQ</p>
+        <h1 class="display-4 fw-black mb-3">
+          <span class="text-gradient">Frequently</span> Asked Questions
+        </h1>
+        <p class="fs-5 max-w-text text-muted">
+          Find answers to common questions and dive deeper into the creative process.
+        </p>
+      </div>
+    </section>
+
+    <!-- FAQ Content Section -->
+    <section class="pb-5" id="faq-list">
+      <div class="container" style="max-width: 900px;">
+        
+        <!-- FAQ Items Grid (Injected via JS) -->
+        <div id="faq-container" class="faq-videos-grid"></div>
+
+        <!-- Loading State -->
+        <div id="faq-loading" class="text-center py-5 d-none">
+          <div class="spinner-border text-accent" role="status">
+            <span class="visually-hidden">Loading FAQs...</span>
+          </div>
         </div>
-      </section>
-      <section class="pb-5" id="faq-list">
-        <div class="container" style="max-width: 900px;">
-          <div id="faq-container" class="faq-videos-grid">
-          </div>
-          <div id="faq-loading" class="text-center py-5 d-none">
-            <div class="spinner-border text-accent" role="status">
-              <span class="visually-hidden">Loading FAQs...</span>
-            </div>
-          </div>
-          <div id="faq-error" class="alert alert-warning d-none" role="alert">
-            <i class="fas fa-exclamation-triangle me-2">
-            </i> Unable to load FAQs. Please try again later.
-          </div>
+
+        <!-- Error State -->
+        <div id="faq-error" class="alert alert-warning d-none" role="alert">
+          <i class="fas fa-exclamation-triangle me-2"></i> 
+          Unable to load FAQs. Please try again later.
         </div>
-      </section>
-    </main>
-    <div id="footer-container">
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js">
-    </script>
-    <script src="js/main.js" defer>
-    </script>
-  </body>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-container"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+  <script src="js/main.js" defer></script>
+
+</body>
+
 </html>
