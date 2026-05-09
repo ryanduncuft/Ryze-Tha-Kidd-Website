@@ -1,7 +1,7 @@
 # Ryze Tha Kidd Official Platform
 
 [![Status](https://img.shields.io/badge/Status-Live-brightgreen)](https://ryzethakidd.com)
-[![Version](https://img.shields.io/badge/Version-3.3.0-blue)](https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website/releases/tag/v3.3.0)
+[![Version](https://img.shields.io/badge/Version-3.3.1-blue)](https://github.com/ryanduncuft/Ryze-Tha-Kidd-Website/releases/tag/v3.3.1)
 
 The official source code for the **Ryze Tha Kidd** ecosystem. This platform serves as a centralized hub for music releases, project archives, and artist updates. Engineered for high performance, accessibility, and a modern cinematic aesthetic.
 
