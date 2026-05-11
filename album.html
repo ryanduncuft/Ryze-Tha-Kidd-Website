@@ -1,1 +1,111 @@
-<!doctypehtml><html lang=en><meta charset=UTF-8><title>Album Details | Ryze Tha Kidd</title><meta content="noindex, nofollow"name=robots><meta content="width=device-width,initial-scale=1"name=viewport><link href=https://cdnjs.cloudflare.com rel=preconnect><link href=/WebpageIcon.ico rel=icon type=image/x-icon><link href=https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css rel=stylesheet><link href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css rel=stylesheet><link href=./css/site.css rel=stylesheet><canvas aria-hidden=true id=interactive-bg></canvas><header id=navbar-container></header><div class="d-flex flex-column position-relative"><main class="w-100 container flex-grow-1 py-5 py-lg-8 py-md-7"id=main-content><header class="mb-5 page-hero text-center text-lg-start"><p class=eyebrow>Release<h1 class="text-gradient fw-black display-5 mb-2">Album / EP Details</h1><p class="text-muted max-w-text mb-0">Full metadata, listening links, and tracklist.</header><div class="text-muted mt-8 text-center"id=loading-state><i class="fas fa-compact-disc fa-spin fs-1 text-gradient"></i><p class="fs-5 mt-4">Loading Album...</div><div class="text-center mt-8 d-none text-danger"id=error-state><p class=fs-5><strong>ERROR 404:</strong> Album not found. Please check the URL.</p><a class="btn btn-primary mt-4"href=/discography>Back to Discography</a></div><section class=d-none id=album-details><div class="row g-5 g-lg-8 align-items-start mb-7 mb-lg-10 mb-md-9"><div class="col-12 col-lg-5"><div class=album-cover-container><img alt="Album Cover"class="w-100 rounded-3 shadow-lg"id=album-image src=""><div class="album-type-badge mt-3"><span class="fs-6 badge bg-gradient"id=album-type></span></div></div></div><div class="col-12 col-lg-7"><div class=album-info><h1 class="text-gradient fw-black display-4 display-md-3 lh-1 mb-4"id=album-title></h1><p class="text-muted fs-4 fs-md-3 fw-light mb-5"id=album-artist><div class="album-metadata mb-6"><div class="row g-3 g-md-4"><div class=col-6><small class="text-muted d-block fw-bold mb-2 text-uppercase">Release Date</small><p class="fs-6 mb-0"id=album-date></div><div class=col-6><small class="text-muted d-block fw-bold mb-2 text-uppercase">Type</small><p class="fs-6 mb-0 text-capitalize"id=album-type-text></div><div class=col-6><small class="text-muted d-block fw-bold mb-2 text-uppercase">Track Count</small><p class="fs-6 mb-0"id=album-track-count></div></div></div><div class="d-flex flex-column album-actions flex-md-row gap-3"><a class="btn btn-lg btn-primary"href=# id=listen-btn rel="noopener noreferrer"target=_blank><i class="fas me-2 fa-play-circle"></i> Listen Now </a><a class="btn btn-lg btn-outline-primary"href=/discography><i class="fas me-2 fa-arrow-left"></i> Back to Discography</a></div></div></div></div><div class="row g-5 g-lg-8"><div class=col-12><div class="album-tracklist border-subtle card surface"><div class="card-body p-5 p-md-6"><h3 class="fw-bold h4 mb-5">Tracklist</h3><div class=tracklist id=tracklist-container></div></div></div></div></div></section></main><footer id=footer-container></footer></div><script src=https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js></script><script src=js/main.js defer></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Album Details | Ryze Tha Kidd</title>
+
+    <meta name="robots" content="noindex, nofollow">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Performance -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/site.css">
+</head>
+
+<body>
+    <canvas aria-hidden="true" id="interactive-bg"></canvas>
+
+    <header id="navbar-container"></header>
+
+    <div class="d-flex flex-column position-relative">
+        <main class="w-100 container flex-grow-1 release-page" id="main-content">
+            <header class="release-page-hero page-hero text-center text-lg-start">
+                <p class="eyebrow">Release</p>
+                <h1 class="text-gradient fw-black display-5 mb-2">Album / EP Details</h1>
+                <p class="text-muted max-w-text mb-0">Full metadata, listening links, and tracklist.</p>
+            </header>
+
+            <!-- Loading State -->
+            <div class="text-muted mt-8 text-center" id="loading-state">
+                <i class="fas fa-compact-disc fa-spin fs-1 text-gradient"></i>
+                <p class="fs-5 mt-4">Loading Album...</p>
+            </div>
+
+            <!-- Error State -->
+            <div class="text-center mt-8 d-none text-danger" id="error-state">
+                <p class="fs-5"><strong>ERROR 404:</strong> Album not found. Please check the URL.</p>
+                <a class="btn btn-primary mt-4" href="/discography">Back to Discography</a>
+            </div>
+
+            <!-- Content Section -->
+            <section class="d-none" id="album-details">
+                <div class="row g-4 g-lg-5 align-items-start release-detail-grid">
+                    <div class="col-12 col-lg-5">
+                        <div class="album-cover-container">
+                            <img id="album-image" class="w-100 rounded-3 shadow-lg" src="" alt="Album Cover">
+                            <div class="album-type-badge mt-3">
+                                <span class="fs-6 badge bg-gradient" id="album-type"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-7">
+                        <div class="album-info">
+                            <h1 class="text-gradient fw-black display-4 display-md-3 lh-1 mb-3" id="album-title"></h1>
+                            <p class="text-muted fs-4 fs-md-3 fw-light mb-4" id="album-artist"></p>
+                            
+                            <div class="album-metadata">
+                                <div class="row g-3 g-md-4">
+                                    <div class="col-6">
+                                        <small class="text-muted d-block fw-bold mb-2 text-uppercase">Release Date</small>
+                                        <p class="fs-6 mb-0" id="album-date"></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block fw-bold mb-2 text-uppercase">Type</small>
+                                        <p class="fs-6 mb-0 text-capitalize" id="album-type-text"></p>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted d-block fw-bold mb-2 text-uppercase">Track Count</small>
+                                        <p class="fs-6 mb-0" id="album-track-count"></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-column album-actions flex-md-row gap-3">
+                                <a class="btn btn-lg btn-primary" href="#" id="listen-btn" rel="noopener noreferrer" target="_blank">
+                                    <i class="fas me-2 fa-play-circle"></i> Listen Now
+                                </a>
+                                <a class="btn btn-lg btn-outline-primary" href="/discography">
+                                    <i class="fas me-2 fa-arrow-left"></i> Back to Discography
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-4 release-support-grid">
+                    <div class="col-12">
+                        <div class="album-tracklist border-subtle card surface">
+                            <div class="card-body p-4 p-md-5">
+                                <h3 class="fw-bold h4 mb-4">Tracklist</h3>
+                                <div class="tracklist" id="tracklist-container"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer id="footer-container"></footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js" defer></script>
+</body>
+</html>
