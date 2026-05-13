@@ -33,6 +33,7 @@ coverage/
 # --- Sensitive Info ---
 .env*
 *.log
+*.txt
 
 # --- OS & IDE Files ---
 .DS_Store
