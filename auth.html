@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Registration | Ryze Tha Kidd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#9D00FF">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
+
+    <script>window.ARTIST_ID = "ryzethakidd";</script>
+    <script src="https://cdn.ryzethakidd.com/shared/main.js" defer></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <canvas aria-hidden="true" id="interactive-bg"></canvas>
+    <header id="navbar-container"></header>
+
+    <main class="flex-grow-1 py-5 d-flex flex-column align-items-center justify-content-center" id="main-content">
+        <div class="auth-wrapper mx-auto" id="auth-container">
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h1 class="fw-bold h3 mb-3">Create Account</h1>
+                    <div class="social-auth-btns">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <p class="small text-muted mb-3">or use your email for registration</p>
+                    <input type="text" placeholder="Full Name" required />
+                    <input type="email" placeholder="Email" required />
+                    <input type="password" placeholder="Password" required />
+                    <button class="btn btn-primary mt-3 px-5 rounded-pill" type="submit">Sign Up</button>
+                </form>
+            </div>
+
+            <div class="form-container sign-in-container">
+                <form action="#">
+                    <h1 class="fw-bold h3 mb-3">Sign In</h1>
+                    <div class="social-auth-btns">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <p class="small text-muted mb-3">Welcome back! Please login</p>
+                    <input type="email" placeholder="Email" required />
+                    <input type="password" placeholder="Password" required />
+                    <a href="#" class="d-block my-2 text-muted small text-decoration-none">Forgot password?</a>
+                    <button class="btn btn-primary px-5 rounded-pill" type="submit">Sign In</button>
+                </form>
+            </div>
+
+            <div class="auth-overlay-container d-none d-md-block">
+                <div class="auth-overlay">
+                    <div class="overlay-panel panel-left">
+                        <h2 class="fw-bold text-white">Welcome Back!</h2>
+                        <p class="small my-4">To stay connected with the community, please login with your info.</p>
+                        <button class="btn btn-outline-light rounded-pill px-5" id="showSignIn">Sign In</button>
+                    </div>
+                    <div class="overlay-panel panel-right">
+                        <h2 class="fw-bold text-white">Hello, Friend!</h2>
+                        <p class="small my-4">Enter your details and start your journey with us.</p>
+                        <button class="btn btn-outline-light rounded-pill px-5" id="showSignUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-container"></footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const signUpBtn = document.getElementById('showSignUp');
+            const signInBtn = document.getElementById('showSignIn');
+            const container = document.getElementById('auth-container');
+
+            signUpBtn.addEventListener('click', () => container.classList.add("active-right"));
+            signInBtn.addEventListener('click', () => container.classList.remove("active-right"));
+        });
+    </script>
+</body>
+</html>
