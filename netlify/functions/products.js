@@ -44,6 +44,12 @@ exports.handler = async (event) => {
             const price = prices.data.find(item => Number.isInteger(item.unit_amount));
             if (!price) return null;
 
+            // Set Stripe Product metadata `coming_soon` to "true" (or
+            // `status` to "coming_soon") to show the item without allowing a
+            // Checkout Session to be started from the storefront.
+            const metadataComingSoon = String(product.metadata.coming_soon || product.metadata.status || "").toLowerCase();
+            const comingSoon = metadataComingSoon === "true" || metadataComingSoon === "coming_soon";
+
             return {
                 id: product.id,
                 priceId: price.id,
@@ -53,7 +59,8 @@ exports.handler = async (event) => {
                 type: product.metadata.category || product.metadata.type || "Store item",
                 unitAmount: price.unit_amount,
                 currency: price.currency,
-                available: product.active && price.active
+                comingSoon,
+                available: product.active && price.active && !comingSoon
             };
         }))).filter(Boolean);
 
