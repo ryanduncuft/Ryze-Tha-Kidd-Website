@@ -20,6 +20,21 @@
 # REWRITE RULES (Modified for "Ugly" Single/Album URLs)
 # =========================================================================
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Store API: keep the public endpoints stable while proxying to Functions.
+[[redirects]]
+  from = "/api/store/products"
+  to = "/.netlify/functions/products"
+  status = 200
+
+[[redirects]]
+  from = "/api/store/create-checkout-session"
+  to = "/.netlify/functions/create-checkout-session"
+  status = 200
+
 [[redirects]]
   # EXCLUSION: If the path is /single or /album exactly, do NOT rewrite to .html.
   # This forces the server to look for a folder instead of the file, making /single 404
