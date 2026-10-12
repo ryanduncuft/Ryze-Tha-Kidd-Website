@@ -23,7 +23,6 @@ Designed with a focus on lightweight architecture and maintainability:
 *   **Dynamic Discography:** A data-driven catalog featuring advanced filtering by release date, title, and artist.
 *   **Cross-Platform Optimization:** Fully responsive UI/UX tailored for mobile, tablet, and desktop environments.
 *   **User Personalization:** Integrated global theme engine supporting Light, Dark, and System-preferred modes.
-*   **Interactive FAQ:** A dedicated community resource for artist information and platform support.
 
 ---
 
