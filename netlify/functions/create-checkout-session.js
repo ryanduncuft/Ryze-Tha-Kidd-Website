@@ -68,8 +68,40 @@ exports.handler = async (event) => {
         const session = await stripe.checkout.sessions.create({
             mode: "payment",
             line_items: [{ price: price.id, quantity: 1 }],
-            success_url: `${siteUrl}/store?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `${siteUrl}/store?checkout=cancel`,
+            
+            // Collect the customer's delivery shipping address
+            shipping_address_collection: {
+                allowed_countries: ["GB", "US", "CA", "AU", "DE", "FR", "IE", "NL", "NZ", "SE", "NO", "DK"]
+            },
+
+            // Built-in dynamic shipping options (Free for UK, £7.99 for International)
+            shipping_options: [
+                {
+                    shipping_rate_data: {
+                        type: "fixed_amount",
+                        fixed_amount: { amount: 0, currency: "gbp" },
+                        display_name: "UK Standard Shipping",
+                        delivery_estimate: {
+                            minimum: { unit: "business_day", value: 2 },
+                            maximum: { unit: "business_day", value: 4 }
+                        }
+                    }
+                },
+                {
+                    shipping_rate_data: {
+                        type: "fixed_amount",
+                        fixed_amount: { amount: 799, currency: "gbp" }, // £7.99 in pence
+                        display_name: "International Standard Shipping",
+                        delivery_estimate: {
+                            minimum: { unit: "business_day", value: 5 },
+                            maximum: { unit: "business_day", value: 10 }
+                        }
+                    }
+                }
+            ],
+
+            success_url: `${siteUrl}/store.html?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${siteUrl}/store.html?checkout=cancel`,
             metadata: { productId: product.id, priceId: price.id }
         });
 
