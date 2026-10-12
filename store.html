@@ -67,6 +67,25 @@
       </section>
     </main>
 
+    <!-- Product Detail Modal Popup -->
+    <div id="product-modal" class="modal-overlay" onclick="if(event.target === this) closeProductModal()">
+      <div class="modal-container">
+        <button type="button" class="modal-close-btn" onclick="closeProductModal()">&times;</button>
+        <div class="modal-media">
+          <img id="modal-image" src="" alt="Product Image" />
+        </div>
+        <div class="modal-body">
+          <div>
+            <span id="modal-type" class="modal-type">Merchandise</span>
+            <h2 id="modal-title" class="modal-title"></h2>
+            <div id="modal-price" class="modal-price"></div>
+            <p id="modal-description" class="modal-description"></p>
+          </div>
+          <button id="modal-checkout-btn" type="button" class="btn btn-primary w-100"></button>
+        </div>
+      </div>
+    </div>
+
     <footer id="footer-container"></footer>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"
