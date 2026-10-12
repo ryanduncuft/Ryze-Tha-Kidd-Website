@@ -60,7 +60,8 @@ exports.handler = async (event) => {
                 unitAmount: price.unit_amount,
                 currency: price.currency,
                 comingSoon,
-                available: product.active && price.active && !comingSoon
+                available: product.active && price.active && !comingSoon,
+                metadata: product.metadata || {} // <-- PASSES METADATA THROUGH TO THE FRONTEND
             };
         }))).filter(Boolean);
 
