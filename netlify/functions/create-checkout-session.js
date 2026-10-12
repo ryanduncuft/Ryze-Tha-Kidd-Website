@@ -74,13 +74,13 @@ exports.handler = async (event) => {
                 allowed_countries: ["GB", "US", "CA", "AU", "DE", "FR", "IE", "NL", "NZ", "SE", "NO", "DK"]
             },
 
-            // Built-in dynamic shipping options (Free for UK, £7.99 for International)
+            // Built-in dynamic shipping options
             shipping_options: [
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
                         fixed_amount: { amount: 0, currency: "gbp" },
-                        display_name: "UK Standard Shipping",
+                        display_name: "UK Free Shipping",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 2 },
                             maximum: { unit: "business_day", value: 4 }
@@ -90,11 +90,22 @@ exports.handler = async (event) => {
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
-                        fixed_amount: { amount: 799, currency: "gbp" }, // £7.99 in pence
-                        display_name: "International Standard Shipping",
+                        fixed_amount: { amount: 799, currency: "gbp" }, // £7.99
+                        display_name: "European Standard Shipping",
+                        delivery_estimate: {
+                            minimum: { unit: "business_day", value: 3 },
+                            maximum: { unit: "business_day", value: 7 }
+                        }
+                    }
+                },
+                {
+                    shipping_rate_data: {
+                        type: "fixed_amount",
+                        fixed_amount: { amount: 1799, currency: "gbp" }, // £17.99
+                        display_name: "International Tracked Shipping (Rest of World)",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 5 },
-                            maximum: { unit: "business_day", value: 10 }
+                            maximum: { unit: "business_day", value: 12 }
                         }
                     }
                 }
