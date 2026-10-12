@@ -88,11 +88,11 @@
             <h1 id="detail-title" class="display-5 fw-bold mb-0"></h1>
             <div id="detail-price" class="fs-3 fw-900 text-primary mb-0"></div>
             
-            <!-- Shipping Information Badge -->
-            <div class="p-3 rounded-3 border bg-light d-flex align-gap-2 align-items-center gap-2 text-muted small">
-              <i class="fas fa-truck text-primary fs-5"></i>
+            <!-- Shipping Information Badge (Theme-Aware) -->
+            <div class="p-3 rounded-3 border d-flex align-items-center gap-2 small" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
+              <i class="fas fa-truck fs-5" style="color: var(--accent);"></i>
               <div>
-                <strong>Shipping:</strong> <span class="text-success fw-semibold">FREE Shipping in the UK</span> | International £7.99
+                <strong>Shipping:</strong> <span class="fw-semibold" style="color: var(--accent);">FREE Shipping in the UK</span> | International £7.99
               </div>
             </div>
 
