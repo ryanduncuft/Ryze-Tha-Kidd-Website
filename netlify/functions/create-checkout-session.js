@@ -78,8 +78,8 @@ exports.handler = async (event) => {
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
-                        fixed_amount: { amount: 199, currency: "gbp" }, // £1.99
-                        display_name: "UK Standard Untracked",
+                        fixed_amount: { amount: 399, currency: "gbp" }, // £3.99
+                        display_name: "UK Royal Mail 48 Tracked",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 2 },
                             maximum: { unit: "business_day", value: 4 }
@@ -89,46 +89,11 @@ exports.handler = async (event) => {
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
-                        fixed_amount: { amount: 299, currency: "gbp" }, // £2.99
-                        display_name: "UK Royal Mail 48 Tracked",
-                        delivery_estimate: {
-                            minimum: { unit: "business_day", value: 2 },
-                            maximum: { unit: "business_day", value: 3 }
-                        }
-                    }
-                },
-                // Europe Options
-                {
-                    shipping_rate_data: {
-                        type: "fixed_amount",
-                        fixed_amount: { amount: 799, currency: "gbp" }, // £7.99
-                        display_name: "European Standard Untracked",
-                        delivery_estimate: {
-                            minimum: { unit: "business_day", value: 3 },
-                            maximum: { unit: "business_day", value: 7 }
-                        }
-                    }
-                },
-                {
-                    shipping_rate_data: {
-                        type: "fixed_amount",
                         fixed_amount: { amount: 1199, currency: "gbp" }, // £11.99 (Adjusted)
-                        display_name: "European Tracked Shipping",
+                        display_name: "European Royal Mail International Tracked",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 3 },
                             maximum: { unit: "business_day", value: 5 }
-                        }
-                    }
-                },
-                // Rest of World Options
-                {
-                    shipping_rate_data: {
-                        type: "fixed_amount",
-                        fixed_amount: { amount: 1399, currency: "gbp" }, // £13.99
-                        display_name: "Rest of World Standard Untracked",
-                        delivery_estimate: {
-                            minimum: { unit: "business_day", value: 6 },
-                            maximum: { unit: "business_day", value: 12 }
                         }
                     }
                 },
@@ -136,7 +101,7 @@ exports.handler = async (event) => {
                     shipping_rate_data: {
                         type: "fixed_amount",
                         fixed_amount: { amount: 1599, currency: "gbp" }, // £15.99
-                        display_name: "Rest of World Tracked Shipping",
+                        display_name: "Rest of World Royal Mail International Tracked",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 5 },
                             maximum: { unit: "business_day", value: 10 }
