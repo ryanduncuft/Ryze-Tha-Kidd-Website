@@ -88,6 +88,14 @@
             <h1 id="detail-title" class="display-5 fw-bold mb-0"></h1>
             <div id="detail-price" class="fs-3 fw-900 text-primary mb-0"></div>
             
+            <!-- Dynamic Limited Edition Stock Banner -->
+            <div id="stock-banner" class="p-3 rounded-3 border d-none align-items-center gap-2 small" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
+              <i class="fas fa-fire fs-5 text-warning" id="stock-banner-icon"></i>
+              <div id="stock-banner-text">
+                <strong>Limited Edition:</strong> <span class="fw-semibold">Loading stock...</span>
+              </div>
+            </div>
+
             <!-- Shipping Information Badge (Theme-Aware) -->
             <div class="p-3 rounded-3 border d-flex align-items-center gap-2 small" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
               <i class="fas fa-truck fs-5" style="color: var(--accent);"></i>
@@ -106,6 +114,45 @@
     </main>
 
     <footer id="footer-container"></footer>
+    
+    <!-- Custom script to inject live remaining stock and handle sold out states -->
+    <script>
+      window.addEventListener('DOMContentLoaded', () => {
+        const checkProductLoaded = setInterval(() => {
+          if (window._activeStoreProducts && window._activeStoreProducts.length > 0) {
+            clearInterval(checkProductLoaded);
+            const params = new URLSearchParams(location.search);
+            const productId = params.get('id');
+            if (productId) {
+              const product = window._activeStoreProducts.find(p => p.id === productId);
+              if (product) {
+                const stockBanner = document.getElementById('stock-banner');
+                const bannerText = document.getElementById('stock-banner-text');
+                const checkoutBtn = document.getElementById('detail-checkout-btn');
+                
+                if (stockBanner && bannerText) {
+                  stockBanner.classList.remove('d-none');
+                  stockBanner.classList.add('d-flex');
+                  
+                  if (product.soldOut) {
+                    bannerText.innerHTML = `<strong class="text-danger">SOLD OUT:</strong> <span class="fw-semibold">All ${product.maxStock} limited copies have been claimed!</span>`;
+                    if (checkoutBtn) {
+                      checkoutBtn.textContent = "Sold Out";
+                      checkoutBtn.disabled = true;
+                      checkoutBtn.className = "btn btn-secondary btn-lg w-100 disabled";
+                      checkoutBtn.onclick = null;
+                    }
+                  } else {
+                    bannerText.innerHTML = `<strong>Limited Edition:</strong> <span class="fw-semibold">${product.remainingStock} of ${product.maxStock} copies left — Pre-Order Now!</span>`;
+                  }
+                }
+              }
+            }
+          }
+        }, 100);
+      });
+    </script>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"
       defer

@@ -11,7 +11,6 @@ const json = (statusCode, body) => ({
     body: JSON.stringify(body)
 });
 
-// Initialise lazily so Netlify can bundle this function without a secret key.
 let stripeClient;
 const getStripe = () => {
     if (!process.env.STRIPE_SECRET_KEY) {
@@ -31,8 +30,12 @@ exports.handler = async (event) => {
         const stripe = getStripe();
         const productList = await stripe.products.list({ active: true, limit: 100 });
 
-        // Prices are fetched server-side: the browser receives only public
-        // display data plus Stripe IDs that the checkout function revalidates.
+        // Fetch completed checkout sessions once to calculate live sold count
+        const sessions = await stripe.checkout.sessions.list({
+            limit: 100,
+            status: "complete"
+        });
+
         const products = (await Promise.all(productList.data.map(async product => {
             const prices = await stripe.prices.list({
                 product: product.id,
@@ -44,9 +47,23 @@ exports.handler = async (event) => {
             const price = prices.data.find(item => Number.isInteger(item.unit_amount));
             if (!price) return null;
 
-            // Set Stripe Product metadata `coming_soon` to "true" (or
-            // `status` to "coming_soon") to show the item without allowing a
-            // Checkout Session to be started from the storefront.
+            // Calculate live sold count for this specific product
+            let soldCount = 0;
+            for (const session of sessions.data) {
+                if (session.payment_status === "paid") {
+                    const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+                    for (const item of lineItems.data) {
+                        if (item.price.product === product.id) {
+                            soldCount += item.quantity;
+                        }
+                    }
+                }
+            }
+
+            const maxStock = parseInt(product.metadata.max_stock || "20", 10);
+            const remainingStock = Math.max(0, maxStock - soldCount);
+            const isSoldOut = remainingStock === 0;
+
             const metadataComingSoon = String(product.metadata.coming_soon || product.metadata.status || "").toLowerCase();
             const comingSoon = metadataComingSoon === "true" || metadataComingSoon === "coming_soon";
 
@@ -60,8 +77,11 @@ exports.handler = async (event) => {
                 unitAmount: price.unit_amount,
                 currency: price.currency,
                 comingSoon,
-                available: product.active && price.active && !comingSoon,
-                metadata: product.metadata || {} // <-- PASSES METADATA THROUGH TO THE FRONTEND
+                soldOut: isSoldOut,
+                remainingStock,
+                maxStock,
+                available: product.active && price.active && !comingSoon && !isSoldOut,
+                metadata: product.metadata || {}
             };
         }))).filter(Boolean);
 
