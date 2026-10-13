@@ -11,7 +11,7 @@
     <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Contact me for music collaborations, features, business inquiries, press requests, or direct messaging via secure contact form.">
-    <meta name="keywords" content="Ryze Th Kidd, contact Ryze Tha Kidd, collaborations, music features, business inquiries, British rapper">
+    <meta name="keywords" content="Ryze Tha Kidd, contact Ryze Tha Kidd, collaborations, music features, business inquiries, British rapper">
     <meta name="author" content="Ryze Tha Kidd">
 
     <!-- Open Graph -->
@@ -39,8 +39,8 @@
     <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
 
     <script>
-            window.ARTIST_ID = "ryzethakidd"; 
-        </script>
+        window.ARTIST_ID = "ryzethakidd"; 
+    </script>
     <script src="https://cdn.ryzethakidd.com/shared/main.js" defer></script>
 </head>
 
@@ -59,7 +59,18 @@
             </header>
 
             <div class="card max-w-form mx-auto p-5 p-md-6 reveal">
-                <div class="g-5 g-md-6 row">
+                <!-- Success Message Card (Hidden by default, shown if ?sent=true is in URL) -->
+                <div id="contact-success-state" class="d-none text-center py-4">
+                    <div class="d-inline-block p-4 rounded-circle mb-4 border-2 text-gradient shadow-lg border-accent-light bg-accent-minimal">
+                        <i class="fa-solid fa-circle-check text-gradient display-2 success-icon" aria-hidden="true"></i>
+                    </div>
+                    <h2 class="fs-3 fw-bold text-secondary mb-3">TRANSMISSION COMPLETE</h2>
+                    <p class="text-muted fs-6 mb-4">Your message has been successfully beamed to the network. I'll review the data and get back to you as soon as possible.</p>
+                    <a href="/contact" class="btn btn-primary btn-lg px-5">Send Another Message</a>
+                </div>
+
+                <!-- Main Form Grid View -->
+                <div id="contact-form-state" class="g-5 g-md-6 row">
                     <!-- Contact Details & Socials -->
                     <div class="d-flex flex-column col-12 col-md-6">
                         <div class="border-accent-minimal border-bottom contact-details-panel mb-6 pb-6">
@@ -84,7 +95,7 @@
                     <!-- Contact Form (Netlify Integrated) -->
                     <div class="col-12 col-md-6">
                         <h2 class="fs-4 fw-bold text-secondary mb-5"><i class="fa-solid text-gradient me-3 fa-code-branch"></i> SEND DATA PACKET</h2>
-                        <form action="/success" aria-label="Contact Form" class="d-flex flex-column gap-5" data-netlify="true" method="POST" name="contact">
+                        <form action="/contact?sent=true" aria-label="Contact Form" class="d-flex flex-column gap-5" data-netlify="true" method="POST" name="contact">
                             <!-- Netlify Hidden Inputs -->
                             <input name="form-name" type="hidden" value="contact">
                             <p class="d-none">
@@ -119,6 +130,21 @@
 
         <footer id="footer-container"></footer>
     </div>
+
+    <!-- Script to handle dynamic success state display -->
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(location.search);
+            if (params.get('sent') === 'true') {
+                const formState = document.getElementById('contact-form-state');
+                const successState = document.getElementById('contact-success-state');
+                if (formState && successState) {
+                    formState.classList.add('d-none');
+                    successState.classList.remove('d-none');
+                }
+            }
+        });
+    </script>
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" defer></script>
