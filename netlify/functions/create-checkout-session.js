@@ -61,6 +61,37 @@ exports.handler = async (event) => {
         const product = await stripe.products.retrieve(productId);
         if (!product.active) return json(400, { error: "This item is not available" });
 
+        // ==================================================================
+        // LIMITED EDITION PRE-ORDER CHECK (20 COPIES MAX)
+        // ==================================================================
+        // We look up successful checkout sessions or payment intents for this product
+        // to enforce your strict 20-copy limit automatically.
+        const maxStock = parseInt(product.metadata.max_stock || "20", 10);
+        
+        // Search for completed checkout sessions containing this product
+        const sessions = await stripe.checkout.sessions.list({
+            limit: 100,
+            status: "complete"
+        });
+
+        let soldCount = 0;
+        for (const session of sessions.data) {
+            if (session.payment_status === "paid") {
+                // Check line items of completed orders
+                const lineItems = await stripe.checkout.sessions.listLineItems(session.id);
+                for (const item of lineItems.data) {
+                    if (item.price.product === productId) {
+                        soldCount += item.quantity;
+                    }
+                }
+            }
+        }
+
+        if (soldCount >= maxStock) {
+            return json(400, { error: "This limited edition pre-order is completely sold out!" });
+        }
+        // ==================================================================
+
         const siteUrl = getSiteUrl();
         const session = await stripe.checkout.sessions.create({
             mode: "payment",
@@ -74,12 +105,12 @@ exports.handler = async (event) => {
             },
 
             shipping_options: [
-                // UK Option
+                // UK Option (£7.99 base price includes free UK shipping)
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
                         fixed_amount: { amount: 0, currency: "gbp" },
-                        display_name: "UK Royal Mail 48 Tracked (UK Addresses Only)",
+                        display_name: "UK Royal Mail 48 Tracked (Free)",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 2 },
                             maximum: { unit: "business_day", value: 4 }
