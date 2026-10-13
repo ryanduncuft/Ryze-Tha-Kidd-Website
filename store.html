@@ -134,8 +134,18 @@
                   stockBanner.classList.remove('d-none');
                   stockBanner.classList.add('d-flex');
                   
-                  if (product.soldOut) {
-                    bannerText.innerHTML = `<strong class="text-danger">SOLD OUT:</strong> <span class="fw-semibold">All ${product.maxStock} limited copies have been claimed!</span>`;
+                  // Extract metadata values safely passed through main.js
+                  const meta = product.metadata || {};
+                  const maxStock = parseInt(meta.max_stock || "20", 10);
+                  
+                  // Read custom attributes or fallback gracefully
+                  const remainingStock = typeof product.remainingStock !== "undefined" 
+                    ? product.remainingStock 
+                    : maxStock;
+                  const isSoldOut = product.soldOut || remainingStock <= 0;
+                  
+                  if (isSoldOut) {
+                    bannerText.innerHTML = `<strong class="text-danger">SOLD OUT:</strong> <span class="fw-semibold">All ${maxStock} limited copies have been claimed!</span>`;
                     if (checkoutBtn) {
                       checkoutBtn.textContent = "Sold Out";
                       checkoutBtn.disabled = true;
@@ -143,7 +153,7 @@
                       checkoutBtn.onclick = null;
                     }
                   } else {
-                    bannerText.innerHTML = `<strong>Limited Edition:</strong> <span class="fw-semibold">${product.remainingStock} of ${product.maxStock} copies left — Pre-Order Now!</span>`;
+                    bannerText.innerHTML = `<strong>Limited Edition:</strong> <span class="fw-semibold">${remainingStock} of ${maxStock} copies left — Pre-Order Now!</span>`;
                   }
                 }
               }
