@@ -11,7 +11,6 @@ const json = (statusCode, body) => ({
     body: JSON.stringify(body)
 });
 
-// Initialise lazily so Netlify can bundle this function without a secret key.
 let stripeClient;
 const getStripe = () => {
     if (!process.env.STRIPE_SECRET_KEY) {
@@ -49,8 +48,6 @@ exports.handler = async (event) => {
     try {
         const stripe = getStripe();
 
-        // Never trust an amount or currency sent by the browser. Retrieve the
-        // Stripe Price and verify it still belongs to the requested product.
         const price = await stripe.prices.retrieve(priceId);
         if (!price.active || price.type !== "one_time" || !Number.isInteger(price.unit_amount)) {
             return json(400, { error: "This item is not available" });
@@ -69,18 +66,20 @@ exports.handler = async (event) => {
             mode: "payment",
             line_items: [{ price: price.id, quantity: 1 }],
             
-            // Collect the customer's delivery shipping address
             shipping_address_collection: {
-                allowed_countries: ["GB", "US", "CA", "AU", "DE", "FR", "IE", "NL", "NZ", "SE", "NO", "DK"]
+                allowed_countries: [
+                    "GB", "US", "CA", "AU", "DE", "FR", "IE", "NL", "NZ", "SE", "NO", "DK",
+                    "AT", "BE", "FI", "IT", "ES", "PT", "CH", "PL", "JP"
+                ]
             },
 
-            // Built-in dynamic shipping options
             shipping_options: [
+                // UK Options
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
-                        fixed_amount: { amount: 0, currency: "gbp" },
-                        display_name: "UK Free Shipping",
+                        fixed_amount: { amount: 199, currency: "gbp" }, // £1.99
+                        display_name: "UK Standard Untracked",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 2 },
                             maximum: { unit: "business_day", value: 4 }
@@ -90,8 +89,20 @@ exports.handler = async (event) => {
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
+                        fixed_amount: { amount: 299, currency: "gbp" }, // £2.99
+                        display_name: "UK Royal Mail 48 Tracked",
+                        delivery_estimate: {
+                            minimum: { unit: "business_day", value: 2 },
+                            maximum: { unit: "business_day", value: 3 }
+                        }
+                    }
+                },
+                // Europe Options
+                {
+                    shipping_rate_data: {
+                        type: "fixed_amount",
                         fixed_amount: { amount: 799, currency: "gbp" }, // £7.99
-                        display_name: "European Standard Shipping",
+                        display_name: "European Standard Untracked",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 3 },
                             maximum: { unit: "business_day", value: 7 }
@@ -101,11 +112,34 @@ exports.handler = async (event) => {
                 {
                     shipping_rate_data: {
                         type: "fixed_amount",
-                        fixed_amount: { amount: 1799, currency: "gbp" }, // £17.99
-                        display_name: "International Tracked Shipping (Rest of World)",
+                        fixed_amount: { amount: 1199, currency: "gbp" }, // £11.99 (Adjusted)
+                        display_name: "European Tracked Shipping",
+                        delivery_estimate: {
+                            minimum: { unit: "business_day", value: 3 },
+                            maximum: { unit: "business_day", value: 5 }
+                        }
+                    }
+                },
+                // Rest of World Options
+                {
+                    shipping_rate_data: {
+                        type: "fixed_amount",
+                        fixed_amount: { amount: 1399, currency: "gbp" }, // £13.99
+                        display_name: "Rest of World Standard Untracked",
+                        delivery_estimate: {
+                            minimum: { unit: "business_day", value: 6 },
+                            maximum: { unit: "business_day", value: 12 }
+                        }
+                    }
+                },
+                {
+                    shipping_rate_data: {
+                        type: "fixed_amount",
+                        fixed_amount: { amount: 1599, currency: "gbp" }, // £15.99
+                        display_name: "Rest of World Tracked Shipping",
                         delivery_estimate: {
                             minimum: { unit: "business_day", value: 5 },
-                            maximum: { unit: "business_day", value: 12 }
+                            maximum: { unit: "business_day", value: 10 }
                         }
                     }
                 }
