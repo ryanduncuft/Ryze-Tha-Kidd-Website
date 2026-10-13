@@ -123,8 +123,8 @@
                         <span id="detail-type" class="text-muted small text-uppercase fw-bold">Merchandise</span>
                         <h1 id="detail-title" class="display-5 fw-bold mb-0"></h1>
                         <div id="detail-price" class="fs-3 fw-900 text-primary mb-0"></div>
-                        
-                        <!-- Conditional Limited Edition Pre-Order Badge (Controlled by main.js) -->
+
+                        <!-- Conditional Limited Edition Pre-Order Badge (Controlled dynamically) -->
                         <div id="limited-edition-banner" class="p-3 rounded-3 border d-none align-items-center gap-2 small" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
                             <i class="fas fa-fire fs-5 text-warning"></i>
                             <div id="limited-edition-banner-text">
@@ -152,7 +152,7 @@
         <!-- Footer -->
         <footer id="footer-container"></footer>
 
-        <!-- Simple inline script to catch ?checkout=success and reveal order confirmation -->
+        <!-- Scripts & State Handling -->
         <script>
             window.addEventListener('DOMContentLoaded', () => {
                 const params = new URLSearchParams(location.search);
