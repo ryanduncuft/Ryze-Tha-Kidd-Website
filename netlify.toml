@@ -24,6 +24,12 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
+# Sitemap Function: Route /sitemap.xml directly to the sitemap serverless function
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/sitemap"
+  status = 200
+
 # Store API: keep the public endpoints stable while proxying to Functions.
 [[redirects]]
   from = "/api/store/products"
