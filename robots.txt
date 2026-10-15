@@ -1,3 +1,13 @@
+# Allow general web crawlers
 User-agent: *
 Allow: /
+
+# Google Merchant Center Specific Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Sitemap Location
 Sitemap: https://www.ryzethakidd.com/sitemap.xml
