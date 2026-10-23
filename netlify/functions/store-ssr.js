@@ -14,11 +14,12 @@ const getStripe = () => {
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
 
+    // If no product ID, return a safe 200 response pointing back to shop cleanly (NO REDIRECT)
     if (!productId) {
         return {
-            statusCode: 302,
-            headers: { Location: "/store.html" },
-            body: "Redirecting..."
+            statusCode: 200,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+            body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=/store.html"></head><body></body></html>`
         };
     }
 
@@ -121,10 +122,11 @@ exports.handler = async function (event, context) {
 
     } catch (error) {
         console.error("SSR generation failed:", error);
+        // Return a clean 200 fallback page instead of a redirect loop
         return {
-            statusCode: 302,
-            headers: { Location: "/store.html" },
-            body: "Redirecting..."
+            statusCode: 200,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+            body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=/store.html"></head><body></body></html>`
         };
     }
 };
