@@ -67,7 +67,7 @@ exports.handler = async function (event, context) {
 
         const jsonLdString = JSON.stringify(jsonLdData);
 
-        // Fully self-contained HTML payload guaranteed to have the Schema and Product details
+        // Fully self-contained HTML layout guaranteed to contain the JSON-LD schema block
         const html = `<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -100,7 +100,6 @@ exports.handler = async function (event, context) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
-    <script>window.ARTIST_ID = "ryzethakidd";</script>
 </head>
 <body class="bg-body text-body">
     <main class="container py-5 my-5">
@@ -131,7 +130,7 @@ exports.handler = async function (event, context) {
             statusCode: 200,
             headers: { 
                 "Content-Type": "text/html; charset=utf-8",
-                "Cache-Control": "public, max-age=300"
+                "Cache-Control": "no-cache, no-store, must-revalidate"
             },
             body: html
         };
@@ -139,9 +138,9 @@ exports.handler = async function (event, context) {
     } catch (error) {
         console.error("SSR generation failed:", error);
         return {
-            statusCode: 302,
-            headers: { Location: "/store.html" },
-            body: "Redirecting..."
+            statusCode: 200,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+            body: `<!DOCTYPE html><html><head><title>Shop | Ryze Tha Kidd</title></head><body><p>Error loading product. <a href="/store.html">Return to Shop</a></p></body></html>`
         };
     }
 };

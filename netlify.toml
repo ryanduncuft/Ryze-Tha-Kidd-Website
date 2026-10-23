@@ -23,9 +23,8 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
-  included_files = ["store.html"]
 
-# Store SSR: Route store.html requests containing an ID query parameter to the function (WITHOUT force = true to avoid loops)
+# Store SSR: Route store.html requests containing an ID query parameter to the function
 [[redirects]]
   from = "/store.html"
   query = {id = ":id"}
