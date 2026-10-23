@@ -94,6 +94,7 @@ exports.handler = async function (event, context) {
         };
 
         const jsonLdString = JSON.stringify(jsonLdData);
+        const priceIdValue = priceObj.id || "";
 
         const html = `<!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -186,7 +187,7 @@ exports.handler = async function (event, context) {
                     <p id="detail-description" class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
                     
                     <div class="mt-3">
-                        <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-price-id="${escapeHtml(priceObj.id || '')}">Proceed to Checkout</button>
+                        <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-price-id="${escapeHtml(priceIdValue)}">Proceed to Checkout</button>
                         <p class="text-center text-muted small mt-2 mb-0">
                             <i class="fas fa-shield-halved me-1"></i> Secure checkout powered by Stripe
                         </p>
@@ -209,7 +210,10 @@ exports.handler = async function (event, context) {
                 btn.setAttribute('data-listener-attached', 'true');
                 btn.addEventListener('click', async () => {
                     const priceId = btn.getAttribute('data-price-id');
-                    if (!priceId) return;
+                    if (!priceId) {
+                        alert('Product and price IDs are required');
+                        return;
+                    }
                     btn.disabled = true;
                     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Preparing checkout...';
                     try {
