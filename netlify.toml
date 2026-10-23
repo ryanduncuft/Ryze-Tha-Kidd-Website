@@ -24,13 +24,12 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Store SSR: Route product requests with a query ID through the SSR function for SEO / Google Merchant Center
+# Store SSR: Only route requests containing an ID query parameter to the SSR bot handler
 [[redirects]]
   from = "/store.html"
   query = {id = ":id"}
   to = "/.netlify/functions/store-ssr?id=:id"
   status = 200
-  force = true
 
 # Sitemap Function: Route /sitemap.xml directly to the sitemap serverless function
 [[redirects]]

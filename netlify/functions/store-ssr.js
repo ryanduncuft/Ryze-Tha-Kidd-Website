@@ -13,13 +13,17 @@ const getStripe = () => {
 
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
+    const userAgent = (event.headers && (event.headers["user-agent"] || event.headers["User-Agent"])) || "";
 
-    // If no product ID is requested, fall back to serving standard static store instructions or header shell
-    if (!productId) {
+    // Define known search engine / social crawlers that need the SEO meta tags
+    const isBot = /googlebot|bingbot|yahoo|duckduckbot|baiduspider|yandex|facebookexternalhit|twitterbot|linkedinbot|embedly|whatsapp|telegram/i.test(userAgent);
+
+    // If it's a regular user, or no product ID, don't intercept — let Netlify serve the normal store.html
+    if (!productId || !isBot) {
         return {
-            statusCode: 200,
-            headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: getBaseStoreHtml()
+            statusCode: 302,
+            headers: { Location: `/store.html${productId ? '?id=' + productId : ''}` },
+            body: "Redirecting..."
         };
     }
 
@@ -38,7 +42,6 @@ exports.handler = async function (event, context) {
         const imageUrl = product.images && product.images[0] ? product.images[0] : "https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png";
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        // Schema.org structured data for Google Merchant / Google Shopping
         const jsonLd = JSON.stringify({
             "@context": "https://schema.org/",
             "@type": "Product",
@@ -58,7 +61,7 @@ exports.handler = async function (event, context) {
             }
         });
 
-        // Hydrated HTML specifically for search crawlers / bots / direct hits
+        // Response tailored specifically for Google and social scrapers
         const html = `<!DOCTYPE html>
 <html lang="en">
     <head>
@@ -68,38 +71,26 @@ exports.handler = async function (event, context) {
         <meta name="description" content="${escapeHtml(description)}">
         <link rel="canonical" href="${canonicalUrl}">
         
-        <!-- Open Graph -->
         <meta property="og:type" content="product">
         <meta property="og:url" content="${canonicalUrl}">
         <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
         <meta property="og:description" content="${escapeHtml(description)}">
         <meta property="og:image" content="${imageUrl}">
 
-        <!-- Twitter -->
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
         <meta name="twitter:description" content="${escapeHtml(description)}">
         <meta name="twitter:image" content="${imageUrl}">
 
-        <!-- Product Structured Data for Google Shopping / Merchant Center -->
         <script type="application/ld+json">
         ${jsonLd}
         </script>
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
-        <script>window.ARTIST_ID = "ryzethakidd";</script>
-        <script src="https://cdn.ryzethakidd.com/shared/main.js" defer></script>
     </head>
     <body>
-        <main class="container py-5">
-            <h1>${escapeHtml(name)}</h1>
-            <p class="fs-3 text-primary">${formattedPrice}</p>
-            <img src="${imageUrl}" alt="${escapeHtml(name)}" style="max-width:300px;" class="rounded mb-3">
-            <p>${escapeHtml(description)}</p>
-            <a href="/store.html" class="btn btn-primary">Back to Shop</a>
-        </main>
+        <h1>${escapeHtml(name)}</h1>
+        <p>${formattedPrice}</p>
+        <img src="${imageUrl}" alt="${escapeHtml(name)}">
+        <p>${escapeHtml(description)}</p>
     </body>
 </html>`;
 
@@ -121,8 +112,4 @@ exports.handler = async function (event, context) {
 
 function escapeHtml(str) {
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-}
-
-function getBaseStoreHtml() {
-    return `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Official Shop | Ryze Tha Kidd</title><meta http-equiv="refresh" content="0;url=/store.html"></head><body></body></html>`;
 }
