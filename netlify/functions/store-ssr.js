@@ -1,6 +1,8 @@
 "use strict";
 
 const Stripe = require("stripe");
+const fs = require("fs");
+const path = require("path");
 
 let stripeClient;
 const getStripe = () => {
@@ -14,12 +16,25 @@ const getStripe = () => {
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
 
-    // If no product ID, return a safe 200 response pointing back to shop cleanly (NO REDIRECT)
+    // Load your actual store.html template from the root directory
+    let baseTemplate = "";
+    try {
+        const htmlPath = path.resolve(process.cwd(), "store.html");
+        baseTemplate = fs.readFileSync(htmlPath, "utf8");
+    } catch (e) {
+        // Fallback if file read fails
+        return {
+            statusCode: 302,
+            headers: { Location: `/store.html${productId ? '?id=' + productId : ''}` },
+            body: "Redirecting..."
+        };
+    }
+
     if (!productId) {
         return {
             statusCode: 200,
             headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=/store.html"></head><body></body></html>`
+            body: baseTemplate
         };
     }
 
@@ -31,7 +46,6 @@ exports.handler = async function (event, context) {
         
         const unitAmount = priceObj.unit_amount || 0;
         const currency = (priceObj.currency || "gbp").toUpperCase();
-        const formattedPrice = new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(unitAmount / 100);
         
         const name = product.name || "Official Merchandise";
         const description = product.description || "Official item from Ryze Tha Kidd.";
@@ -57,76 +71,40 @@ exports.handler = async function (event, context) {
             }
         });
 
-        const html = `<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="description" content="${escapeHtml(description)}">
-        <link rel="canonical" href="${canonicalUrl}">
-        
-        <meta property="og:type" content="product">
-        <meta property="og:url" content="${canonicalUrl}">
-        <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
-        <meta property="og:description" content="${escapeHtml(description)}">
-        <meta property="og:image" content="${imageUrl}">
+        // SEO meta tags and Schema markup to inject into the <head>
+        const seoInject = `
+    <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
+    <meta name="description" content="${escapeHtml(description)}">
+    <link rel="canonical" href="${canonicalUrl}">
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="${canonicalUrl}">
+    <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
+    <meta property="og:description" content="${escapeHtml(description)}">
+    <meta property="og:image" content="${imageUrl}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
+    <meta name="twitter:description" content="${escapeHtml(description)}">
+    <meta name="twitter:image" content="${imageUrl}">
+    <script type="application/ld+json">
+    ${jsonLd}
+    </script>
+</head>`;
 
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
-        <meta name="twitter:description" content="${escapeHtml(description)}">
-        <meta name="twitter:image" content="${imageUrl}">
-
-        <script type="application/ld+json">
-        ${jsonLd}
-        </script>
-
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-        <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
-        <script>window.ARTIST_ID = "ryzethakidd";</script>
-        <script src="https://cdn.ryzethakidd.com/shared/main.js" defer></script>
-    </head>
-    <body class="bg-body text-body">
-        <header id="navbar-container"></header>
-        <main class="container py-5 my-5">
-            <div class="mb-4">
-                <a href="/store.html" class="link-arrow"><i class="fas fa-arrow-left me-2"></i>Back to Shop</a>
-            </div>
-            <div class="row g-5 align-items-start">
-                <div class="col-lg-6">
-                    <div class="rounded-4 overflow-hidden border mb-3 position-relative" style="aspect-ratio: 1/1;">
-                        <img src="${imageUrl}" alt="${escapeHtml(name)}" class="w-100 h-100 object-fit-cover position-absolute top-0 start-0">
-                    </div>
-                </div>
-                <div class="col-lg-6 d-flex flex-column gap-3">
-                    <h1 class="display-5 fw-bold mb-0">${escapeHtml(name)}</h1>
-                    <div class="fs-3 fw-900 text-primary mb-0">${formattedPrice}</div>
-                    <p class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
-                    <div class="mt-3">
-                        <a href="/store.html" class="btn btn-primary btn-lg w-100">View in Full Shop Grid</a>
-                    </div>
-                </div>
-            </div>
-        </main>
-        <footer id="footer-container"></footer>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" defer></script>
-    </body>
-</html>`;
+        // Replace the closing </head> tag in your original store.html with our SEO tags included
+        const hydratedHtml = baseTemplate.replace("</head>", seoInject);
 
         return {
             statusCode: 200,
             headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: html
+            body: hydratedHtml
         };
 
     } catch (error) {
         console.error("SSR generation failed:", error);
-        // Return a clean 200 fallback page instead of a redirect loop
         return {
             statusCode: 200,
             headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: `<!DOCTYPE html><html><head><meta http-equiv="refresh" content="0;url=/store.html"></head><body></body></html>`
+            body: baseTemplate
         };
     }
 };
