@@ -1,6 +1,8 @@
 "use strict";
 
 const Stripe = require("stripe");
+const fs = require("fs");
+const path = require("path");
 
 let stripeClient;
 const getStripe = () => {
@@ -13,17 +15,22 @@ const getStripe = () => {
 
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
-    const userAgent = (event.headers && (event.headers["user-agent"] || event.headers["User-Agent"])) || "";
 
-    // Define known search engine / social crawlers that need the SEO meta tags
-    const isBot = /googlebot|bingbot|yahoo|duckduckbot|baiduspider|yandex|facebookexternalhit|twitterbot|linkedinbot|embedly|whatsapp|telegram/i.test(userAgent);
+    // Load static store.html from root using process.cwd()
+    let baseTemplate = "";
+    try {
+        const htmlPath = path.resolve(process.cwd(), "store.html");
+        baseTemplate = fs.readFileSync(htmlPath, "utf8");
+    } catch (e) {
+        console.error("Failed to read store.html:", e);
+        baseTemplate = `<!DOCTYPE html><html><head><title>Official Shop | Ryze Tha Kidd</title></head><body><script>window.location.href="/store.html";</script></body></html>`;
+    }
 
-    // If it's a regular user, or no product ID, don't intercept — let Netlify serve the normal store.html
-    if (!productId || !isBot) {
+    if (!productId) {
         return {
-            statusCode: 302,
-            headers: { Location: `/store.html${productId ? '?id=' + productId : ''}` },
-            body: "Redirecting..."
+            statusCode: 200,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+            body: baseTemplate
         };
     }
 
@@ -61,51 +68,39 @@ exports.handler = async function (event, context) {
             }
         });
 
-        // Response tailored specifically for Google and social scrapers
-        const html = `<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="utf-8">
+        const seoInject = `
         <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="${escapeHtml(description)}">
         <link rel="canonical" href="${canonicalUrl}">
-        
         <meta property="og:type" content="product">
         <meta property="og:url" content="${canonicalUrl}">
         <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
         <meta property="og:description" content="${escapeHtml(description)}">
         <meta property="og:image" content="${imageUrl}">
-
         <meta name="twitter:card" content="summary_large_image">
         <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
         <meta name="twitter:description" content="${escapeHtml(description)}">
         <meta name="twitter:image" content="${imageUrl}">
-
         <script type="application/ld+json">
         ${jsonLd}
         </script>
-    </head>
-    <body>
-        <h1>${escapeHtml(name)}</h1>
-        <p>${formattedPrice}</p>
-        <img src="${imageUrl}" alt="${escapeHtml(name)}">
-        <p>${escapeHtml(description)}</p>
-    </body>
-</html>`;
+        `;
+
+        // Inject dynamic metadata directly into head tag
+        const hydratedHtml = baseTemplate.replace(/<title>.*?<\/title>/i, seoInject);
 
         return {
             statusCode: 200,
             headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: html
+            body: hydratedHtml
         };
 
     } catch (error) {
         console.error("SSR generation failed:", error);
         return {
-            statusCode: 302,
-            headers: { Location: "/store.html" },
-            body: "Redirecting..."
+            statusCode: 200,
+            headers: { "Content-Type": "text/html; charset=utf-8" },
+            body: baseTemplate
         };
     }
 };

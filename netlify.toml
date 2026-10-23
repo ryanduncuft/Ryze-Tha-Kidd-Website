@@ -23,6 +23,7 @@
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+  included_files = ["store.html"]
 
 # Store SSR: Only route requests containing an ID query parameter to the SSR bot handler
 [[redirects]]
