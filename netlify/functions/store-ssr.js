@@ -16,6 +16,7 @@ const getStripe = () => {
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
 
+    // If no product ID is present, redirect or show clean shop fallback
     if (!productId) {
         return {
             statusCode: 302,
@@ -43,7 +44,7 @@ exports.handler = async function (event, context) {
         const imageUrl = images[0];
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        // Schema.org Product JSON-LD for Google Merchant Center & Rich Results Test
+        // Schema.org Product JSON-LD block for Google Merchant Center & Rich Results Test
         const jsonLdData = {
             "@context": "https://schema.org/",
             "@type": "Product",
@@ -67,7 +68,7 @@ exports.handler = async function (event, context) {
 
         const jsonLdString = JSON.stringify(jsonLdData);
 
-        // Standalone fully-hydrated HTML response containing the required JSON-LD schema
+        // Fully self-contained HTML layout guaranteed to include the schema & metadata for Google
         const html = `<!DOCTYPE html>
 <html lang="en" data-theme="light">
     <head>
@@ -92,7 +93,7 @@ exports.handler = async function (event, context) {
         <meta name="twitter:description" content="${escapeHtml(description)}">
         <meta name="twitter:image" content="${imageUrl}">
 
-        <!-- Google Product Schema.org JSON-LD -->
+        <!-- Google Product Schema.org JSON-LD (Required for Rich Results) -->
         <script type="application/ld+json">
         ${jsonLdString}
         </script>
@@ -102,8 +103,10 @@ exports.handler = async function (event, context) {
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
         <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
         <script>window.ARTIST_ID = "ryzethakidd";</script>
+        <script src="https://cdn.ryzethakidd.com/shared/main.js" defer></script>
     </head>
     <body class="bg-body text-body">
+        <header id="navbar-container"></header>
         <main class="container py-5 my-5">
             <div class="mb-4">
                 <a href="/store.html" class="link-arrow"><i class="fas fa-arrow-left me-2"></i>Back to Shop</a>
@@ -124,6 +127,7 @@ exports.handler = async function (event, context) {
                 </div>
             </div>
         </main>
+        <footer id="footer-container"></footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" defer></script>
     </body>
 </html>`;
