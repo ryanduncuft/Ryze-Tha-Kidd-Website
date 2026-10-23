@@ -17,12 +17,20 @@
   force = true
 
 # =========================================================================
-# REWRITE RULES (Modified for "Ugly" Single/Album URLs)
+# REWRITE RULES & FUNCTIONS CONFIGURATION
 # =========================================================================
 
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
+
+# Store SSR: Route product requests with a query ID through the SSR function for SEO / Google Merchant Center
+[[redirects]]
+  from = "/store.html"
+  query = {id = ":id"}
+  to = "/.netlify/functions/store-ssr?id=:id"
+  status = 200
+  force = true
 
 # Sitemap Function: Route /sitemap.xml directly to the sitemap serverless function
 [[redirects]]
@@ -43,14 +51,12 @@
 
 [[redirects]]
   # EXCLUSION: If the path is /single or /album exactly, do NOT rewrite to .html.
-  # This forces the server to look for a folder instead of the file, making /single 404
-  # and requiring /single.html
   from = "/single"
   to = "/single"
   status = 200
 
 [[redirects]]
-  from = "album"
+  from = "/album"
   to = "/album"
   status = 200
 
@@ -61,13 +67,13 @@
   status = 404
 
 [[redirects]]
-  # Rule 3: Clean URLs for OTHER static pages (about, contact, etc)
+  # Clean URLs for OTHER static pages (about, contact, etc)
   from = "/:page"
   to = "/:page.html"
   status = 200
 
 [[redirects]]
-  # Rule 6: Custom 404 Page
+  # Custom 404 Page Catch-all
   from = "/*"
   to = "/404.html"
   status = 404
