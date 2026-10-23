@@ -97,6 +97,7 @@ exports.handler = async function (event, context) {
 
         const jsonLdString = JSON.stringify(jsonLdData);
         const priceIdValue = priceObj.id || "";
+        const productIdValue = product.id || "";
 
         // Fallback safety check: if priceIdValue is somehow empty, log it for debugging
         if (!priceIdValue) {
@@ -194,7 +195,7 @@ exports.handler = async function (event, context) {
                     <p id="detail-description" class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
                     
                     <div class="mt-3">
-                        <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-price-id="${escapeHtml(priceIdValue)}">Proceed to Checkout</button>
+                        <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-product-id="${escapeHtml(productIdValue)}" data-price-id="${escapeHtml(priceIdValue)}">Proceed to Checkout</button>
                         <p class="text-center text-muted small mt-2 mb-0">
                             <i class="fas fa-shield-halved me-1"></i> Secure checkout powered by Stripe
                         </p>
@@ -216,8 +217,9 @@ exports.handler = async function (event, context) {
             if (btn && !btn.hasAttribute('data-listener-attached')) {
                 btn.setAttribute('data-listener-attached', 'true');
                 btn.addEventListener('click', async () => {
+                    const productId = btn.getAttribute('data-product-id');
                     const priceId = btn.getAttribute('data-price-id');
-                    if (!priceId) {
+                    if (!productId || !priceId) {
                         alert('Product and price IDs are required');
                         return;
                     }
@@ -227,7 +229,7 @@ exports.handler = async function (event, context) {
                         const res = await fetch('/api/store/create-checkout-session', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ priceId: priceId })
+                            body: JSON.stringify({ productId: productId, priceId: priceId })
                         });
                         const data = await res.json();
                         if (data.url) {
