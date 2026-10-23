@@ -43,7 +43,11 @@ exports.handler = async function (event, context) {
         const primaryImageUrl = images[0];
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        // Build thumbnail HTML elements
+        // Check metadata for limited edition banner text
+        const limitedEditionText = product.metadata && (product.metadata.limited_text || product.metadata.preorder_text);
+        const limitedEditionClass = limitedEditionText ? "d-flex" : "d-none";
+
+        // Build thumbnail HTML elements for all product images
         const thumbnailsHtml = images.map((imgUrl, index) => `
             <img src="${imgUrl}" alt="${escapeHtml(name)} view ${index + 1}" class="rounded border object-fit-cover shadow-sm" style="width: 75px; height: 75px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" onclick="document.getElementById('detail-image').src='${imgUrl}'" />
         `).join("");
@@ -136,6 +140,14 @@ exports.handler = async function (event, context) {
                     <span id="detail-type" class="text-muted small text-uppercase fw-bold">Store item</span>
                     <h1 id="detail-title" class="display-5 fw-bold mb-0">${escapeHtml(name)}</h1>
                     <div id="detail-price" class="fs-3 fw-900 text-primary mb-0">${formattedPrice}</div>
+
+                    <!-- Conditional Limited Edition Pre-Order Badge -->
+                    <div id="limited-edition-banner" class="p-3 rounded-3 border align-items-center gap-2 small ${limitedEditionClass}" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
+                        <i class="fas fa-fire fs-5 text-warning"></i>
+                        <div id="limited-edition-banner-text">
+                            <strong>Limited Edition Pre-Order:</strong> <span class="fw-semibold">${escapeHtml(limitedEditionText || "Secure your copy now!")}</span>
+                        </div>
+                    </div>
 
                     <!-- Shipping Information Badge -->
                     <div class="p-3 rounded-3 border d-flex align-items-center gap-2 small" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
