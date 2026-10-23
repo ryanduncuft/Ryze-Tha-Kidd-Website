@@ -36,18 +36,32 @@ exports.handler = async function (event, context) {
         
         const name = product.name || "Official Merchandise";
         const description = product.description || "Official item from Ryze Tha Kidd.";
-        const images = Array.isArray(product.images) && product.images.length > 0 
-            ? product.images 
-            : ["https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png"];
         
+        // Gather images from Stripe product images array and supplement with metadata if available
+        let images = Array.isArray(product.images) && product.images.length > 0 
+            ? [...product.images] 
+            : ["https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png"];
+
+        // Check metadata for any additional images (e.g. metadata.extra_images or metadata.images split by comma)
+        const metaImages = product.metadata && (product.metadata.extra_images || product.metadata.images);
+        if (metaImages) {
+            const extra = metaImages.split(",").map(s => s.trim()).filter(Boolean);
+            images = [...images, ...extra];
+        }
+
         const primaryImageUrl = images[0];
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        // Check metadata for limited edition banner text
-        const limitedEditionText = product.metadata && (product.metadata.limited_text || product.metadata.preorder_text);
+        // Check metadata for limited edition / pre-order banner text across common keys
+        const limitedEditionText = product.metadata && (
+            product.metadata.limited_text || 
+            product.metadata.preorder_text || 
+            product.metadata.limited_edition_text || 
+            (product.metadata.is_limited === "true" ? "Made-to-order batch. Secure your copy now!" : null)
+        );
         const limitedEditionClass = limitedEditionText ? "d-flex" : "d-none";
 
-        // Build thumbnail HTML elements for all product images
+        // Build thumbnail HTML elements for all images
         const thumbnailsHtml = images.map((imgUrl, index) => `
             <img src="${imgUrl}" alt="${escapeHtml(name)} view ${index + 1}" class="rounded border object-fit-cover shadow-sm" style="width: 75px; height: 75px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" onclick="document.getElementById('detail-image').src='${imgUrl}'" />
         `).join("");
