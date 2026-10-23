@@ -70,6 +70,10 @@ exports.handler = async function (event, context) {
         const limitedText = isLimited ? "Made-to-order batch. Secure your copy now!" : null;
         const limitedEditionClass = limitedText ? "d-flex" : "d-none";
 
+        // Check if coming_soon is true in metadata (case-insensitive)
+        const metadataComingSoon = String(meta.coming_soon || meta.status || "").toLowerCase();
+        const isComingSoon = metadataComingSoon === "true" || metadataComingSoon === "coming_soon";
+
         const thumbnailsHtml = images.map((imgUrl, index) => `
             <img src="${imgUrl}" alt="${escapeHtml(name)} view ${index + 1}" class="rounded border object-fit-cover shadow-sm" style="width: 75px; height: 75px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" onclick="document.getElementById('detail-image').src='${imgUrl}'" />
         `).join("");
@@ -91,7 +95,7 @@ exports.handler = async function (event, context) {
                 "price": (unitAmount / 100).toFixed(2),
                 "priceValidUntil": "2027-12-31",
                 "itemCondition": "https://schema.org/NewCondition",
-                "availability": "https://schema.org/InStock"
+                "availability": isComingSoon ? "https://schema.org/OutOfStock" : "https://schema.org/InStock"
             }
         };
 
@@ -99,13 +103,17 @@ exports.handler = async function (event, context) {
         const priceIdValue = priceObj.id || "";
         const productIdValue = product.id || "";
 
-        // Fallback safety check: if priceIdValue is somehow empty, log it for debugging
-        if (!priceIdValue) {
+        if (!priceIdValue && !isComingSoon) {
             console.error("Warning: No active price ID found for product:", product.id);
         }
 
+        // Generate button HTML based on whether the product is coming soon
+        const actionButtonHtml = isComingSoon
+            ? `<button id="detail-checkout-btn" type="button" class="btn btn-secondary btn-lg w-100 disabled" disabled>Coming Soon</button>`
+            : `<button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-product-id="${escapeHtml(productIdValue)}" data-price-id="${escapeHtml(priceIdValue)}">Proceed to Checkout</button>`;
+
         const html = `<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
@@ -139,7 +147,7 @@ exports.handler = async function (event, context) {
     <script>window.ARTIST_ID = "ryzethakidd";</script>
     <script src="https://cdn.ryzethakidd.com/shared/main.js" defer></script>
 </head>
-<body class="bg-body text-body">
+<body>
     <div class="scroll-trigger-sentinel"></div>
     <canvas aria-hidden="true" id="interactive-bg"></canvas>
 
@@ -195,7 +203,7 @@ exports.handler = async function (event, context) {
                     <p id="detail-description" class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
                     
                     <div class="mt-3">
-                        <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-product-id="${escapeHtml(productIdValue)}" data-price-id="${escapeHtml(priceIdValue)}">Proceed to Checkout</button>
+                        ${actionButtonHtml}
                         <p class="text-center text-muted small mt-2 mb-0">
                             <i class="fas fa-shield-halved me-1"></i> Secure checkout powered by Stripe
                         </p>
@@ -214,7 +222,7 @@ exports.handler = async function (event, context) {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const btn = document.getElementById('detail-checkout-btn');
-            if (btn && !btn.hasAttribute('data-listener-attached')) {
+            if (btn && !btn.hasAttribute('data-listener-attached') && !btn.classList.contains('disabled')) {
                 btn.setAttribute('data-listener-attached', 'true');
                 btn.addEventListener('click', async () => {
                     const productId = btn.getAttribute('data-product-id');
