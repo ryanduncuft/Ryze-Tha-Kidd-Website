@@ -25,12 +25,13 @@
   node_bundler = "esbuild"
   included_files = ["store.html"]
 
-# Store SSR: Only route requests containing an ID query parameter to the SSR bot handler
+# Store SSR: Force Netlify to route store.html with query parameters straight to the serverless function
 [[redirects]]
   from = "/store.html"
   query = {id = ":id"}
   to = "/.netlify/functions/store-ssr?id=:id"
   status = 200
+  force = true
 
 # Sitemap Function: Route /sitemap.xml directly to the sitemap serverless function
 [[redirects]]
