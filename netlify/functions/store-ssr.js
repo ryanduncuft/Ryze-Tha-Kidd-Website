@@ -9,31 +9,47 @@ const getStripe = () => {
     if (!process.env.STRIPE_SECRET_KEY) {
         throw new Error("STRIPE_SECRET_KEY is not configured");
     }
-    if (!stripeClient) stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY);
+    if (!stripeClient) {
+        stripeClient = new Stripe(process.env.STRIPE_SECRET_KEY);
+    }
     return stripeClient;
 };
+
+// Safe helper to read store.html across all Netlify serverless deployment environments
+function getStoreTemplate() {
+    const possiblePaths = [
+        path.resolve(process.cwd(), "store.html"),
+        path.join(__dirname, "store.html"),
+        path.join(__dirname, "..", "store.html"),
+        path.join(__dirname, "..", "..", "store.html")
+    ];
+
+    for (const p of possiblePaths) {
+        try {
+            if (fs.existsSync(p)) {
+                return fs.readFileSync(p, "utf8");
+            }
+        } catch (err) {
+            // Continue checking next candidate path
+        }
+    }
+    return null;
+}
 
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
 
-    // Load your actual store.html template from the root directory
-    let baseTemplate = "";
-    try {
-        const htmlPath = path.resolve(process.cwd(), "store.html");
-        baseTemplate = fs.readFileSync(htmlPath, "utf8");
-    } catch (e) {
-        // Fallback if file read fails
-        return {
-            statusCode: 302,
-            headers: { Location: `/store.html${productId ? '?id=' + productId : ''}` },
-            body: "Redirecting..."
-        };
-    }
+    // Load static template safely
+    let baseTemplate = getStoreTemplate() || `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Official Shop | Ryze Tha Kidd</title></head><body><main id="main-content"><p>Loading shop...</p></main></body></html>`;
 
+    // If no product ID is present, return the un-hydrated store page cleanly
     if (!productId) {
         return {
             statusCode: 200,
-            headers: { "Content-Type": "text/html; charset=utf-8" },
+            headers: { 
+                "Content-Type": "text/html; charset=utf-8",
+                "Cache-Control": "public, max-age=0, must-revalidate"
+            },
             body: baseTemplate
         };
     }
@@ -49,14 +65,21 @@ exports.handler = async function (event, context) {
         
         const name = product.name || "Official Merchandise";
         const description = product.description || "Official item from Ryze Tha Kidd.";
-        const imageUrl = product.images && product.images[0] ? product.images[0] : "https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png";
+        
+        // Collect all available product images
+        const images = Array.isArray(product.images) && product.images.length > 0 
+            ? product.images 
+            : ["https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png"];
+        
+        const primaryImageUrl = images[0];
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        const jsonLd = JSON.stringify({
+        // Schema.org Product JSON-LD block for Google Merchant Center & Google Rich Results
+        const jsonLdData = {
             "@context": "https://schema.org/",
             "@type": "Product",
             "name": name,
-            "image": [imageUrl],
+            "image": images,
             "description": description,
             "brand": {
                 "@type": "Brand",
@@ -67,48 +90,76 @@ exports.handler = async function (event, context) {
                 "url": canonicalUrl,
                 "priceCurrency": currency,
                 "price": (unitAmount / 100).toFixed(2),
+                "priceValidUntil": "2027-12-31",
+                "itemCondition": "https://schema.org/NewCondition",
                 "availability": "https://schema.org/InStock"
             }
-        });
+        };
 
-        // SEO meta tags and Schema markup to inject into the <head>
+        const jsonLdString = JSON.stringify(jsonLdData);
+
+        // Clean existing generic SEO tags out of the template head to avoid duplicate tags
+        let cleanedTemplate = baseTemplate
+            .replace(/<title>.*?<\/title>/gi, "")
+            .replace(/<meta\s+name=["']description["'].*?>/gi, "")
+            .replace(/<link\s+rel=["']canonical["'].*?>/gi, "")
+            .replace(/<meta\s+property=["']og:title["'].*?>/gi, "")
+            .replace(/<meta\s+property=["']og:description["'].*?>/gi, "")
+            .replace(/<meta\s+property=["']og:image["'].*?>/gi, "")
+            .replace(/<meta\s+property=["']og:url["'].*?>/gi, "")
+            .replace(/<meta\s+property=["']og:type["'].*?>/gi, "");
+
+        // Construct dynamic, product-specific tags
         const seoInject = `
-    <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
-    <meta name="description" content="${escapeHtml(description)}">
-    <link rel="canonical" href="${canonicalUrl}">
-    <meta property="og:type" content="product">
-    <meta property="og:url" content="${canonicalUrl}">
-    <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
-    <meta property="og:description" content="${escapeHtml(description)}">
-    <meta property="og:image" content="${imageUrl}">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
-    <meta name="twitter:description" content="${escapeHtml(description)}">
-    <meta name="twitter:image" content="${imageUrl}">
-    <script type="application/ld+json">
-    ${jsonLd}
-    </script>
+        <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
+        <meta name="description" content="${escapeHtml(description)}">
+        <link rel="canonical" href="${canonicalUrl}">
+        <meta property="og:type" content="product">
+        <meta property="og:url" content="${canonicalUrl}">
+        <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
+        <meta property="og:description" content="${escapeHtml(description)}">
+        <meta property="og:image" content="${primaryImageUrl}">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:site" content="@ryzethakidd">
+        <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
+        <meta name="twitter:description" content="${escapeHtml(description)}">
+        <meta name="twitter:image" content="${primaryImageUrl}">
+        <script type="application/ld+json">
+        ${jsonLdString}
+        </script>
 </head>`;
 
-        // Replace the closing </head> tag in your original store.html with our SEO tags included
-        const hydratedHtml = baseTemplate.replace("</head>", seoInject);
+        const hydratedHtml = cleanedTemplate.replace("</head>", seoInject);
 
         return {
             statusCode: 200,
-            headers: { "Content-Type": "text/html; charset=utf-8" },
+            headers: { 
+                "Content-Type": "text/html; charset=utf-8",
+                "Cache-Control": "public, max-age=300, s-maxage=600"
+            },
             body: hydratedHtml
         };
 
     } catch (error) {
         console.error("SSR generation failed:", error);
+        // Fallback gracefully without redirect loops
         return {
             statusCode: 200,
-            headers: { "Content-Type": "text/html; charset=utf-8" },
+            headers: { 
+                "Content-Type": "text/html; charset=utf-8",
+                "Cache-Control": "public, max-age=0, must-revalidate"
+            },
             body: baseTemplate
         };
     }
 };
 
 function escapeHtml(str) {
-    return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    if (!str) return "";
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
 }
