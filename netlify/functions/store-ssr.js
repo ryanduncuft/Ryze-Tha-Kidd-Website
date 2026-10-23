@@ -27,8 +27,16 @@ exports.handler = async function (event, context) {
     try {
         const stripe = getStripe();
         const product = await stripe.products.retrieve(productId);
-        const prices = await stripe.prices.list({ product: product.id, active: true, limit: 1 });
-        const priceObj = prices.data[0] || {};
+        
+        // Fetch active prices and find a valid one-time price just like products.js does
+        const prices = await stripe.prices.list({ 
+            product: product.id, 
+            active: true, 
+            type: "one_time",
+            limit: 100 
+        });
+        
+        const priceObj = prices.data.find(item => Number.isInteger(item.unit_amount)) || prices.data[0] || {};
         
         const unitAmount = priceObj.unit_amount || 0;
         const currency = (priceObj.currency || "gbp").toUpperCase();
@@ -43,35 +51,29 @@ exports.handler = async function (event, context) {
             ? [...product.images] 
             : [];
 
-        // Check for numbered metadata image keys (image_1, image_2, etc.)
         Object.keys(meta).forEach(key => {
             if (key.startsWith("image_") && meta[key]) {
                 images.push(meta[key]);
             }
         });
 
-        // Fallback to default logo if no images found at all
         if (images.length === 0) {
             images = ["https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png"];
         }
 
-        // Deduplicate image URLs while preserving order
         images = [...new Set(images)];
 
         const primaryImageUrl = images[0];
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        // Check if limited_edition is true (case-insensitive check)
         const isLimited = String(meta.limited_edition || "").toLowerCase() === "true";
         const limitedText = isLimited ? "Made-to-order batch. Secure your copy now!" : null;
         const limitedEditionClass = limitedText ? "d-flex" : "d-none";
 
-        // Build thumbnail HTML elements for all images
         const thumbnailsHtml = images.map((imgUrl, index) => `
             <img src="${imgUrl}" alt="${escapeHtml(name)} view ${index + 1}" class="rounded border object-fit-cover shadow-sm" style="width: 75px; height: 75px; cursor: pointer; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.8'" onmouseout="this.style.opacity='1'" onclick="document.getElementById('detail-image').src='${imgUrl}'" />
         `).join("");
 
-        // Schema.org Product JSON-LD block for Google Merchant Center & Rich Results Test
         const jsonLdData = {
             "@context": "https://schema.org/",
             "@type": "Product",
@@ -95,6 +97,11 @@ exports.handler = async function (event, context) {
 
         const jsonLdString = JSON.stringify(jsonLdData);
         const priceIdValue = priceObj.id || "";
+
+        // Fallback safety check: if priceIdValue is somehow empty, log it for debugging
+        if (!priceIdValue) {
+            console.error("Warning: No active price ID found for product:", product.id);
+        }
 
         const html = `<!DOCTYPE html>
 <html lang="en" data-theme="light">
