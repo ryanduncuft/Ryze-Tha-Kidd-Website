@@ -183,7 +183,7 @@ exports.handler = async function (event, context) {
                         </div>
                     </div>
 
-                    <p id="detail-description" class="text-muted" style="white-space: pre-line;"></p>
+                    <p id="detail-description" class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
                     
                     <div class="mt-3">
                         <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-price-id="${escapeHtml(priceObj.id || '')}">Proceed to Checkout</button>
