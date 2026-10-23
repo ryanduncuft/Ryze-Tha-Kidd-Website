@@ -1,5 +1,22 @@
 # =========================================================================
-# PRIMARY REDIRECT RULES (Prioritized 301 Permanent Redirects)
+# PRIMARY REDIRECT RULES & FUNCTIONS ROUTING
+# =========================================================================
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# Store SSR: Route store.html requests containing an ID query parameter to the function.
+# force = true ensures Netlify ignores the static store.html file and hits the function instead.
+[[redirects]]
+  from = "/store.html"
+  query = {id = ":id"}
+  to = "/.netlify/functions/store-ssr?id=:id"
+  status = 200
+  force = true
+
+# =========================================================================
+# OTHER REDIRECT RULES (Prioritized 301 Permanent Redirects)
 # =========================================================================
 
 [[redirects]]
@@ -15,21 +32,6 @@
   to = "https://www.ryzethakidd.com/:splat"
   status = 301
   force = true
-
-# =========================================================================
-# REWRITE RULES & FUNCTIONS CONFIGURATION
-# =========================================================================
-
-[functions]
-  directory = "netlify/functions"
-  node_bundler = "esbuild"
-
-# Store SSR: Route store.html requests containing an ID query parameter to the function
-[[redirects]]
-  from = "/store.html"
-  query = {id = ":id"}
-  to = "/.netlify/functions/store-ssr?id=:id"
-  status = 200
 
 # Sitemap Function: Route /sitemap.xml directly to the sitemap serverless function
 [[redirects]]
