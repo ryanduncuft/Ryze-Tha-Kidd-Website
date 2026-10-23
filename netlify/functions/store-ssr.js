@@ -36,30 +36,35 @@ exports.handler = async function (event, context) {
         
         const name = product.name || "Official Merchandise";
         const description = product.description || "Official item from Ryze Tha Kidd.";
+        const meta = product.metadata || {};
         
-        // Gather images from Stripe product images array and supplement with metadata if available
+        // Gather images from Stripe product gallery and explicitly mapped metadata keys (image_1, image_2, etc.)
         let images = Array.isArray(product.images) && product.images.length > 0 
             ? [...product.images] 
-            : ["https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png"];
+            : [];
 
-        // Check metadata for any additional images (e.g. metadata.extra_images or metadata.images split by comma)
-        const metaImages = product.metadata && (product.metadata.extra_images || product.metadata.images);
-        if (metaImages) {
-            const extra = metaImages.split(",").map(s => s.trim()).filter(Boolean);
-            images = [...images, ...extra];
+        // Check for numbered metadata image keys (image_1, image_2, etc.)
+        Object.keys(meta).forEach(key => {
+            if (key.startsWith("image_") && meta[key]) {
+                images.push(meta[key]);
+            }
+        });
+
+        // Fallback to default logo if no images found at all
+        if (images.length === 0) {
+            images = ["https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png"];
         }
+
+        // Deduplicate image URLs while preserving order
+        images = [...new Set(images)];
 
         const primaryImageUrl = images[0];
         const canonicalUrl = `https://www.ryzethakidd.com/store.html?id=${product.id}`;
 
-        // Check metadata for limited edition / pre-order banner text across common keys
-        const limitedEditionText = product.metadata && (
-            product.metadata.limited_text || 
-            product.metadata.preorder_text || 
-            product.metadata.limited_edition_text || 
-            (product.metadata.is_limited === "true" ? "Made-to-order batch. Secure your copy now!" : null)
-        );
-        const limitedEditionClass = limitedEditionText ? "d-flex" : "d-none";
+        // Check if limited_edition is true (case-insensitive check)
+        const isLimited = String(meta.limited_edition || "").toLowerCase() === "true";
+        const limitedText = isLimited ? "Made-to-order batch. Secure your copy now!" : null;
+        const limitedEditionClass = limitedText ? "d-flex" : "d-none";
 
         // Build thumbnail HTML elements for all images
         const thumbnailsHtml = images.map((imgUrl, index) => `
@@ -90,7 +95,6 @@ exports.handler = async function (event, context) {
 
         const jsonLdString = JSON.stringify(jsonLdData);
 
-        // Fully self-contained HTML layout matching your exact site structure & badges
         const html = `<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
@@ -151,15 +155,15 @@ exports.handler = async function (event, context) {
                     </div>
                 </div>
                 <div class="col-lg-6 d-flex flex-column gap-3">
-                    <span id="detail-type" class="text-muted small text-uppercase fw-bold">Store item</span>
+                    <span id="detail-type" class="text-muted small text-uppercase fw-bold">${escapeHtml(meta.category || meta.type || "Store item")}</span>
                     <h1 id="detail-title" class="display-5 fw-bold mb-0">${escapeHtml(name)}</h1>
                     <div id="detail-price" class="fs-3 fw-900 text-primary mb-0">${formattedPrice}</div>
 
                     <!-- Conditional Limited Edition Pre-Order Badge -->
-                    <div id="limited-edition-banner" class="p-3 rounded-3 border align-items-center gap-2 small ${limitedEditionClass}" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
+                    <div id="limited-edition-banner" class="p-3 rounded-3 border ${limitedEditionClass} align-items-center gap-2 small" style="background: var(--card-bg); border-color: var(--border-color) !important; color: var(--text-primary);">
                         <i class="fas fa-fire fs-5 text-warning"></i>
                         <div id="limited-edition-banner-text">
-                            <strong>Limited Edition Pre-Order:</strong> <span class="fw-semibold">${escapeHtml(limitedEditionText || "Secure your copy now!")}</span>
+                            <strong>Limited Edition Pre-Order:</strong> <span class="fw-semibold">Made-to-order batch. Secure your copy now!</span>
                         </div>
                     </div>
 
@@ -179,7 +183,7 @@ exports.handler = async function (event, context) {
                         </div>
                     </div>
 
-                    <p id="detail-description" class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
+                    <p id="detail-description" class="text-muted" style="white-space: pre-line;"></p>
                     
                     <div class="mt-3">
                         <button id="detail-checkout-btn" type="button" class="btn btn-primary btn-lg w-100" data-price-id="${escapeHtml(priceObj.id || '')}">Proceed to Checkout</button>
