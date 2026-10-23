@@ -16,27 +16,11 @@ const getStripe = () => {
 exports.handler = async function (event, context) {
     const productId = event.queryStringParameters && event.queryStringParameters.id;
 
-    // Fetch the live store.html layout directly from your domain to guarantee it's always found
-    let baseTemplate = "";
-    try {
-        const response = await fetch("https://www.ryzethakidd.com/store.html");
-        if (response.ok) {
-            baseTemplate = await response.text();
-        }
-    } catch (e) {
-        // Fallback skeleton if network fetch fails
-    }
-
-    if (!baseTemplate) {
-        baseTemplate = `<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Official Shop | Ryze Tha Kidd</title></head><body><main class="container py-5"><h1>Official Shop</h1><p><a href="/store.html">Return to Shop</a></p></main></body></html>`;
-    }
-
-    // If no product ID is provided, return the base template cleanly
     if (!productId) {
         return {
-            statusCode: 200,
-            headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: baseTemplate
+            statusCode: 302,
+            headers: { Location: "/store.html" },
+            body: "Redirecting..."
         };
     }
 
@@ -48,6 +32,7 @@ exports.handler = async function (event, context) {
         
         const unitAmount = priceObj.unit_amount || 0;
         const currency = (priceObj.currency || "gbp").toUpperCase();
+        const formattedPrice = new Intl.NumberFormat("en-GB", { style: "currency", currency }).format(unitAmount / 100);
         
         const name = product.name || "Official Merchandise";
         const description = product.description || "Official item from Ryze Tha Kidd.";
@@ -82,36 +67,65 @@ exports.handler = async function (event, context) {
 
         const jsonLdString = JSON.stringify(jsonLdData);
 
-        // Remove generic title/meta descriptions to prevent duplicates
-        let cleanedTemplate = baseTemplate
-            .replace(/<title>.*?<\/title>/gi, "")
-            .replace(/<meta\s+name=["']description["'].*?>/gi, "")
-            .replace(/<link\s+rel=["']canonical["'].*?>/gi, "")
-            .replace(/<meta\s+property=["']og:title["'].*?>/gi, "")
-            .replace(/<meta\s+property=["']og:description["'].*?>/gi, "")
-            .replace(/<meta\s+property=["']og:image["'].*?>/gi, "")
-            .replace(/<meta\s+property=["']og:url["'].*?>/gi, "");
+        // Fully self-contained HTML payload guaranteed to have the Schema and Product details
+        const html = `<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="utf-8">
+    <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="${escapeHtml(description)}">
+    <link rel="canonical" href="${canonicalUrl}">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="product">
+    <meta property="og:url" content="${canonicalUrl}">
+    <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
+    <meta property="og:description" content="${escapeHtml(description)}">
+    <meta property="og:image" content="${primaryImageUrl}">
+    <meta property="og:locale" content="en_GB">
 
-        // Inject product-specific SEO tags and the crucial JSON-LD schema block
-        const seoInject = `
-        <title>${escapeHtml(name)} | Ryze Tha Kidd</title>
-        <meta name="description" content="${escapeHtml(description)}">
-        <link rel="canonical" href="${canonicalUrl}">
-        <meta property="og:type" content="product">
-        <meta property="og:url" content="${canonicalUrl}">
-        <meta property="og:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
-        <meta property="og:description" content="${escapeHtml(description)}">
-        <meta property="og:image" content="${primaryImageUrl}">
-        <meta name="twitter:card" content="summary_large_image">
-        <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
-        <meta name="twitter:description" content="${escapeHtml(description)}">
-        <meta name="twitter:image" content="${primaryImageUrl}">
-        <script type="application/ld+json">
-        ${jsonLdString}
-        </script>
-</head>`;
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${escapeHtml(name)} | Ryze Tha Kidd">
+    <meta name="twitter:description" content="${escapeHtml(description)}">
+    <meta name="twitter:image" content="${primaryImageUrl}">
 
-        const hydratedHtml = cleanedTemplate.replace("</head>", seoInject);
+    <!-- Google Product Schema.org JSON-LD (Required for Rich Results & Merchant Center) -->
+    <script type="application/ld+json">
+    ${jsonLdString}
+    </script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
+    <script>window.ARTIST_ID = "ryzethakidd";</script>
+</head>
+<body class="bg-body text-body">
+    <main class="container py-5 my-5">
+        <div class="mb-4">
+            <a href="/store.html" class="link-arrow"><i class="fas fa-arrow-left me-2"></i>Back to Shop</a>
+        </div>
+        <div class="row g-5 align-items-start">
+            <div class="col-lg-6">
+                <div class="rounded-4 overflow-hidden border mb-3 position-relative" style="aspect-ratio: 1/1; background: var(--bs-body-bg);">
+                    <img src="${primaryImageUrl}" alt="${escapeHtml(name)}" class="w-100 h-100 object-fit-cover position-absolute top-0 start-0">
+                </div>
+            </div>
+            <div class="col-lg-6 d-flex flex-column gap-3">
+                <h1 class="display-5 fw-bold mb-0">${escapeHtml(name)}</h1>
+                <div class="fs-3 fw-900 text-primary mb-0">${formattedPrice}</div>
+                <p class="text-muted" style="white-space: pre-line;">${escapeHtml(description)}</p>
+                <div class="mt-3">
+                    <a href="/store.html" class="btn btn-primary btn-lg w-100">View in Full Shop</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" defer></script>
+</body>
+</html>`;
 
         return {
             statusCode: 200,
@@ -119,15 +133,15 @@ exports.handler = async function (event, context) {
                 "Content-Type": "text/html; charset=utf-8",
                 "Cache-Control": "public, max-age=300"
             },
-            body: hydratedHtml
+            body: html
         };
 
     } catch (error) {
         console.error("SSR generation failed:", error);
         return {
-            statusCode: 200,
-            headers: { "Content-Type": "text/html; charset=utf-8" },
-            body: baseTemplate
+            statusCode: 302,
+            headers: { Location: "/store.html" },
+            body: "Redirecting..."
         };
     }
 };
