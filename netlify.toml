@@ -6,70 +6,40 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# =========================================================================
-# 1. SUBDOMAIN DOMAIN-SPECIFIC REWRITES
-# =========================================================================
-
-# When a user lands on the root of shop.ryzethakidd.com, serve store.html
+# Store SSR: Route store.html requests containing an ID query parameter to the function.
+# force = true ensures Netlify ignores the static store.html file and hits the function instead.
 [[redirects]]
-  from = "/"
-  to = "/store.html"
-  status = 200
-  force = true
-  conditions = {Language = [], Country = [], Role = []}
-  headers = {Host = "shop.ryzethakidd.com"}
-
-# Handle SSR product view on shop subdomain (e.g. shop.ryzethakidd.com/?id=123)
-[[redirects]]
-  from = "/"
+  from = "/store.html"
   query = {id = ":id"}
   to = "/.netlify/functions/store-ssr?id=:id"
   status = 200
   force = true
-  headers = {Host = "shop.ryzethakidd.com"}
-
-# If someone on the main domain (www) types /store or /store.html, redirect them to the shop subdomain root
-[[redirects]]
-  from = "/store"
-  to = "https://shop.ryzethakidd.com/"
-  status = 301
-  force = true
-
-[[redirects]]
-  from = "/store.html"
-  to = "https://shop.ryzethakidd.com/"
-  status = 301
-  force = true
 
 # =========================================================================
-# 2. CANONICAL & DOMAIN CLEANUP
+# OTHER REDIRECT RULES (Prioritized 301 Permanent Redirects)
 # =========================================================================
 
 [[redirects]]
-  # Redirect old Netlify app subdomain to canonical domain
+  # Rule 1: Redirect old Netlify subdomain to the canonical domain
   from = "https://ryzethakidd.netlify.app/*"
   to = "https://www.ryzethakidd.com/:splat"
   status = 301
   force = true
 
 [[redirects]]
-  # Redirect HTTP to secure HTTPS
+  # Rule 2: Redirect HTTP (all domains) to secure HTTPS
   from = "http://*"
   to = "https://www.ryzethakidd.com/:splat"
   status = 301
   force = true
 
-# =========================================================================
-# 3. ENDPOINTS & API PROXIES
-# =========================================================================
-
-# Sitemap Function
+# Sitemap Function: Route /sitemap.xml directly to the sitemap serverless function
 [[redirects]]
   from = "/sitemap.xml"
   to = "/.netlify/functions/sitemap"
   status = 200
 
-# Store API Proxying
+# Store API: keep the public endpoints stable while proxying to Functions.
 [[redirects]]
   from = "/api/store/products"
   to = "/.netlify/functions/products"
@@ -80,8 +50,8 @@
   to = "/.netlify/functions/create-checkout-session"
   status = 200
 
-# Single and Album exact paths bypass
 [[redirects]]
+  # EXCLUSION: If the path is /single or /album exactly, do NOT rewrite to .html.
   from = "/single"
   to = "/single"
   status = 200
@@ -91,20 +61,20 @@
   to = "/album"
   status = 200
 
-# Block removed FAQ page
 [[redirects]]
+  # Permanent 404 block for deleted FAQ page
   from = "/faq"
   to = "/404.html"
   status = 404
 
-# Clean URL rewriting for static HTML pages
 [[redirects]]
+  # Clean URLs for OTHER static pages (about, contact, etc)
   from = "/:page"
   to = "/:page.html"
   status = 200
 
-# Catch-all 404
 [[redirects]]
+  # Custom 404 Page Catch-all
   from = "/*"
   to = "/404.html"
   status = 404
