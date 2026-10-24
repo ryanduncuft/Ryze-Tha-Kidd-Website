@@ -10,22 +10,29 @@
 # SUBDOMAIN REDIRECT (Redirect storefront requests to shop.ryzethakidd.com)
 # =========================================================================
 
+# Clean redirect for exact /store or /store.html to the shop subdomain root
 [[redirects]]
-  # Redirect /store or /store.html (with or without query parameters) to shop.ryzethakidd.com
   from = "/store"
-  to = "https://shop.ryzethakidd.com/:splat"
+  to = "https://shop.ryzethakidd.com/"
   status = 301
   force = true
 
 [[redirects]]
   from = "/store.html"
+  to = "https://shop.ryzethakidd.com/"
+  status = 301
+  force = true
+
+# Wildcard redirect for subpaths like /store/item-name -> shop.ryzethakidd.com/item-name
+[[redirects]]
+  from = "/store/*"
   to = "https://shop.ryzethakidd.com/:splat"
   status = 301
   force = true
 
-# Store SSR: Route store.html requests on the subdomain to the SSR serverless function.
+# Store SSR: Route store.html requests on the shop subdomain directly to the SSR serverless function.
 [[redirects]]
-  from = "/store.html"
+  from = "/"
   query = {id = ":id"}
   to = "/.netlify/functions/store-ssr?id=:id"
   status = 200
