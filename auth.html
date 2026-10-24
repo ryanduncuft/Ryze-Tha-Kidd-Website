@@ -2,10 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Registration | Ryze Tha Kidd</title>
+    <title>Account Portal | Ryze Tha Kidd</title>
+
+    <!-- Prevent search engine indexing for draft account portal -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Meta Tags -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sign in or register for an account on the official Ryze Tha Kidd platform. Access community features, order updates, and exclusive artist content.">
+    <meta name="author" content="Ryze Tha Kidd">
     <meta name="theme-color" content="#9D00FF">
 
+    <!-- Performance & Resource Hints -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://res.cloudinary.com">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.ryzethakidd.com/auth">
+    <meta property="og:title" content="Account Portal | Ryze Tha Kidd">
+    <meta property="og:description" content="Sign in or register for an account on the official Ryze Tha Kidd platform. Access community features, order updates, and exclusive artist content.">
+    <meta property="og:image" content="https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png">
+    <meta property="og:locale" content="en_GB">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ryzethakidd">
+    <meta name="twitter:title" content="Account Portal | Ryze Tha Kidd">
+    <meta name="twitter:description" content="Sign in or register for an account on the official Ryze Tha Kidd platform. Access community features, order updates, and exclusive artist content.">
+    <meta name="twitter:image" content="https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png">
+
+    <!-- Canonical & Icons -->
+    <link rel="canonical" href="https://www.ryzethakidd.com/auth">
+    <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
+    <link rel="icon" href="/WebpageIcon.png" type="image/png" sizes="192x192">
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css">
@@ -24,14 +56,14 @@
                 <form action="#">
                     <h1 class="fw-bold h3 mb-3">Create Account</h1>
                     <div class="social-auth-btns">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign up with Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign up with Google"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign up with Twitter"><i class="fab fa-twitter"></i></a>
                     </div>
                     <p class="small text-muted mb-3">or use your email for registration</p>
-                    <input type="text" placeholder="Full Name" required />
-                    <input type="email" placeholder="Email" required />
-                    <input type="password" placeholder="Password" required />
+                    <input type="text" placeholder="Full Name" required aria-label="Full Name" />
+                    <input type="email" placeholder="Email" required aria-label="Email" />
+                    <input type="password" placeholder="Password" required aria-label="Password" />
                     <button class="btn btn-primary mt-3 px-5 rounded-pill" type="submit">Sign Up</button>
                 </form>
             </div>
@@ -40,13 +72,13 @@
                 <form action="#">
                     <h1 class="fw-bold h3 mb-3">Sign In</h1>
                     <div class="social-auth-btns">
-                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-google"></i></a>
-                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign in with Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign in with Google"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign in with Twitter"><i class="fab fa-twitter"></i></a>
                     </div>
                     <p class="small text-muted mb-3">Welcome back! Please login</p>
-                    <input type="email" placeholder="Email" required />
-                    <input type="password" placeholder="Password" required />
+                    <input type="email" placeholder="Email" required aria-label="Email" />
+                    <input type="password" placeholder="Password" required aria-label="Password" />
                     <a href="#" class="d-block my-2 text-muted small text-decoration-none">Forgot password?</a>
                     <button class="btn btn-primary px-5 rounded-pill" type="submit">Sign In</button>
                 </form>
@@ -78,8 +110,10 @@
             const signInBtn = document.getElementById('showSignIn');
             const container = document.getElementById('auth-container');
 
-            signUpBtn.addEventListener('click', () => container.classList.add("active-right"));
-            signInBtn.addEventListener('click', () => container.classList.remove("active-right"));
+            if (signUpBtn && signInBtn && container) {
+                signUpBtn.addEventListener('click', () => container.classList.add("active-right"));
+                signInBtn.addEventListener('click', () => container.classList.remove("active-right"));
+            }
         });
     </script>
 </body>

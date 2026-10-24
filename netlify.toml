@@ -6,8 +6,24 @@
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Store SSR: Route store.html requests containing an ID query parameter to the function.
-# force = true ensures Netlify ignores the static store.html file and hits the function instead.
+# =========================================================================
+# SUBDOMAIN REDIRECT (Redirect storefront requests to shop.ryzethakidd.com)
+# =========================================================================
+
+[[redirects]]
+  # Redirect /store or /store.html (with or without query parameters) to shop.ryzethakidd.com
+  from = "/store"
+  to = "https://shop.ryzethakidd.com/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/store.html"
+  to = "https://shop.ryzethakidd.com/:splat"
+  status = 301
+  force = true
+
+# Store SSR: Route store.html requests on the subdomain to the SSR serverless function.
 [[redirects]]
   from = "/store.html"
   query = {id = ":id"}
