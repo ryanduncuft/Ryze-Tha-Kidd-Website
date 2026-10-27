@@ -1,0 +1,477 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Official Store | Ryze Tha Kidd - CDs & Physical Merchandise</title>
+    <meta name="description" content="Official store for Ryze Tha Kidd. Shop 2-Disc jewel case CDs, limited edition physical releases, and exclusive artist merchandise with free UK tracked shipping.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.ryzethakidd.com/store">
+    <meta property="og:title" content="Official Store | Ryze Tha Kidd - CDs &amp; Physical Merchandise">
+    <meta property="og:description" content="Official store for Ryze Tha Kidd. Shop 2-Disc jewel case CDs, limited edition physical releases, and exclusive artist merchandise with free UK tracked shipping.">
+    <meta property="og:image" content="https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png">
+    <meta property="og:image:alt" content="Official Ryze Tha Kidd website artwork">
+    <meta property="og:locale" content="en_GB">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ryzethakidd">
+    <meta name="twitter:title" content="Official Store | Ryze Tha Kidd - CDs &amp; Physical Merchandise">
+    <meta name="twitter:description" content="Official store for Ryze Tha Kidd. Shop 2-Disc jewel case CDs, limited edition physical releases, and exclusive artist merchandise with free UK tracked shipping.">
+    <meta name="twitter:image" content="https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png">
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://res.cloudinary.com">
+
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Ryze Tha Kidd Shop, Ryze Tha Kidd Merchandise, Buy CDs, Limited Edition CDs, Emo Rap Merchandise, Independent Music Merch, Mossley, Manchester, UK, Healing Wounds CD, Patient Zero CD">
+    <meta name="author" content="Ryze Tha Kidd">
+    <meta name="theme-color" content="#9D00FF">
+
+    <!-- Canonical & Icons -->
+    <link rel="canonical" href="https://www.ryzethakidd.com/store">
+    <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
+    <link rel="icon" href="/WebpageIcon.png" type="image/png" sizes="192x192">
+
+    <!-- Google Schema.org Storefront & Merchant Center Structured Data -->
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "OnlineStore",
+        "name": "Ryze Tha Kidd Official Store",
+        "url": "https://www.ryzethakidd.com/store",
+        "description": "Official online storefront for independent British artist Ryze Tha Kidd featuring physical CD releases and exclusive merchandise.",
+        "image": "https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png",
+        "priceRange": "Â£7.99 - Â£9.99",
+        "currenciesAccepted": "GBP",
+        "paymentAccepted": "Credit Card, Debit Card, Stripe",
+        "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": "GB",
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 14,
+        "returnMethod": "https://schema.org/ReturnByMail",
+        "returnFees": "https://schema.org/FreeReturn"
+        }
+        }
+    </script>
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preload" href="https://cdn.ryzethakidd.com/shared/ui.html" as="fetch" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css" crossorigin="anonymous">
+
+    <style>
+        /* Custom Theme-Aware Store Enhancements */
+        .store-card {
+        background: var(--card-bg, var(--bs-body-bg));
+        border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1)) !important;
+        transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+        border-radius: 1rem;
+        overflow: hidden;
+        }
+        .store-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(157, 0, 255, 0.15) !important;
+        border-color: var(--accent, #9D00FF) !important;
+        }
+        .store-card img {
+        transition: transform 0.5s ease;
+        }
+        .store-card:hover img {
+        transform: scale(1.04);
+        }
+        .filter-btn-disabled {
+        opacity: 0.45 !important;
+        cursor: not-allowed !important;
+        pointer-events: auto !important;
+        background-color: rgba(108, 117, 125, 0.2) !important;
+        border-color: rgba(108, 117, 125, 0.3) !important;
+        color: var(--bs-secondary-color, #888) !important;
+        }
+        .discography-controls {
+        background: var(--card-bg, var(--bs-body-bg));
+        border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+        border-radius: 1rem;
+        }
+        /* Grid layout tuning */
+        .store-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+        }
+
+        /* Product Detail Page Clean & Theme-Aware Overrides */
+        .store-detail-container, .store-detail-card, #product-view, .product-detail-wrapper {
+        background: var(--card-bg, var(--bs-body-bg)) !important;
+        border-color: var(--border-color, rgba(255, 255, 255, 0.1)) !important;
+        }
+
+        /* Force ALL dynamic price tags on product and grid views to use site accent purple */
+        .product-price,
+        .store-price,
+        #product-price,
+        main .text-primary,
+        #main-content .text-primary {
+        color: var(--accent, #9D00FF) !important;
+        }
+    </style>
+
+    <script>
+        window.ARTIST_ID = "ryzethakidd";
+    </script>
+    <script src="https://cdn.ryzethakidd.com/shared/main.js" crossorigin="anonymous" defer></script>
+    <script src="https://cdn.ryzethakidd.com/ryzethakidd/store/config.js" defer></script>
+        
+</head>
+
+    <body>
+        <!-- Background Canvas -->
+        <canvas aria-hidden="true" id="interactive-bg"></canvas>
+
+        <!-- Navigation Header -->
+        <header id="navbar-container"></header>
+
+        <main class="container flex-grow-1 py-5 py-md-7 w-100" id="main-content">
+            <!-- Checkout Success View -->
+            <div id="store-success-view" class="d-none my-5">
+                <div class="card mx-auto text-center p-5 p-md-6 max-w-card surface reveal store-card">
+                    <div class="d-inline-block p-4 rounded-circle mb-4 border-2 text-gradient shadow-lg border-accent-light bg-accent-minimal">
+                        <i class="fa-solid fa-circle-check text-gradient display-1 success-icon" aria-hidden="true"></i>
+                    </div>
+                    <h1 class="display-4 display-md-3 fw-bolder mb-3 text-gradient lh-1">ORDER SUCCESSFUL!</h1>
+                    <p class="fs-5 text-muted mx-auto mt-3">
+                        Your payment was processed successfully and your order has been locked in. Thank you for supporting independent music! Tracking details will be emailed to you.
+                    </p>
+                    <div class="mt-4">
+                        <a href="/store.html" class="btn btn-primary btn-lg px-5">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Shop Grid View -->
+            <div id="store-grid-view">
+                <header class="page-hero mb-5 text-center text-lg-start">
+                    <p class="eyebrow">Official Merchandise & Physical Media</p>
+                    <h1 class="display-3 display-md-1 fw-black lh-1 text-gradient" id="store-heading">
+                        The Shop
+                    </h1>
+                    <p class="max-w-text text-muted">
+                        Purchase CDs, physical media, merchandise, and limited collector's items directly from Ryze Tha Kidd. All physical releases ship straight from Manchester, UK with free tracked domestic delivery.
+                    </p>
+                </header>
+
+                <!-- Controls Header with Filters Toggle & Surprise Me -->
+                <div class="d-flex flex-column flex-md-row justify-content-end align-items-center mb-4 gap-3 reveal">
+                    <div class="d-flex gap-2 flex-wrap justify-content-center ms-auto">
+                        <button class="btn btn-sm btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#filterPanel" aria-expanded="false" aria-controls="filterPanel">
+                            <i class="fas fa-sliders me-2"></i> Filters & Search
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary" id="store-random-item">
+                            <i class="fas fa-shuffle me-2"></i> Surprise Me
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Collapsible Filtering and Sorting Panel -->
+                <div class="collapse mb-5" id="filterPanel">
+                    <section aria-label="Store filtering and sorting" class="discography-controls p-4 p-md-5">
+
+                        <div class="row g-4 mb-4">
+                            <div class="col-12 col-lg-6">
+                                <label class="text-muted small fw-medium d-block mb-2" for="store-search">Search the shop:</label>
+                                <div class="input-group search-bar">
+                                    <span class="input-group-text" id="store-search-icon"><i class="fas fa-search"></i></span>
+                                    <input class="form-control" id="store-search" type="search" autocomplete="off" aria-describedby="store-search-icon" placeholder="Search title, description...">
+                                    <button class="btn btn-outline-secondary" id="store-search-clear" type="button">Clear</button>
+                                </div>
+                                <p class="text-muted small mb-0 mt-2" aria-live="polite" id="store-search-feedback"></p>
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <label class="text-muted small fw-medium d-block mb-2" for="store-sort-by">Sort By:</label>
+                                <select class="form-select" id="store-sort-by" aria-label="Sort store items">
+                                    <option value="featured">Featured / Default</option>
+                                    <option value="price-asc">Price (Low to High)</option>
+                                    <option value="price-desc">Price (High to Low)</option>
+                                    <option value="title-asc">Title (A-Z)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4 g-3">
+                            <div class="col-12">
+                                <label class="text-muted small fw-medium d-block mb-2">Category / Type:</label>
+                                <div class="d-flex flex-wrap gap-2" role="toolbar" aria-label="Filter products by type" id="store-category-filters">
+                                    <button class="filter-btn filter-btn-active" data-category="all"><i class="fas me-2 fa-store"></i> All Items</button>
+                                    <button class="filter-btn filter-btn-inactive" data-category="cd"><i class="fas me-2 fa-compact-disc"></i> CDs</button>
+                                    <button class="filter-btn filter-btn-inactive" data-category="limited"><i class="fas me-2 fa-fire"></i> Limited Edition</button>
+                                    <button class="filter-btn filter-btn-disabled" data-category="vinyl" disabled title="Coming Soon"><i class="fas me-2 fa-record-vinyl"></i> Vinyls</button>
+                                    <button class="filter-btn filter-btn-disabled" data-category="merch" disabled title="Coming Soon"><i class="fas me-2 fa-shirt"></i> Merchandise</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-4">
+                            <div class="col-12 col-lg-6">
+                                <label class="text-muted small fw-medium d-block mb-2" for="store-availability-filter">Availability:</label>
+                                <select class="form-select" id="store-availability-filter" aria-label="Filter by stock availability">
+                                    <option value="all">All Available Items</option>
+                                    <option value="in-stock">In Stock Only</option>
+                                    <option value="coming-soon">Coming Soon</option>
+                                </select>
+                            </div>
+
+                            <div class="col-12 col-lg-6">
+                                <label class="text-muted small fw-medium d-block mb-2">Price Range:</label>
+                                <div class="d-flex gap-3 align-items-center year-range">
+                                    <input class="form-range" id="price-min" type="range" aria-label="Minimum price" max="20" min="0" step="0.5" value="0">
+                                    <input class="form-range" id="price-max" type="range" aria-label="Maximum price" max="20" min="0" step="0.5" value="20">
+                                </div>
+                                <div class="text-muted small d-flex gap-3">
+                                    <span>From <strong id="price-min-label">Â£0.00</strong></span>
+                                    <span>To <strong id="price-max-label">Â£20.00</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <section aria-labelledby="store-products-title" class="pb-0 pt-0">
+                    <div class="section-head mb-4">
+                        <div>
+                            <h2 class="fs-3 fw-bold mb-1" id="store-products-title">
+                                Available Items
+                            </h2>
+                            <p class="mb-0 text-muted" id="store-status" role="status">
+                                Loading the Shop...
+                            </p>
+                        </div>
+                    </div>
+                    <div
+                        aria-live="polite"
+                        class="store-grid"
+                        id="store-products"
+                        aria-busy="true"
+                    >
+                        <p class="store-empty-state text-muted">Loading available releases...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer id="footer-container"></footer>
+
+        <!-- Scripts & Store Controls Script -->
+        <script>
+
+            window.addEventListener('DOMContentLoaded', async () => {
+
+                const params = new URLSearchParams(location.search);
+                if (params.get('checkout') === 'success') {
+                    const successView = document.getElementById('store-success-view');
+                    const gridView = document.getElementById('store-grid-view');
+                    if (successView && gridView) {
+                        gridView.classList.add('d-none');
+                        successView.classList.remove('d-none');
+                    }
+                    return;
+                }
+
+                let allProducts = [];
+                let currentCategory = 'all';
+
+                const searchInput = document.getElementById('store-search');
+                const searchClear = document.getElementById('store-search-clear');
+                const searchFeedback = document.getElementById('store-search-feedback');
+                const sortBySelect = document.getElementById('store-sort-by');
+                const availabilitySelect = document.getElementById('store-availability-filter');
+                const priceMinInput = document.getElementById('price-min');
+                const priceMaxInput = document.getElementById('price-max');
+                const priceMinLabel = document.getElementById('price-min-label');
+                const priceMaxLabel = document.getElementById('price-max-label');
+                const productsContainer = document.getElementById('store-products');
+                const statusElement = document.getElementById('store-status');
+                const categoryButtons = document.querySelectorAll('#store-category-filters button:not([disabled])');
+                const randomBtn = document.getElementById('store-random-item');
+
+                if (!productsContainer) {
+                    console.warn("Store products container not found");
+                    return;
+                }
+
+try {
+                    const productsUrl = '/api/store/products';
+
+                    const res = await fetch(productsUrl, {
+                        headers: { Accept: 'application/json' },
+                        cache: 'no-store'
+                    });
+
+                    if (!res.ok) throw new Error(`Products request failed: ${res.status}`);
+                    const data = await res.json();
+                    allProducts = data.products || [];
+
+if (allProducts.length > 0) {
+                        const maxPriceInCatalog = Math.max(...allProducts.map(p => (p.unitAmount || 0) / 100));
+                        const roundedMax = Math.ceil(maxPriceInCatalog) || 20;
+
+                        if (priceMinInput) priceMinInput.max = roundedMax;
+                        if (priceMaxInput) {
+                            priceMaxInput.max = roundedMax;
+                            priceMaxInput.value = roundedMax;
+                        }
+                        if (priceMaxLabel) priceMaxLabel.textContent = `Â£${roundedMax.toFixed(2)}`;
+                    }
+
+                    renderProducts();
+                } catch (err) {
+                    console.error("Error fetching products", err);
+                    window.alert("CHECKOUT ERROR: " + err.message);
+                    if (statusElement) statusElement.textContent = "Failed to load products.";
+                }
+
+                function filterAndSortProducts() {
+                    let filtered = [...allProducts];
+
+                    const query = searchInput ? searchInput.value.trim().toLowerCase() : "";
+                    if (query) {
+                        filtered = filtered.filter(p =>
+                            (p.name && p.name.toLowerCase().includes(query)) ||
+                            (p.description && p.description.toLowerCase().includes(query)) ||
+                            (p.type && p.type.toLowerCase().includes(query))
+                        );
+                        if (searchFeedback) searchFeedback.textContent = `Found ${filtered.length} matching product(s)`;
+                    } else if (searchFeedback) {
+                        searchFeedback.textContent = "";
+                    }
+
+                    if (currentCategory !== 'all') {
+                        filtered = filtered.filter(p => {
+                            const meta = p.metadata || {};
+                            const isLimited = String(meta.limited_edition || "").toLowerCase() === "true";
+                            const type = String(p.type || "").toLowerCase();
+
+                            if (currentCategory === 'cd') return type.includes('cd');
+                            if (currentCategory === 'limited') return isLimited;
+                            return true;
+                        });
+                    }
+
+                    const avail = availabilitySelect ? availabilitySelect.value : "all";
+                    if (avail === 'in-stock') {
+                        filtered = filtered.filter(p => !p.comingSoon && !p.soldOut);
+                    } else if (avail === 'coming-soon') {
+                        filtered = filtered.filter(p => p.comingSoon);
+                    }
+
+                    const minP = parseFloat(priceMinInput.value) || 0;
+                    const maxP = parseFloat(priceMaxInput.value) || 999;
+                    filtered = filtered.filter(p => {
+                        const priceVal = (p.unitAmount || 0) / 100;
+                        return priceVal >= minP && priceVal <= maxP;
+                    });
+
+                    const sortVal = sortBySelect ? sortBySelect.value : "featured";
+                    if (sortVal === 'price-asc') {
+                        filtered.sort((a, b) => (a.unitAmount || 0) - (b.unitAmount || 0));
+                    } else if (sortVal === 'price-desc') {
+                        filtered.sort((a, b) => (b.unitAmount || 0) - (a.unitAmount || 0));
+                    } else if (sortVal === 'title-asc') {
+                        filtered.sort((a, b) => (a.name || "").localeCompare(b.name || ""));
+                    }
+
+                    return filtered;
+                }
+
+                function renderProducts() {
+                    if (!productsContainer) return;
+                    const filtered = filterAndSortProducts();
+
+if (statusElement) {
+                        statusElement.textContent = `Showing ${filtered.length} of ${allProducts.length} items`;
+                    }
+
+                    if (filtered.length === 0) {
+                        productsContainer.innerHTML = `<p class="store-empty-state text-muted">No items found matching your filters.</p>`;
+                        return;
+                    }
+
+                    productsContainer.innerHTML = filtered.map(p => {
+                        const priceFormatted = new Intl.NumberFormat('en-GB', { style: 'currency', currency: (p.currency || 'GBP').toUpperCase() }).format((p.unitAmount || 0) / 100);
+                        const productId = encodeURIComponent(String(p.id || ""));
+                        return `
+                            <article class="store-card h-100 d-flex flex-column shadow-sm">
+                                <a href="/store.html?id=${productId}" class="d-block overflow-hidden position-relative" style="aspect-ratio: 1/1; background: var(--bs-body-bg);">
+                                    <img src="${p.image}" class="w-100 h-100 object-fit-cover" alt="${p.name}">
+                                </a>
+                                <div class="card-body d-flex flex-column p-4 flex-grow-1">
+                                    <span class="badge bg-secondary mb-2 align-self-start">${p.type}</span>
+                                    <h3 class="fs-5 fw-bold card-title mb-2">
+                                        <a href="/store.html?id=${productId}" class="text-decoration-none text-reset">${p.name}</a>
+                                    </h3>
+                                    <p class="fs-4 fw-black mt-auto mb-3" style="color: var(--accent, #9D00FF);">${priceFormatted}</p>
+                                    <a href="/store.html?id=${productId}" class="btn btn-outline-primary w-100 mt-auto">View Details</a>
+                                </div>
+                            </article>
+                        `;
+                    }).join('');
+                }
+
+                if (searchInput) searchInput.addEventListener('input', renderProducts);
+                if (searchClear) searchClear.addEventListener('click', () => {
+
+                    searchInput.value = '';
+                    renderProducts();
+                });
+                if (sortBySelect) sortBySelect.addEventListener('change', renderProducts);
+                if (availabilitySelect) availabilitySelect.addEventListener('change', renderProducts);
+
+                if (priceMinInput && priceMaxInput) {
+                    priceMinInput.addEventListener('input', () => {
+                        if (parseFloat(priceMinInput.value) > parseFloat(priceMaxInput.value)) {
+                            priceMinInput.value = priceMaxInput.value;
+                        }
+                        priceMinLabel.textContent = `Â£${parseFloat(priceMinInput.value).toFixed(2)}`;
+                        renderProducts();
+                    });
+                    priceMaxInput.addEventListener('input', () => {
+                        if (parseFloat(priceMaxInput.value) < parseFloat(priceMinInput.value)) {
+                            priceMaxInput.value = priceMinInput.value;
+                        }
+                        priceMaxLabel.textContent = `Â£${parseFloat(priceMaxInput.value).toFixed(2)}`;
+                        renderProducts();
+                    });
+                }
+
+                categoryButtons.forEach(btn => {
+                    btn.addEventListener('click', () => {
+
+                        categoryButtons.forEach(b => {
+                            b.classList.remove('filter-btn-active');
+                            b.classList.add('filter-btn-inactive');
+                        });
+                        btn.classList.remove('filter-btn-inactive');
+                        btn.classList.add('filter-btn-active');
+                        currentCategory = btn.getAttribute('data-category');
+                        renderProducts();
+                    });
+                });
+
+                if (randomBtn) {
+                    randomBtn.addEventListener('click', () => {
+                        if (allProducts.length > 0) {
+                            const random = allProducts[Math.floor(Math.random() * allProducts.length)];
+
+                            window.location.href = `/store.html?id=${encodeURIComponent(random.id)}`;
+                        }
+                    });
+                }
+
+});
+        </script>
+
+        <!-- Scripts -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    </body>
+</html>

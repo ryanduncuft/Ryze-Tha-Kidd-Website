@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Account Portal | Ryze Tha Kidd</title>
+    <meta name="description" content="Sign in or register for an account on the official Ryze Tha Kidd platform. Access community features, order updates, and exclusive artist content.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.ryzethakidd.com/auth">
+    <meta property="og:title" content="Account Portal | Ryze Tha Kidd">
+    <meta property="og:description" content="Sign in or register for an account on the official Ryze Tha Kidd platform. Access community features, order updates, and exclusive artist content.">
+    <meta property="og:image" content="https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png">
+    <meta property="og:image:alt" content="Official Ryze Tha Kidd website artwork">
+    <meta property="og:locale" content="en_GB">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@ryzethakidd">
+    <meta name="twitter:title" content="Account Portal | Ryze Tha Kidd">
+    <meta name="twitter:description" content="Sign in or register for an account on the official Ryze Tha Kidd platform. Access community features, order updates, and exclusive artist content.">
+    <meta name="twitter:image" content="https://res.cloudinary.com/dvju1xiaw/image/upload/f_auto,q_auto/v1792020777/Logo-rtk_dzt3wv.png">
+
+    <!-- Prevent search engine indexing for draft account portal -->
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Ryze Tha Kidd">
+    <meta name="theme-color" content="#9D00FF">
+
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://res.cloudinary.com">
+
+    <!-- Canonical & Icons -->
+    <link rel="canonical" href="https://www.ryzethakidd.com/auth">
+    <link rel="icon" href="/WebpageIcon.ico" type="image/x-icon">
+    <link rel="icon" href="/WebpageIcon.png" type="image/png" sizes="192x192">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="preload" href="https://cdn.ryzethakidd.com/shared/ui.html" as="fetch" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.ryzethakidd.com/shared/site.css" crossorigin="anonymous">
+
+    <script>window.ARTIST_ID = "ryzethakidd";</script>
+
+    <script src="https://cdn.ryzethakidd.com/shared/main.js" crossorigin="anonymous" defer></script>
+</head>
+
+<body class="d-flex flex-column min-vh-100">
+    <canvas aria-hidden="true" id="interactive-bg"></canvas>
+    <header id="navbar-container"></header>
+
+    <main class="flex-grow-1 py-5 d-flex flex-column align-items-center justify-content-center" id="main-content">
+        <div class="auth-wrapper mx-auto" id="auth-container">
+            <div class="form-container sign-up-container">
+                <form action="#">
+                    <h2 class="fw-bold h3 mb-3">Create Account</h2>
+                    <div class="social-auth-btns">
+                        <a href="#" class="social-icon" aria-label="Sign up with Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign up with Google"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign up with Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <p class="small text-muted mb-3">or use your email for registration</p>
+                    <input type="text" placeholder="Full Name" required aria-label="Full Name" />
+                    <input type="email" placeholder="Email" required aria-label="Email" />
+                    <input type="password" placeholder="Password" required aria-label="Password" />
+                    <button class="btn btn-primary mt-3 px-5 rounded-pill" type="submit">Sign Up</button>
+                </form>
+            </div>
+
+            <div class="form-container sign-in-container">
+                <form action="#">
+                    <h2 class="fw-bold h3 mb-3">Sign In</h2>
+                    <div class="social-auth-btns">
+                        <a href="#" class="social-icon" aria-label="Sign in with Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign in with Google"><i class="fab fa-google"></i></a>
+                        <a href="#" class="social-icon" aria-label="Sign in with Twitter"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <p class="small text-muted mb-3">Welcome back! Please login</p>
+                    <input type="email" placeholder="Email" required aria-label="Email" />
+                    <input type="password" placeholder="Password" required aria-label="Password" />
+                    <a href="#" class="d-block my-2 text-muted small text-decoration-none">Forgot password?</a>
+                    <button class="btn btn-primary px-5 rounded-pill" type="submit">Sign In</button>
+                </form>
+            </div>
+
+            <div class="auth-overlay-container d-none d-md-block">
+                <div class="auth-overlay">
+                    <div class="overlay-panel panel-left">
+                        <h2 class="fw-bold text-white">Welcome Back!</h2>
+                        <p class="small my-4">To stay connected with the community, please login with your info.</p>
+                        <button class="btn btn-outline-light rounded-pill px-5" id="showSignIn">Sign In and Login</button>
+                    </div>
+                    <div class="overlay-panel panel-right">
+                        <h2 class="fw-bold text-white">Hello, Friend!</h2>
+                        <p class="small my-4">Enter your details and start your journey with us.</p>
+                        <button class="btn btn-outline-light rounded-pill px-5" id="showSignUp">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-container"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js" crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const signUpBtn = document.getElementById('showSignUp');
+            const signInBtn = document.getElementById('showSignIn');
+            const container = document.getElementById('auth-container');
+
+            if (signUpBtn && signInBtn && container) {
+                signUpBtn.addEventListener('click', () => {
+                    container.classList.add("active-right");
+                });
+                signInBtn.addEventListener('click', () => {
+                    container.classList.remove("active-right");
+                });
+
+            } else {
+                console.warn("Authentication panel controls not found");
+            }
+        });
+    </script>
+</body>
+</html>

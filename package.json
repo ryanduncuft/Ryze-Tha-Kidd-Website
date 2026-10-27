@@ -1,0 +1,10 @@
+{
+  "name": "ryze-tha-kidd-storefront",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "stripe": "^23.0.1"
+  }
+}

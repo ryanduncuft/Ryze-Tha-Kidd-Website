@@ -1,0 +1,44 @@
+# --- Dependencies & Binaries ---
+node_modules/
+*.node
+.pnp
+.pnp.js
+
+# --- Archives & Backups (The 3GB Culprits) ---
+*.zip
+*.tar
+*.gz
+*.rar
+*.7z
+*.bak
+*.tmp
+
+# --- Python Files ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# --- Production & Build ---
+dist/
+build/
+out/
+.next/
+.cache/
+coverage/
+
+# --- Sensitive Info ---
+.env*
+*.log
+*.txt
+
+# --- OS & IDE Files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp

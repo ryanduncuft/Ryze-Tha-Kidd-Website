@@ -1,0 +1,95 @@
+# =========================================================================
+# PRIMARY REDIRECT RULES & FUNCTIONS ROUTING
+# =========================================================================
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+# STORE SSR: Must be at the very top so Netlify intercepts ?id=... before static fallback rules
+[[redirects]]
+  from = "/store.html"
+  query = {id = ":id"}
+  to = "/.netlify/functions/store-ssr?id=:id"
+  status = 200
+  force = true
+
+# =========================================================================
+# DOMAIN CANONICALIZATION (301 Permanent Redirects)
+# =========================================================================
+
+[[redirects]]
+  # Redirect non-www or old Netlify subdomain to canonical domain
+  from = "https://ryzethakidd.netlify.app/*"
+  to = "https://www.ryzethakidd.com/:splat"
+  status = 301
+  force = true
+
+# =========================================================================
+# OTHER REDIRECT RULES
+# =========================================================================
+
+# Sitemap Function
+[[redirects]]
+  from = "/sitemap.xml"
+  to = "/.netlify/functions/sitemap"
+  status = 200
+
+# Store API endpoints
+[[redirects]]
+  from = "/api/store/products"
+  to = "/.netlify/functions/products"
+  status = 200
+
+[[redirects]]
+  from = "/api/store/create-checkout-session"
+  to = "/.netlify/functions/create-checkout-session"
+  status = 200
+
+# Exclusions
+[[redirects]]
+  from = "/single"
+  to = "/single"
+  status = 200
+
+[[redirects]]
+  from = "/album"
+  to = "/album"
+  status = 200
+
+# Clean URLs for static pages (about, contact, etc.)
+[[redirects]]
+  from = "/:page"
+  to = "/:page.html"
+  status = 200
+
+# Custom 404 Page Catch-all (Must be last)
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# =========================================================================
+# SECURITY HEADERS
+# =========================================================================
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevents clickjacking by forbidding your site from being embedded in frames
+    X-Frame-Options = "DENY"
+    # Prevents MIME-type sniffing attacks
+    X-Content-Type-Options = "nosniff"
+    # Protects user privacy when navigating away
+    Referrer-Policy = "strict-origin-when-cross-origin"
+     
+    # Updated Content Security Policy whitelisting your CDN for styles and cdnjs for source maps
+    Content-Security-Policy = """
+      default-src 'self';
+      script-src 'self' https://js.stripe.com https://cdn.ryzethakidd.com https://cdnjs.cloudflare.com https://gist.github.com 'unsafe-inline';
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.ryzethakidd.com;
+      font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com;
+      img-src 'self' data: https://*.stripe.com https://res.cloudinary.com https://cdn.ryzethakidd.com https://*.ytimg.com https://salehriaz.com https://gist.githubusercontent.com;
+      connect-src 'self' https://api.stripe.com https://res.cloudinary.com https://cdn.ryzethakidd.com https://cdnjs.cloudflare.com https://gist.githubusercontent.com;
+      frame-src https://js.stripe.com https://www.youtube.com https://www.youtube-nocookie.com;
+    """
