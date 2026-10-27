@@ -43,27 +43,3 @@ Designed with a focus on lightweight architecture and maintainability:
     cd Ryze-Tha-Kidd-Website
     ```
 3.  **Launch:** Open `index.html` via your local server.
-
-## Shared frontend and store deployment
-
-The artist sites load their shared shell from Cloudflare. Keep the HTML references pointed at
-`https://cdn.ryzethakidd.com/shared/main.js`; do not change them to a local `main.js` path.
-
-1. Update the shared asset origin with `../shared/main.js`, `../shared/site.css`, and `../shared/ui.html`,
-   preserving the `/shared/` paths. Confirm the Cloudflare URL returns the updated files, then
-   purge or refresh the corresponding cache if it serves an older version.
-2. Deploy `ryzethakidd.com/store/config.js` to
-   `https://cdn.ryzethakidd.com/ryzethakidd/store/config.js`. Ryze's store, album, and single
-   pages load this configuration from Cloudflare for Stripe initialization, checkout, and
-   optional store links.
-3. Keep the Netlify routes in `netlify.toml` pointed to the existing `products` and
-   `create-checkout-session` functions. The browser requests the public product endpoint and
-   asks the checkout function to create a Checkout Session; Stripe's secret key must remain in
-   the Netlify `STRIPE_SECRET_KEY` environment variable and must never be added to `config.js`.
-   The publishable key is configured in `config.js`; hosted checkout sessions are still created
-   by the server endpoint.
-4. Verify Ryze's store listing, a product detail URL, and the checkout redirect. Confirm a
-   LostGem page still loads the same shared Cloudflare assets with `window.ARTIST_ID = "lostgem"`
-   and does not load Ryze's store configuration; its artist-specific configuration and data remain
-   selected by the shared script using that artist ID. A future LostGem store can use a copy of
-   `config.js` at `https://cdn.ryzethakidd.com/lostgem/store/config.js` with her own publishable key and endpoints.
